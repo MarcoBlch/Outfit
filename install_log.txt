@@ -1,0 +1,415 @@
+Fetching gem metadata from https://rubygems.org/.........
+Resolving dependencies...
+Installing bindex 0.8.1 with native extensions
+Installing stringio 3.1.8 with native extensions
+Installing erb 6.0.0 with native extensions
+Installing cgi 0.5.0 with native extensions
+Installing io-console 0.8.1 with native extensions
+Installing bcrypt 3.1.20 with native extensions
+Installing msgpack 1.8.0 with native extensions
+Installing date 3.5.0 with native extensions
+Installing racc 1.8.1 with native extensions
+Installing bigdecimal 3.3.1 with native extensions
+Installing nio4r 2.7.5 with native extensions
+Installing json 2.16.0 with native extensions
+Fetching i18n 1.14.7
+Fetching tzinfo 2.0.6
+Fetching rack-session 2.1.1
+Fetching rack-test 2.2.0
+Fetching net-protocol 0.2.2
+Installing websocket-driver 0.8.0 with native extensions
+Installing rack-session 2.1.1
+Installing i18n 1.14.7
+Installing rack-test 2.2.0
+Installing net-protocol 0.2.2
+Installing tzinfo 2.0.6
+Fetching rackup 2.2.1
+Fetching warden 1.2.9
+Fetching rack-cors 3.0.0
+Fetching sprockets 4.2.2
+Installing rackup 2.2.1
+Installing warden 1.2.9
+Fetching addressable 2.8.8
+Fetching pp 0.6.3
+Installing rack-cors 3.0.0
+Fetching net-http 0.8.0
+Installing pp 0.6.3
+Installing sprockets 4.2.2
+Installing net-http 0.8.0
+Fetching ruby-vips 2.2.5
+Fetching pry 0.15.2
+Installing addressable 2.8.8
+Installing prism 1.6.0 with native extensions
+Installing ruby-vips 2.2.5
+Fetching rspec-core 3.13.6
+Fetching rspec-expectations 3.13.5
+Fetching rspec-mocks 3.13.7
+Installing pry 0.15.2
+Fetching unicode-display_width 3.2.0
+Installing rspec-core 3.13.6
+Installing rspec-mocks 3.13.7
+Installing unicode-display_width 3.2.0
+Installing rspec-expectations 3.13.5
+Fetching selenium-webdriver 4.38.0
+Installing selenium-webdriver 4.38.0
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+current directory:
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/gems/bigdecimal-3.3.1/ext/bigdecimal
+/usr/bin/ruby3.2 -I/usr/lib/ruby/vendor_ruby extconf.rb
+mkmf.rb can't find header files for ruby at /usr/lib/ruby/include/ruby.h
+
+You might have to install separate package for the ruby development
+environment, ruby-dev or ruby-devel for example.
+
+extconf failed, exit code 1
+
+Gem files will remain installed in
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/gems/bigdecimal-3.3.1
+for inspection.
+Results logged to
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/extensions/x86_64-linux-gnu/3.2.0/bigdecimal-3.3.1/gem_make.out
+
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:119:in `run'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/ext_conf_builder.rb:28:in `build'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:187:in `build_extension'
+/usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:221:in `block in
+build_extensions'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:218:in `each'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:218:in `build_extensions'
+  /usr/lib/ruby/vendor_ruby/rubygems/installer.rb:844:in `build_extensions'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/rubygems_gem_installer.rb:111:in
+`build_extensions'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/rubygems_gem_installer.rb:30:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/source/rubygems.rb:220:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/gem_installer.rb:55:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/gem_installer.rb:17:in
+`install_from_spec'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/parallel_installer.rb:133:in
+`do_install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/parallel_installer.rb:124:in
+`block in worker_pool'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:62:in
+`apply_func'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:57:in `block in
+process_queue'
+  /var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:54:in `loop'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:54:in
+`process_queue'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:90:in `block (2
+levels) in create_threads'
+
+An error occurred while installing bigdecimal (3.3.1), and Bundler cannot
+continue.
+
+In Gemfile:
+  rails was resolved to 7.1.6, which depends on
+    actioncable was resolved to 7.1.6, which depends on
+      actionpack was resolved to 7.1.6, which depends on
+        actionview was resolved to 7.1.6, which depends on
+          rails-dom-testing was resolved to 2.3.0, which depends on
+            activesupport was resolved to 7.1.6, which depends on
+              bigdecimal
+
+
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+current directory:
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/gems/cgi-0.5.0/ext/cgi/escape
+/usr/bin/ruby3.2 -I/usr/lib/ruby/vendor_ruby extconf.rb
+mkmf.rb can't find header files for ruby at /usr/lib/ruby/include/ruby.h
+
+You might have to install separate package for the ruby development
+environment, ruby-dev or ruby-devel for example.
+
+extconf failed, exit code 1
+
+Gem files will remain installed in
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/gems/cgi-0.5.0 for
+inspection.
+Results logged to
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/extensions/x86_64-linux-gnu/3.2.0/cgi-0.5.0/gem_make.out
+
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:119:in `run'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/ext_conf_builder.rb:28:in `build'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:187:in `build_extension'
+/usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:221:in `block in
+build_extensions'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:218:in `each'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:218:in `build_extensions'
+  /usr/lib/ruby/vendor_ruby/rubygems/installer.rb:844:in `build_extensions'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/rubygems_gem_installer.rb:111:in
+`build_extensions'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/rubygems_gem_installer.rb:30:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/source/rubygems.rb:220:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/gem_installer.rb:55:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/gem_installer.rb:17:in
+`install_from_spec'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/parallel_installer.rb:133:in
+`do_install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/parallel_installer.rb:124:in
+`block in worker_pool'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:62:in
+`apply_func'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:57:in `block in
+process_queue'
+  /var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:54:in `loop'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:54:in
+`process_queue'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:90:in `block (2
+levels) in create_threads'
+
+An error occurred while installing cgi (0.5.0), and Bundler cannot continue.
+
+In Gemfile:
+  rails was resolved to 7.1.6, which depends on
+    actioncable was resolved to 7.1.6, which depends on
+      actionpack was resolved to 7.1.6, which depends on
+        actionview was resolved to 7.1.6, which depends on
+          cgi
+
+
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+current directory:
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/gems/date-3.5.0/ext/date
+/usr/bin/ruby3.2 -I/usr/lib/ruby/vendor_ruby extconf.rb
+mkmf.rb can't find header files for ruby at /usr/lib/ruby/include/ruby.h
+
+You might have to install separate package for the ruby development
+environment, ruby-dev or ruby-devel for example.
+
+extconf failed, exit code 1
+
+Gem files will remain installed in
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/gems/date-3.5.0 for
+inspection.
+Results logged to
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/extensions/x86_64-linux-gnu/3.2.0/date-3.5.0/gem_make.out
+
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:119:in `run'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/ext_conf_builder.rb:28:in `build'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:187:in `build_extension'
+/usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:221:in `block in
+build_extensions'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:218:in `each'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:218:in `build_extensions'
+  /usr/lib/ruby/vendor_ruby/rubygems/installer.rb:844:in `build_extensions'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/rubygems_gem_installer.rb:111:in
+`build_extensions'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/rubygems_gem_installer.rb:30:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/source/rubygems.rb:220:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/gem_installer.rb:55:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/gem_installer.rb:17:in
+`install_from_spec'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/parallel_installer.rb:133:in
+`do_install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/parallel_installer.rb:124:in
+`block in worker_pool'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:62:in
+`apply_func'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:57:in `block in
+process_queue'
+  /var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:54:in `loop'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:54:in
+`process_queue'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:90:in `block (2
+levels) in create_threads'
+
+An error occurred while installing date (3.5.0), and Bundler cannot continue.
+
+In Gemfile:
+  rails was resolved to 7.1.6, which depends on
+    actionmailbox was resolved to 7.1.6, which depends on
+      mail was resolved to 2.9.0, which depends on
+        net-imap was resolved to 0.5.12, which depends on
+          date
+
+
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+current directory:
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/gems/bcrypt-3.1.20/ext/mri
+/usr/bin/ruby3.2 -I/usr/lib/ruby/vendor_ruby extconf.rb
+mkmf.rb can't find header files for ruby at /usr/lib/ruby/include/ruby.h
+
+You might have to install separate package for the ruby development
+environment, ruby-dev or ruby-devel for example.
+
+extconf failed, exit code 1
+
+Gem files will remain installed in
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/gems/bcrypt-3.1.20 for
+inspection.
+Results logged to
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/extensions/x86_64-linux-gnu/3.2.0/bcrypt-3.1.20/gem_make.out
+
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:119:in `run'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/ext_conf_builder.rb:28:in `build'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:187:in `build_extension'
+/usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:221:in `block in
+build_extensions'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:218:in `each'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:218:in `build_extensions'
+  /usr/lib/ruby/vendor_ruby/rubygems/installer.rb:844:in `build_extensions'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/rubygems_gem_installer.rb:111:in
+`build_extensions'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/rubygems_gem_installer.rb:30:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/source/rubygems.rb:220:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/gem_installer.rb:55:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/gem_installer.rb:17:in
+`install_from_spec'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/parallel_installer.rb:133:in
+`do_install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/parallel_installer.rb:124:in
+`block in worker_pool'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:62:in
+`apply_func'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:57:in `block in
+process_queue'
+  /var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:54:in `loop'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:54:in
+`process_queue'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:90:in `block (2
+levels) in create_threads'
+
+An error occurred while installing bcrypt (3.1.20), and Bundler cannot continue.
+
+In Gemfile:
+  devise was resolved to 4.9.4, which depends on
+    bcrypt
+
+
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+current directory:
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/gems/stringio-3.1.8/ext/stringio
+/usr/bin/ruby3.2 -I/usr/lib/ruby/vendor_ruby extconf.rb
+mkmf.rb can't find header files for ruby at /usr/lib/ruby/include/ruby.h
+
+You might have to install separate package for the ruby development
+environment, ruby-dev or ruby-devel for example.
+
+extconf failed, exit code 1
+
+Gem files will remain installed in
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/gems/stringio-3.1.8
+for inspection.
+Results logged to
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/extensions/x86_64-linux-gnu/3.2.0/stringio-3.1.8/gem_make.out
+
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:119:in `run'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/ext_conf_builder.rb:28:in `build'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:187:in `build_extension'
+/usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:221:in `block in
+build_extensions'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:218:in `each'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:218:in `build_extensions'
+  /usr/lib/ruby/vendor_ruby/rubygems/installer.rb:844:in `build_extensions'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/rubygems_gem_installer.rb:111:in
+`build_extensions'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/rubygems_gem_installer.rb:30:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/source/rubygems.rb:220:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/gem_installer.rb:55:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/gem_installer.rb:17:in
+`install_from_spec'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/parallel_installer.rb:133:in
+`do_install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/parallel_installer.rb:124:in
+`block in worker_pool'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:62:in
+`apply_func'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:57:in `block in
+process_queue'
+  /var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:54:in `loop'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:54:in
+`process_queue'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:90:in `block (2
+levels) in create_threads'
+
+An error occurred while installing stringio (3.1.8), and Bundler cannot
+continue.
+
+In Gemfile:
+  cssbundling-rails was resolved to 1.4.3, which depends on
+    railties was resolved to 7.1.6, which depends on
+      irb was resolved to 1.15.3, which depends on
+        rdoc was resolved to 6.16.1, which depends on
+          psych was resolved to 5.2.6, which depends on
+            stringio
+
+
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+current directory:
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/gems/io-console-0.8.1/ext/io/console
+/usr/bin/ruby3.2 -I/usr/lib/ruby/vendor_ruby extconf.rb
+mkmf.rb can't find header files for ruby at /usr/lib/ruby/include/ruby.h
+
+You might have to install separate package for the ruby development
+environment, ruby-dev or ruby-devel for example.
+
+extconf failed, exit code 1
+
+Gem files will remain installed in
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/gems/io-console-0.8.1
+for inspection.
+Results logged to
+/home/marc/code/MarcoBlch/Outfit/vendor/bundle/ruby/3.2.0/extensions/x86_64-linux-gnu/3.2.0/io-console-0.8.1/gem_make.out
+
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:119:in `run'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/ext_conf_builder.rb:28:in `build'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:187:in `build_extension'
+/usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:221:in `block in
+build_extensions'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:218:in `each'
+  /usr/lib/ruby/vendor_ruby/rubygems/ext/builder.rb:218:in `build_extensions'
+  /usr/lib/ruby/vendor_ruby/rubygems/installer.rb:844:in `build_extensions'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/rubygems_gem_installer.rb:111:in
+`build_extensions'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/rubygems_gem_installer.rb:30:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/source/rubygems.rb:220:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/gem_installer.rb:55:in
+`install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/gem_installer.rb:17:in
+`install_from_spec'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/parallel_installer.rb:133:in
+`do_install'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/installer/parallel_installer.rb:124:in
+`block in worker_pool'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:62:in
+`apply_func'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:57:in `block in
+process_queue'
+  /var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:54:in `loop'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:54:in
+`process_queue'
+/var/lib/gems/3.2.0/gems/bundler-2.6.9/lib/bundler/worker.rb:90:in `block (2
+levels) in create_threads'
+
+An error occurred while installing io-console (0.8.1), and Bundler cannot
+continue.
+
+In Gemfile:
+  cssbundling-rails was resolved to 1.4.3, which depends on
+    railties was resolved to 7.1.6, which depends on
+      irb was resolved to 1.15.3, which depends on
+        reline was resolved to 0.6.3, which depends on
+          io-console

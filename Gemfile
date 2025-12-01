@@ -82,9 +82,12 @@ group :development do
   gem "bullet"
 end
 gem "devise"
+gem "devise-jwt"
 gem "sidekiq"
 gem "httparty"
 gem "image_processing", "~> 1.2"
+gem "aws-sdk-s3"
 gem "pgvector"
+gem "google-cloud-ai_platform"
 gem "dotenv-rails", groups: [:development, :test]
 gem "rack-cors"
