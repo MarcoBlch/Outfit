@@ -41,3 +41,4 @@
 
 # Environment variables
 .env
+/vendor

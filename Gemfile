@@ -87,7 +87,7 @@ gem "sidekiq"
 gem "httparty"
 gem "image_processing", "~> 1.2"
 gem "aws-sdk-s3"
-gem "pgvector"
+gem "pgvector", git: "https://github.com/pgvector/pgvector-ruby.git", branch: "master"
 gem "google-cloud-ai_platform"
 gem "dotenv-rails", groups: [:development, :test]
 gem "rack-cors"

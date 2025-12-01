@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :wardrobe_items, dependent: :destroy
+  has_many :outfits, dependent: :destroy
   include Devise::JWT::RevocationStrategies::JTIMatcher
 
   # Include default devise modules. Others available are:
