@@ -42,3 +42,15 @@
 # Environment variables
 .env
 /vendor
+
+# Test and verification output files
+*_output.txt
+*_output_*.txt
+check_*.txt
+verify_*_output*.txt
+debug_*.txt
+probe_*.txt
+models_*.txt
+locations_*.txt
+text_output*.txt
+rails_server.log
