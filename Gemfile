@@ -80,6 +80,7 @@ end
 group :development do
   gem "annotate"
   gem "bullet"
+  gem "brakeman"
 end
 gem "devise"
 gem "devise-jwt"
@@ -87,7 +88,7 @@ gem "sidekiq"
 gem "httparty"
 gem "image_processing", "~> 1.2"
 gem "aws-sdk-s3"
-gem "pgvector", git: "https://github.com/pgvector/pgvector-ruby.git", branch: "master"
+gem "pgvector"
 gem "google-cloud-ai_platform"
 gem "dotenv-rails", groups: [:development, :test]
 gem "rack-cors"

@@ -33,6 +33,22 @@ class WardrobeItemsController < ApplicationController
     @wardrobe_item.destroy
   end
 
+  def search
+    query = params[:query]
+    return render json: { error: "Query parameter is required" }, status: :bad_request if query.blank?
+
+    begin
+      embedding = EmbeddingService.new.embed(query)
+      # Find nearest neighbors using pgvector
+      # We use the 'embedding' column on WardrobeItem
+      @wardrobe_items = current_user.wardrobe_items.nearest_neighbors(embedding, distance: :cosine).first(10)
+      
+      render json: @wardrobe_items
+    rescue EmbeddingService::EmbeddingError => e
+      render json: { error: e.message }, status: :service_unavailable
+    end
+  end
+
   private
 
   def set_wardrobe_item

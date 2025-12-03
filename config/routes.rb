@@ -5,7 +5,11 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
   
-  resources :wardrobe_items
+  resources :wardrobe_items do
+    collection do
+      get :search
+    end
+  end
   resources :outfits
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
