@@ -1,1 +1,39 @@
 @import "tailwindcss";
+
+@theme {
+  /* Premium Color Palette (HSL) */
+  --color-primary: 265 89% 66%; /* Soft Violet */
+  --color-primary-dark: 265 89% 56%;
+  --color-secondary: 190 90% 60%; /* Cyan/Teal accent */
+  
+  --color-bg-dark: 222 47% 11%; /* Deep Slate */
+  --color-bg-card: 217 33% 17%; /* Lighter Slate */
+  --color-bg-glass: 217 33% 17% / 0.7; /* Glassmorphism base */
+  
+  --color-text-main: 210 40% 98%;
+  --color-text-muted: 215 20% 65%;
+
+  /* Font Family */
+  --font-sans: "Inter", "sans-serif";
+}
+
+/* Custom Utilities for Glassmorphism */
+@utility glass {
+  background-color: var(--color-bg-glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgb(255 255 255 / 0.1);
+}
+
+@utility glass-hover {
+  @apply transition-all duration-300;
+  &:hover {
+    background-color: rgb(255 255 255 / 0.1);
+    border-color: rgb(255 255 255 / 0.2);
+  }
+}
+
+body {
+  background-color: hsl(var(--color-bg-dark));
+  color: hsl(var(--color-text-main));
+  font-family: var(--font-sans);
+}

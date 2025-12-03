@@ -1,0 +1,57 @@
+<div class="h-[calc(100vh-4rem)] flex overflow-hidden" data-controller="drag">
+  <!-- Sidebar: Wardrobe -->
+  <aside class="w-80 bg-gray-900 border-r border-white/10 flex flex-col">
+    <div class="p-4 border-b border-white/10">
+      <h2 class="text-lg font-medium text-white">Wardrobe</h2>
+      <p class="text-xs text-gray-400">Drag items to the canvas</p>
+    </div>
+    
+    <div class="flex-1 overflow-y-auto p-4 space-y-4">
+      <% @wardrobe_items.each do |item| %>
+        <div 
+          draggable="true" 
+          data-action="dragstart->drag#dragStart" 
+          data-id="<%= item.id %>" 
+          data-image-src="<%= url_for(item.image) if item.image.attached? %>"
+          class="bg-white/5 rounded-lg p-2 cursor-grab active:cursor-grabbing hover:bg-white/10 transition-colors"
+        >
+          <% if item.image.attached? %>
+            <%= image_tag item.image, class: "w-full h-32 object-contain pointer-events-none" %>
+          <% else %>
+             <div class="w-full h-32 flex items-center justify-center text-gray-500 bg-black/20 rounded">
+               <span class="text-xs">No Image</span>
+             </div>
+          <% end %>
+          <div class="mt-2 text-xs text-gray-300 truncate"><%= item.category&.titleize %></div>
+        </div>
+      <% end %>
+    </div>
+  </aside>
+
+  <!-- Main Canvas Area -->
+  <main class="flex-1 flex flex-col relative bg-gray-800">
+    <!-- Toolbar -->
+    <div class="h-16 border-b border-white/10 flex items-center justify-between px-6 bg-gray-900/50 backdrop-blur">
+      <h1 class="text-xl font-bold text-white">New Outfit</h1>
+      
+      <%= form_with model: @outfit, local: true, class: "flex items-center space-x-4" do |f| %>
+        <%= f.text_field :name, placeholder: "Outfit Name", class: "bg-transparent border-0 border-b border-gray-600 text-white placeholder-gray-500 focus:ring-0 focus:border-primary px-0" %>
+        
+        <!-- Canvas Container for Inputs (populated by JS) -->
+        <div data-drag-target="input"></div>
+
+        <%= f.submit "Save Outfit", class: "px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-lg text-sm font-medium transition-colors shadow-lg shadow-primary/20" %>
+      <% end %>
+    </div>
+
+    <!-- Canvas -->
+    <div 
+      data-drag-target="canvas" 
+      class="flex-1 relative overflow-hidden bg-[radial-gradient(#ffffff10_1px,transparent_1px)] [background-size:16px_16px]"
+    >
+      <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <p class="text-gray-600 text-sm">Drop items here</p>
+      </div>
+    </div>
+  </main>
+</div>

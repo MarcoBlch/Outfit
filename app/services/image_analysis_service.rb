@@ -1,6 +1,7 @@
 require "google/cloud/ai_platform/v1"
 require "httparty"
 require "googleauth"
+require "mime/types"
 
 class ImageAnalysisService
   class AnalysisError < StandardError; end
@@ -20,6 +21,8 @@ class ImageAnalysisService
     # Get Access Token
     authorizer = Google::Auth.get_application_default
     token = authorizer.fetch_access_token!["access_token"]
+
+    mime_type = MIME::Types.type_for(image_path).first.content_type
 
     # Construct the prompt for Gemini
     prompt_text = <<~PROMPT
@@ -41,7 +44,7 @@ class ImageAnalysisService
             { text: prompt_text },
             { 
               inline_data: {
-                mime_type: "image/jpeg", 
+                mime_type: mime_type, 
                 data: encoded_image
               }
             }

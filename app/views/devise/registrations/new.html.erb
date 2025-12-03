@@ -1,0 +1,48 @@
+<div class="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8">
+    <div class="text-center">
+      <div class="mx-auto h-12 w-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-2xl shadow-lg shadow-primary/20">
+        O
+      </div>
+      <h2 class="mt-6 text-3xl font-bold tracking-tight text-white">Create your account</h2>
+      <p class="mt-2 text-sm text-gray-400">
+        Already have an account?
+        <%= link_to "Sign in", new_session_path(resource_name), class: "font-medium text-primary hover:text-primary-light transition-colors" %>
+      </p>
+    </div>
+
+    <%= render "shared/card", classes: "backdrop-blur-xl bg-white/5 border border-white/10" do %>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-6" }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+
+        <div>
+          <%= f.label :email, class: "block text-sm font-medium leading-6 text-white" %>
+          <div class="mt-2">
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "block w-full rounded-lg border-0 bg-white/5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" %>
+          </div>
+        </div>
+
+        <div>
+          <%= f.label :password, class: "block text-sm font-medium leading-6 text-white" %>
+          <div class="mt-2">
+            <%= f.password_field :password, autocomplete: "new-password", class: "block w-full rounded-lg border-0 bg-white/5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" %>
+          </div>
+          <% if @minimum_password_length %>
+            <p class="mt-1 text-xs text-gray-400"><%= @minimum_password_length %> characters minimum</p>
+          <% end %>
+        </div>
+
+        <div>
+          <%= f.label :password_confirmation, class: "block text-sm font-medium leading-6 text-white" %>
+          <div class="mt-2">
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "block w-full rounded-lg border-0 bg-white/5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" %>
+          </div>
+        </div>
+
+        <div>
+          <%= f.submit "Sign up", class: "flex w-full justify-center rounded-lg bg-primary px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all shadow-lg shadow-primary/20" %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

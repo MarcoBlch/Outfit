@@ -3,8 +3,20 @@ class WardrobeItemsController < ApplicationController
   before_action :set_wardrobe_item, only: %i[show update destroy]
 
   def index
-    @wardrobe_items = current_user.wardrobe_items
-    render json: @wardrobe_items
+    @wardrobe_items = current_user.wardrobe_items.order(created_at: :desc)
+    
+    # Filtering
+    @wardrobe_items = @wardrobe_items.where(category: params[:category]) if params[:category].present?
+    @wardrobe_items = @wardrobe_items.where(color: params[:color]) if params[:color].present?
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @wardrobe_items }
+    end
+  end
+
+  def new
+    @wardrobe_item = WardrobeItem.new
   end
 
   def show

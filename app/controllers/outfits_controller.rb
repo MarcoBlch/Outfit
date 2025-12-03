@@ -4,20 +4,37 @@ class OutfitsController < ApplicationController
 
   def index
     @outfits = current_user.outfits.includes(:wardrobe_items)
-    render json: @outfits, include: :outfit_items
+    respond_to do |format|
+      format.html
+      format.json { render json: @outfits, include: :outfit_items }
+    end
   end
 
   def show
-    render json: @outfit, include: [:outfit_items, :wardrobe_items]
+    respond_to do |format|
+      format.html
+      format.json { render json: @outfit, include: [:outfit_items, :wardrobe_items] }
+    end
+  end
+
+  def new
+    @outfit = Outfit.new
+    @wardrobe_items = current_user.wardrobe_items.order(created_at: :desc)
   end
 
   def create
     @outfit = current_user.outfits.build(outfit_params)
 
     if @outfit.save
-      render json: @outfit, status: :created, include: :outfit_items
+      respond_to do |format|
+        format.html { redirect_to @outfit, notice: "Outfit created successfully." }
+        format.json { render json: @outfit, status: :created, include: :outfit_items }
+      end
     else
-      render json: @outfit.errors, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @outfit.errors, status: :unprocessable_entity }
+      end
     end
   end
 

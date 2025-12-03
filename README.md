@@ -22,3 +22,8 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+## Maintenance
+
+For information about maintaining Vertex AI model integrations and handling deprecations, please see [MAINTENANCE.md](MAINTENANCE.md).
+

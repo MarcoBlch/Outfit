@@ -1,0 +1,69 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="flex flex-col md:flex-row gap-8">
+    <!-- Sidebar Filters -->
+    <aside class="w-full md:w-64 flex-shrink-0 space-y-8">
+      <div>
+        <h2 class="text-lg font-medium text-white mb-4">Filters</h2>
+        
+        <%= form_with url: wardrobe_items_path, method: :get, data: { turbo_frame: "wardrobe_grid", controller: "filter", action: "input->filter#submit" } do |f| %>
+          <!-- Search -->
+          <div class="mb-6">
+            <%= f.label :query, "Search", class: "sr-only" %>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <%= f.text_field :query, placeholder: "Search items...", class: "block w-full pl-10 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:ring-primary focus:border-primary sm:text-sm" %>
+            </div>
+          </div>
+
+          <!-- Categories -->
+          <div class="space-y-2">
+            <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider">Category</h3>
+            <div class="space-y-1">
+              <% ["Tops", "Bottoms", "Shoes", "Accessories", "Outerwear"].each do |category| %>
+                <label class="flex items-center space-x-3 cursor-pointer group">
+                  <%= radio_button_tag :category, category.downcase, params[:category] == category.downcase, class: "form-radio h-4 w-4 text-primary border-gray-600 bg-gray-700 focus:ring-primary focus:ring-offset-gray-900" %>
+                  <span class="text-gray-300 group-hover:text-white transition-colors"><%= category %></span>
+                </label>
+              <% end %>
+              <label class="flex items-center space-x-3 cursor-pointer group">
+                <%= radio_button_tag :category, "", params[:category].blank?, class: "form-radio h-4 w-4 text-primary border-gray-600 bg-gray-700 focus:ring-primary focus:ring-offset-gray-900" %>
+                <span class="text-gray-300 group-hover:text-white transition-colors">All</span>
+              </label>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </aside>
+
+    <!-- Main Grid -->
+    <div class="flex-1">
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-white">My Wardrobe</h1>
+        <%= render "shared/button", text: "Add Item", path: new_wardrobe_item_path, icon: raw('<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" /></svg>') %>
+      </div>
+
+      <%= turbo_frame_tag "wardrobe_grid" do %>
+        <% if @wardrobe_items.any? %>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+            <%= render partial: "wardrobe_item", collection: @wardrobe_items %>
+          </div>
+        <% else %>
+          <div class="text-center py-12 bg-white/5 rounded-xl border border-white/10 border-dashed">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-white">No items found</h3>
+            <p class="mt-1 text-sm text-gray-400">Get started by creating a new wardrobe item.</p>
+            <div class="mt-6">
+              <%= render "shared/button", text: "Upload Item", path: new_wardrobe_item_path, variant: :secondary %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

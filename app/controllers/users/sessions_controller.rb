@@ -4,10 +4,15 @@ class Users::SessionsController < Devise::SessionsController
   private
 
   def respond_with(resource, _opts = {})
-    render json: {
-      message: 'Logged in successfully.',
-      user: resource,
-    }, status: :ok
+    respond_to do |format|
+      format.html { super }
+      format.json do
+        render json: {
+          message: 'Logged in successfully.',
+          user: resource,
+        }, status: :ok
+      end
+    end
   end
 
   def respond_to_on_destroy

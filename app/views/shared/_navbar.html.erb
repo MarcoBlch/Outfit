@@ -1,0 +1,57 @@
+<nav class="sticky top-0 z-50 glass border-b border-white/10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <div class="flex-shrink-0">
+        <%= link_to root_path, class: "flex items-center space-x-2 group" do %>
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:shadow-primary/50 transition-all duration-300">
+            O
+          </div>
+          <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
+            Outfit Maker
+          </span>
+        <% end %>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:block">
+        <div class="ml-10 flex items-baseline space-x-4">
+          <%= link_to "Dashboard", root_path, class: "px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors" %>
+          <%= link_to "Wardrobe", wardrobe_items_path, class: "px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors" %>
+          <%= link_to "Studio", new_outfit_path, class: "px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors" %>
+        </div>
+      </div>
+
+      <!-- Right Side Actions -->
+      <div class="hidden md:block">
+        <div class="ml-4 flex items-center md:ml-6 space-x-4">
+          <!-- Upload Button -->
+          <%= link_to new_wardrobe_item_path, class: "flex items-center px-4 py-2 rounded-lg bg-primary hover:bg-primary-dark text-white text-sm font-medium transition-colors shadow-lg shadow-primary/20" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+            </svg>
+            Upload
+          <% end %>
+
+          <!-- Profile Dropdown (Placeholder) -->
+          <div class="relative ml-3">
+            <button type="button" class="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+              <span class="sr-only">Open user menu</span>
+              <div class="h-8 w-8 rounded-full bg-gradient-to-br from-gray-700 to-gray-600 border border-white/10"></div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="-mr-2 flex md:hidden">
+        <button type="button" class="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+          <span class="sr-only">Open main menu</span>
+          <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
