@@ -13,7 +13,7 @@ class ImageAnalysisService
     @api_endpoint = "https://#{@location}-aiplatform.googleapis.com/v1/projects/#{@project_id}/locations/#{@location}/publishers/google/models/gemini-2.5-flash:generateContent"
   end
 
-  def analyze(image_path)
+  def analyze(image_path, mime_type: nil)
     # Read image file and encode to Base64
     image_content = File.binread(image_path)
     encoded_image = Base64.strict_encode64(image_content)
@@ -22,7 +22,7 @@ class ImageAnalysisService
     authorizer = Google::Auth.get_application_default
     token = authorizer.fetch_access_token!["access_token"]
 
-    mime_type = MIME::Types.type_for(image_path).first.content_type
+    mime_type ||= MIME::Types.type_for(image_path).first&.content_type || "image/jpeg"
 
     # Construct the prompt for Gemini
     prompt_text = <<~PROMPT

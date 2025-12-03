@@ -6,6 +6,6 @@ class WardrobeItem < ApplicationRecord
   
   has_neighbors :embedding
 
-  validates :category, presence: true
+  # validates :category, presence: true
   validates :image, presence: true
 end

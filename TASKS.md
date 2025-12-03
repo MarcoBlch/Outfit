@@ -27,6 +27,15 @@
     - [ ] Create "Quick View" modal for item details <!-- id: 21 -->
     - [ ] Implement "Edit Metadata" form <!-- id: 22 -->
 
+## Phase 2: AI Integration (Auto-Tagging)
+- [x] **Backend Processing** <!-- id: 36 -->
+    - [x] Create `ImageAnalysisJob` (Sidekiq) <!-- id: 37 -->
+    - [x] Update `WardrobeItemsController` to enqueue job on upload <!-- id: 38 -->
+    - [x] Implement Turbo Stream broadcasting in Job <!-- id: 39 -->
+- [x] **Frontend Feedback** <!-- id: 40 -->
+    - [x] Add "Analyzing..." state to `_wardrobe_item.html.erb` <!-- id: 41 -->
+    - [x] Handle Turbo Stream updates for Category/Color/Tags <!-- id: 42 -->
+
 ## Phase 3: Outfit Studio
 - [x] **Studio Layout (`/outfits/new`)** <!-- id: 23 -->
     - [x] Build Split-Screen Layout (Wardrobe Sidebar vs. Canvas) <!-- id: 24 -->

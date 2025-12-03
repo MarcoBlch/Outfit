@@ -27,9 +27,17 @@ class WardrobeItemsController < ApplicationController
     @wardrobe_item = current_user.wardrobe_items.build(wardrobe_item_params)
 
     if @wardrobe_item.save
-      render json: @wardrobe_item, status: :created
+      ImageAnalysisJob.perform_later(@wardrobe_item.id)
+
+      respond_to do |format|
+        format.html { redirect_to wardrobe_items_path, notice: "Item uploaded! AI analysis in progress..." }
+        format.json { render json: @wardrobe_item, status: :created }
+      end
     else
-      render json: @wardrobe_item.errors, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @wardrobe_item.errors, status: :unprocessable_entity }
+      end
     end
   end
 
