@@ -20,7 +20,10 @@ class WardrobeItemsController < ApplicationController
   end
 
   def show
-    render json: @wardrobe_item
+    respond_to do |format|
+      format.html
+      format.json { render json: @wardrobe_item }
+    end
   end
 
   def create
@@ -42,37 +45,76 @@ class WardrobeItemsController < ApplicationController
   end
 
   def update
+    # Process tags if present in metadata
+    if params[:wardrobe_item][:metadata] && params[:wardrobe_item][:metadata][:tags].is_a?(String)
+      params[:wardrobe_item][:metadata][:tags] = params[:wardrobe_item][:metadata][:tags].split(",").map(&:strip).reject(&:blank?)
+    end
+
     if @wardrobe_item.update(wardrobe_item_params)
-      render json: @wardrobe_item
+      respond_to do |format|
+        format.html { redirect_to wardrobe_items_path, notice: "Item updated." }
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace("wardrobe_item_#{@wardrobe_item.id}", partial: "wardrobe_items/wardrobe_item", locals: { wardrobe_item: @wardrobe_item }),
+            turbo_stream.replace("modal", template: "wardrobe_items/show"),
+            turbo_stream.prepend("flash_messages", partial: "shared/flash_message", locals: { message: "Item updated successfully." })
+          ]
+        end
+        format.json { render json: @wardrobe_item }
+      end
     else
-      render json: @wardrobe_item.errors, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :show, status: :unprocessable_entity }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("modal", template: "wardrobe_items/show"), status: :unprocessable_entity }
+        format.json { render json: @wardrobe_item.errors, status: :unprocessable_entity }
+      end
     end
   end
+
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
 
   def destroy
     @wardrobe_item.destroy
+    
+    respond_to do |format|
+      format.html { redirect_to wardrobe_items_path, notice: "Item removed." }
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.remove(@wardrobe_item),
+          turbo_stream.update("modal", ""),
+          turbo_stream.prepend("flash_messages", partial: "shared/flash_message", locals: { message: "Item removed.", type: "notice" })
+        ]
+      end
+    end
   end
 
   def search
-    query = params[:query]
-    return render json: { error: "Query parameter is required" }, status: :bad_request if query.blank?
-
-    begin
-      embedding = EmbeddingService.new.embed(query)
-      # Find nearest neighbors using pgvector
-      # We use the 'embedding' column on WardrobeItem
-      @wardrobe_items = current_user.wardrobe_items.nearest_neighbors(embedding, distance: :cosine).first(10)
-      
-      render json: @wardrobe_items
-    rescue EmbeddingService::EmbeddingError => e
-      render json: { error: e.message }, status: :service_unavailable
+    @wardrobe_items = current_user.wardrobe_items
+    
+    if params[:query].present?
+      @wardrobe_items = @wardrobe_items.where("category ILIKE ? OR color ILIKE ?", "%#{params[:query]}%", "%#{params[:query]}%")
     end
+    
+    render turbo_stream: turbo_stream.update("wardrobe_grid", partial: "wardrobe_items/grid", locals: { wardrobe_items: @wardrobe_items })
   end
 
   private
 
   def set_wardrobe_item
     @wardrobe_item = current_user.wardrobe_items.find(params[:id])
+  end
+
+  def handle_record_not_found
+    respond_to do |format|
+      format.html { redirect_to wardrobe_items_path, alert: "Item not found." }
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.update("modal", ""),
+          turbo_stream.prepend("flash_messages", partial: "shared/flash_message", locals: { message: "Item already removed.", type: "alert" })
+        ]
+      end
+      format.json { render json: { error: "Item not found" }, status: :not_found }
+    end
   end
 
   def wardrobe_item_params

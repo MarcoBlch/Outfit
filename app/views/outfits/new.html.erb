@@ -1,4 +1,4 @@
-<div class="h-[calc(100vh-4rem)] flex overflow-hidden" data-controller="drag">
+<div class="h-[calc(100vh-4rem)] flex overflow-hidden" data-controller="canvas">
   <!-- Sidebar: Wardrobe -->
   <aside class="w-80 bg-gray-900 border-r border-white/10 flex flex-col">
     <div class="p-4 border-b border-white/10">
@@ -10,7 +10,7 @@
       <% @wardrobe_items.each do |item| %>
         <div 
           draggable="true" 
-          data-action="dragstart->drag#dragStart" 
+          data-action="dragstart->canvas#dragStart" 
           data-id="<%= item.id %>" 
           data-image-src="<%= url_for(item.image) if item.image.attached? %>"
           class="bg-white/5 rounded-lg p-2 cursor-grab active:cursor-grabbing hover:bg-white/10 transition-colors"
@@ -38,20 +38,36 @@
         <%= f.text_field :name, placeholder: "Outfit Name", class: "bg-transparent border-0 border-b border-gray-600 text-white placeholder-gray-500 focus:ring-0 focus:border-primary px-0" %>
         
         <!-- Canvas Container for Inputs (populated by JS) -->
-        <div data-drag-target="input"></div>
+        <div data-canvas-target="input"></div>
 
         <%= f.submit "Save Outfit", class: "px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-lg text-sm font-medium transition-colors shadow-lg shadow-primary/20" %>
       <% end %>
     </div>
 
-    <!-- Canvas -->
-    <div 
-      data-drag-target="canvas" 
-      class="flex-1 relative overflow-hidden bg-[radial-gradient(#ffffff10_1px,transparent_1px)] [background-size:16px_16px]"
-    >
-      <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <p class="text-gray-600 text-sm">Drop items here</p>
+      <!-- Canvas Area -->
+      <div class="flex-1 bg-gray-900/50 backdrop-blur-xl rounded-2xl border border-white/10 p-8 flex flex-col relative overflow-hidden"
+           data-canvas-target="canvas">
+        
+        <div class="absolute top-4 left-4 z-10 text-gray-400 text-sm pointer-events-none">
+          <p>Drag items here from the wardrobe.</p>
+          <p class="text-xs mt-1 opacity-70">Tap to select • Drag to move • Pinch/Rotate to adjust</p>
+        </div>
+
+        <!-- Items will be dropped here -->
+        
+        <!-- Floating Toolbar (Hidden by default) -->
+        <div data-canvas-target="toolbar" class="absolute bottom-8 left-1/2 -translate-x-1/2 bg-gray-900/90 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 flex items-center space-x-4 shadow-2xl z-50 transition-all duration-300 translate-y-20 opacity-0">
+          <button type="button" data-action="canvas#bringToFront" class="p-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-colors" title="Bring to Front">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+          </button>
+          <button type="button" data-action="canvas#sendToBack" class="p-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-colors" title="Send to Back">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div class="w-px h-6 bg-white/20"></div>
+          <button type="button" data-action="canvas#removeItem" class="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-full transition-colors" title="Remove">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+          </button>
+        </div>
       </div>
-    </div>
   </main>
 </div>

@@ -17,6 +17,31 @@ class ImageAnalysisJob < ApplicationJob
       
       Rails.logger.info "Analysis result: #{analysis.inspect}"
 
+      # Check for invalid items
+      tags = analysis["tags"] || []
+      description = analysis["description"]&.downcase || ""
+      
+      if tags.include?("not clothing") || tags.include?("graphic") || description.include?("not a clothing item") || analysis["category"] == "not applicable"
+        Rails.logger.info "Item ##{wardrobe_item.id} identified as not clothing. Removing."
+        
+        # Broadcast removal
+        Turbo::StreamsChannel.broadcast_remove_to(
+          "wardrobe_stream",
+          target: "wardrobe_item_#{wardrobe_item.id}"
+        )
+        
+        # Broadcast error flash
+        Turbo::StreamsChannel.broadcast_prepend_to(
+          "wardrobe_stream",
+          target: "flash_messages",
+          partial: "shared/flash_message",
+          locals: { message: "Item removed: Not identified as clothing.", type: "alert" }
+        )
+        
+        wardrobe_item.destroy
+        return
+      end
+
       wardrobe_item.update!(
         category: analysis["category"]&.downcase,
         color: analysis["color"]&.downcase,
@@ -29,7 +54,7 @@ class ImageAnalysisJob < ApplicationJob
       # Broadcast the update to the frontend
       # This replaces the specific card in the grid with the updated version
       Turbo::StreamsChannel.broadcast_replace_to(
-        "wardrobe_stream", # We need to subscribe to this channel in the index view
+        "wardrobe_stream",
         target: "wardrobe_item_#{wardrobe_item.id}",
         partial: "wardrobe_items/wardrobe_item",
         locals: { wardrobe_item: wardrobe_item }

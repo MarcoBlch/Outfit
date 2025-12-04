@@ -4,5 +4,20 @@
 
 import { application } from "./application"
 
+import CanvasController from "./canvas_controller"
+application.register("canvas", CanvasController)
+
+import EditModeController from "./edit_mode_controller"
+application.register("edit-mode", EditModeController)
+
+import FilterController from "./filter_controller"
+application.register("filter", FilterController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import ModalController from "./modal_controller"
+application.register("modal", ModalController)
+
+import UploadController from "./upload_controller"
+application.register("upload", UploadController)

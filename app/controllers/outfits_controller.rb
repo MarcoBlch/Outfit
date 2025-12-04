@@ -31,6 +31,7 @@ class OutfitsController < ApplicationController
         format.json { render json: @outfit, status: :created, include: :outfit_items }
       end
     else
+      @wardrobe_items = current_user.wardrobe_items.order(created_at: :desc)
       respond_to do |format|
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @outfit.errors, status: :unprocessable_entity }

@@ -12,7 +12,11 @@
 
   <body class="min-h-screen flex flex-col antialiased selection:bg-primary selection:text-white">
     <%= render "shared/navbar" %>
-    <%= render "shared/flash" %>
+    <div id="flash_messages">
+      <%= render "shared/flash" %>
+    </div>
+    
+    <%= turbo_frame_tag "modal" %>
     
     <main class="flex-grow">
       <%= yield %>
