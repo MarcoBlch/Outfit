@@ -287,14 +287,15 @@ class OutfitSuggestionService
   end
 
   def user_profile_section
-    return "" unless @user.respond_to?(:profile) && @user.profile.present?
+    return "" unless @user.user_profile.present?
 
-    profile = @user.profile
+    profile = @user.user_profile
     text = "USER PROFILE:"
-    text += "\n- Style preference: #{profile.style_preference}" if profile.style_preference.present?
+    text += "\n- Style preference: #{profile.style_preference&.humanize}" if profile.style_preference.present?
+    text += "\n- Body type: #{profile.body_type&.humanize}" if profile.body_type.present?
     text += "\n- Age range: #{profile.age_range}" if profile.age_range.present?
-    text += "\n- Favorite colors: #{profile.favorite_colors.join(', ')}" if profile.favorite_colors.present?
-    text += "\n\nConsider these preferences when selecting outfits."
+    text += "\n- Favorite colors: #{profile.favorite_colors.join(', ')}" if profile.favorite_colors.any?
+    text += "\n\nConsider these preferences when selecting outfits. Prioritize items in their favorite colors and match the formality to their style preference."
     text
   end
 

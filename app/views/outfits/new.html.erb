@@ -1,4 +1,7 @@
-<div class="h-[calc(100vh-4rem)] flex overflow-hidden" data-controller="canvas">
+<div class="h-[calc(100vh-4rem)] flex overflow-hidden" data-controller="canvas"
+     <% if @preselected_items.present? %>
+     data-canvas-preselected-value="<%= @preselected_items.map { |item| { id: item.id, image_src: url_for(item.image) } }.to_json %>"
+     <% end %>>
   <!-- Sidebar: Wardrobe -->
   <aside class="w-80 bg-gray-900 border-r border-white/10 flex flex-col">
     <div class="p-4 border-b border-white/10">

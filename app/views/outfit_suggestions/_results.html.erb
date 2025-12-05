@@ -12,6 +12,18 @@
     <p class="text-gray-400 text-sm">
       Based on: "<%= suggestion.context %>"
     </p>
+
+    <!-- Weather Context Badge -->
+    <% if defined?(weather) && weather.present? %>
+      <div class="inline-flex items-center space-x-2 mt-3 px-4 py-2 bg-blue-600/10 border border-blue-600/20 rounded-full">
+        <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+        </svg>
+        <span class="text-xs text-blue-300">
+          Based on today's weather: <span class="font-semibold"><%= weather[:temp] %>°F, <%= weather[:condition].titleize %></span>
+        </span>
+      </div>
+    <% end %>
   </div>
 
   <!-- Outfit cards grid -->

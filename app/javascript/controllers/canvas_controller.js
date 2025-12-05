@@ -3,6 +3,7 @@ import interact from "interactjs"
 
 export default class extends Controller {
     static targets = ["canvas", "item", "input", "toolbar"]
+    static values = { preselected: Array }
 
     connect() {
         this.canvasTarget.addEventListener("dragover", this.handleDragOver.bind(this))
@@ -44,6 +45,23 @@ export default class extends Controller {
             if (e.target === this.canvasTarget) {
                 this.deselectAll()
             }
+        })
+
+        // Load preselected items from AI suggestions
+        if (this.hasPreselectedValue && this.preselectedValue.length > 0) {
+            this.loadPreselectedItems()
+        }
+    }
+
+    loadPreselectedItems() {
+        const canvasRect = this.canvasTarget.getBoundingClientRect()
+        const centerX = canvasRect.width / 2
+        const startY = 50
+
+        this.preselectedValue.forEach((item, index) => {
+            // Stack items vertically in the center
+            const y = startY + (index * 150)
+            this.addItemToCanvas(item.id, item.image_src, centerX, y)
         })
     }
 

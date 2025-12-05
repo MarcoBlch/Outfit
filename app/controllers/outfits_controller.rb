@@ -20,6 +20,12 @@ class OutfitsController < ApplicationController
   def new
     @outfit = Outfit.new
     @wardrobe_items = current_user.wardrobe_items.order(created_at: :desc)
+
+    # Pre-select items if passed from AI suggestions
+    if params[:wardrobe_item_ids].present?
+      @preselected_item_ids = Array(params[:wardrobe_item_ids]).map(&:to_i)
+      @preselected_items = current_user.wardrobe_items.where(id: @preselected_item_ids)
+    end
   end
 
   def create
@@ -58,9 +64,25 @@ class OutfitsController < ApplicationController
   end
 
   def outfit_params
-    params.require(:outfit).permit(
+    permitted = params.require(:outfit).permit(
       :name, :favorite, :last_worn_at, metadata: {},
-      outfit_items_attributes: [:id, :wardrobe_item_id, :position_x, :position_y, :scale, :rotation, :z_index, :_destroy]
+      outfit_items_attributes: [:id, :wardrobe_item_id, :position_x, :position_y, :scale, :rotation, :z_index, :_destroy],
+      wardrobe_item_ids: []
     )
+
+    # Handle wardrobe_item_ids by converting to outfit_items_attributes
+    if permitted[:wardrobe_item_ids].present? && permitted[:outfit_items_attributes].blank?
+      permitted[:outfit_items_attributes] = permitted.delete(:wardrobe_item_ids).map.with_index do |item_id, index|
+        { wardrobe_item_id: item_id, z_index: index }
+      end
+    end
+
+    # Store occasion in metadata if provided
+    if params[:outfit][:occasion].present?
+      permitted[:metadata] ||= {}
+      permitted[:metadata][:occasion] = params[:outfit][:occasion]
+    end
+
+    permitted
   end
 end

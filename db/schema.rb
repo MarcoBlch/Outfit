@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_04_000001) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_05_232318) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -85,6 +85,20 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_04_000001) do
     t.index ["user_id"], name: "index_outfits_on_user_id"
   end
 
+  create_table "user_profiles", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "style_preference"
+    t.integer "body_type"
+    t.string "age_range"
+    t.string "location"
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["body_type"], name: "index_user_profiles_on_body_type"
+    t.index ["style_preference"], name: "index_user_profiles_on_style_preference"
+    t.index ["user_id"], name: "index_user_profiles_on_user_id", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -97,6 +111,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_04_000001) do
     t.integer "ai_suggestions_today", default: 0
     t.date "ai_suggestions_reset_at"
     t.string "subscription_tier", default: "free"
+    t.string "location"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -111,5 +126,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_04_000001) do
   add_foreign_key "outfit_items", "wardrobe_items"
   add_foreign_key "outfit_suggestions", "users"
   add_foreign_key "outfits", "users"
+  add_foreign_key "user_profiles", "users"
   add_foreign_key "wardrobe_items", "users"
 end

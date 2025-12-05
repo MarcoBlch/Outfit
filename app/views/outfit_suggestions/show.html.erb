@@ -81,12 +81,12 @@
   </div>
 
   <!-- Suggestions content -->
-  <% if @suggestion.status == "completed" && @suggestion.suggestions_data %>
+  <% if @suggestion.status == "completed" && @suggestion.validated_suggestions %>
     <div class="space-y-4">
       <h2 class="text-xl font-bold text-white">Suggested Outfits</h2>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <% @suggestion.suggestions_data.each_with_index do |outfit, index| %>
+        <% @suggestion.validated_suggestions.each_with_index do |outfit, index| %>
           <%= render "outfit_suggestions/suggestion_card", outfit: outfit, index: index, suggestion: @suggestion %>
         <% end %>
       </div>

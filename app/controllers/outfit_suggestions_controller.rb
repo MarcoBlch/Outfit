@@ -32,8 +32,15 @@ class OutfitSuggestionsController < ApplicationController
       # Track start time for performance monitoring
       start_time = Time.current
 
+      # Fetch weather if enabled and available
+      weather = nil
+      include_weather = params[:include_weather] != "false" # Default to true
+      if include_weather && current_user.weather_available?
+        weather = current_user.current_weather
+      end
+
       # Call the AI service
-      service = OutfitSuggestionService.new(current_user, context)
+      service = OutfitSuggestionService.new(current_user, context, weather: weather)
       outfits = service.generate_suggestions(count: 3)
 
       # Calculate response time
@@ -49,7 +56,7 @@ class OutfitSuggestionsController < ApplicationController
             turbo_stream.update(
               "suggestions-results",
               partial: "outfit_suggestions/results",
-              locals: { suggestion: @suggestion, outfits: outfits }
+              locals: { suggestion: @suggestion, outfits: outfits, weather: weather }
             ),
             turbo_stream.update(
               "remaining-count",

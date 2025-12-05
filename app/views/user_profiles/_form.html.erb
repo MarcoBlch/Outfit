@@ -1,0 +1,130 @@
+<%= form_with model: user_profile, url: user_profile.persisted? ? user_profile_path(user_profile) : user_profiles_path, method: user_profile.persisted? ? :patch : :post, id: "profile-form", class: "space-y-6" do |f| %>
+
+  <!-- Question 1: Style Preference -->
+  <div class="space-y-3">
+    <label class="block text-sm font-medium text-gray-300">
+      <span class="flex items-center space-x-2">
+        <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">1</span>
+        <span>What's your go-to style?</span>
+      </span>
+    </label>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <% UserProfile.style_preferences.keys.each do |style| %>
+        <%= f.radio_button :style_preference, style, id: "style_#{style}", class: "peer hidden" %>
+        <label for="style_<%= style %>" class="flex flex-col items-center justify-center p-4 glass rounded-xl border-2 border-white/10 cursor-pointer transition-all duration-200 hover:border-purple-500/50 peer-checked:border-purple-500 peer-checked:bg-purple-600/20">
+          <span class="text-xs font-medium text-white capitalize"><%= style.humanize %></span>
+        </label>
+      <% end %>
+    </div>
+    <% if user_profile.errors[:style_preference].any? %>
+      <p class="text-sm text-red-400"><%= user_profile.errors[:style_preference].first %></p>
+    <% end %>
+  </div>
+
+  <!-- Question 2: Body Type -->
+  <div class="space-y-3">
+    <label class="block text-sm font-medium text-gray-300">
+      <span class="flex items-center space-x-2">
+        <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">2</span>
+        <span>What's your body type?</span>
+      </span>
+    </label>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+      <% UserProfile.body_types.keys.each do |body| %>
+        <%= f.radio_button :body_type, body, id: "body_#{body}", class: "peer hidden" %>
+        <label for="body_<%= body %>" class="flex flex-col items-center justify-center p-4 glass rounded-xl border-2 border-white/10 cursor-pointer transition-all duration-200 hover:border-purple-500/50 peer-checked:border-purple-500 peer-checked:bg-purple-600/20">
+          <span class="text-xs font-medium text-white capitalize"><%= body.to_s.humanize %></span>
+        </label>
+      <% end %>
+    </div>
+    <% if user_profile.errors[:body_type].any? %>
+      <p class="text-sm text-red-400"><%= user_profile.errors[:body_type].first %></p>
+    <% end %>
+  </div>
+
+  <!-- Question 3: Age Range -->
+  <div class="space-y-3">
+    <label class="block text-sm font-medium text-gray-300">
+      <span class="flex items-center space-x-2">
+        <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">3</span>
+        <span>What's your age range?</span>
+      </span>
+    </label>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+      <% %w[18-24 25-34 35-44 45-54 55+].each do |age| %>
+        <%= f.radio_button :age_range, age, id: "age_#{age.gsub(/[^0-9a-z]/i, '')}", class: "peer hidden" %>
+        <label for="age_<%= age.gsub(/[^0-9a-z]/i, '') %>" class="flex flex-col items-center justify-center p-4 glass rounded-xl border-2 border-white/10 cursor-pointer transition-all duration-200 hover:border-purple-500/50 peer-checked:border-purple-500 peer-checked:bg-purple-600/20">
+          <span class="text-sm font-medium text-white"><%= age %></span>
+        </label>
+      <% end %>
+    </div>
+    <% if user_profile.errors[:age_range].any? %>
+      <p class="text-sm text-red-400"><%= user_profile.errors[:age_range].first %></p>
+    <% end %>
+  </div>
+
+  <!-- Question 4: Favorite Colors -->
+  <div class="space-y-3">
+    <label class="block text-sm font-medium text-gray-300">
+      <span class="flex items-center space-x-2">
+        <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">4</span>
+        <span>What are your favorite colors? (Select 2-5)</span>
+      </span>
+    </label>
+    <div class="grid grid-cols-4 md:grid-cols-8 gap-3">
+      <% colors = [
+        { name: 'Black', hex: '#000000' },
+        { name: 'White', hex: '#FFFFFF' },
+        { name: 'Gray', hex: '#6B7280' },
+        { name: 'Navy', hex: '#1E3A8A' },
+        { name: 'Blue', hex: '#3B82F6' },
+        { name: 'Red', hex: '#EF4444' },
+        { name: 'Pink', hex: '#EC4899' },
+        { name: 'Purple', hex: '#A855F7' },
+        { name: 'Green', hex: '#10B981' },
+        { name: 'Yellow', hex: '#F59E0B' },
+        { name: 'Orange', hex: '#F97316' },
+        { name: 'Brown', hex: '#92400E' },
+        { name: 'Beige', hex: '#D4B5A0' },
+        { name: 'Burgundy', hex: '#7C2D12' },
+        { name: 'Teal', hex: '#14B8A6' },
+        { name: 'Olive', hex: '#84CC16' }
+      ] %>
+      <% colors.each do |color| %>
+        <%= f.check_box :favorite_colors, {
+          multiple: true,
+          id: "color_#{color[:name].downcase}",
+          class: "peer hidden",
+          checked: user_profile.favorite_colors.include?(color[:name])
+        }, color[:name], nil %>
+        <label for="color_<%= color[:name].downcase %>" class="flex flex-col items-center justify-center p-3 glass rounded-xl border-2 border-white/10 cursor-pointer transition-all duration-200 hover:border-purple-500/50 peer-checked:border-purple-500 peer-checked:bg-purple-600/20">
+          <div class="w-8 h-8 rounded-full mb-1 <%= color[:hex] == '#FFFFFF' ? 'border border-gray-600' : '' %>" style="background-color: <%= color[:hex] %>"></div>
+          <span class="text-xs text-gray-400"><%= color[:name] %></span>
+        </label>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Question 5: Location -->
+  <div class="space-y-3">
+    <label for="user_profile_location" class="block text-sm font-medium text-gray-300">
+      <span class="flex items-center space-x-2">
+        <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">5</span>
+        <span>Where are you located? (For weather-aware suggestions)</span>
+      </span>
+    </label>
+    <%= f.text_field :location,
+      placeholder: "e.g., New York, NY or London, UK",
+      class: "w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" %>
+    <p class="text-xs text-gray-500">This helps us suggest weather-appropriate outfits</p>
+    <% if user_profile.errors[:location].any? %>
+      <p class="text-sm text-red-400"><%= user_profile.errors[:location].first %></p>
+    <% end %>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="pt-4">
+    <%= f.submit user_profile.persisted? ? "Update Profile" : "Complete Profile",
+      class: "w-full px-6 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium rounded-xl shadow-lg shadow-purple-600/20 hover:shadow-purple-600/40 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" %>
+  </div>
+<% end %>

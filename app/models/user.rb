@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_many :wardrobe_items, dependent: :destroy
   has_many :outfits, dependent: :destroy
   has_many :outfit_suggestions, dependent: :destroy
+  has_one :user_profile, dependent: :destroy
   include Devise::JWT::RevocationStrategies::JTIMatcher
 
   # Include default devise modules. Others available are:
@@ -32,5 +33,16 @@ class User < ApplicationRecord
 
   def premium?
     subscription_tier == "premium" || subscription_tier == "pro"
+  end
+
+  # Weather Integration (uses location from user_profile)
+  def weather_available?
+    user_profile&.location.present? && ENV["OPENWEATHER_API_KEY"].present?
+  end
+
+  def current_weather
+    return nil unless weather_available?
+
+    WeatherService.new(user_profile.location).current_conditions
   end
 end
