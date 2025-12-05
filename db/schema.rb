@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_01_231608) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_04_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -57,6 +57,23 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_231608) do
     t.index ["wardrobe_item_id"], name: "index_outfit_items_on_wardrobe_item_id"
   end
 
+  create_table "outfit_suggestions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "context", null: false
+    t.jsonb "gemini_response"
+    t.jsonb "validated_suggestions", default: []
+    t.integer "suggestions_count", default: 0
+    t.decimal "api_cost", precision: 10, scale: 4, default: "0.0"
+    t.integer "response_time_ms"
+    t.string "status", default: "pending"
+    t.text "error_message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status"], name: "index_outfit_suggestions_on_status"
+    t.index ["user_id", "created_at"], name: "index_outfit_suggestions_on_user_id_and_created_at"
+    t.index ["user_id"], name: "index_outfit_suggestions_on_user_id"
+  end
+
   create_table "outfits", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "name"
@@ -77,6 +94,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_231608) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "jti", default: "", null: false
+    t.integer "ai_suggestions_today", default: 0
+    t.date "ai_suggestions_reset_at"
+    t.string "subscription_tier", default: "free"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -89,6 +109,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_231608) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "outfit_items", "outfits"
   add_foreign_key "outfit_items", "wardrobe_items"
+  add_foreign_key "outfit_suggestions", "users"
   add_foreign_key "outfits", "users"
   add_foreign_key "wardrobe_items", "users"
 end

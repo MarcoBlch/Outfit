@@ -1,0 +1,53 @@
+<div class="glass rounded-xl p-6 border border-red-500/20">
+  <div class="flex items-start space-x-4">
+    <!-- Error icon -->
+    <div class="flex-shrink-0">
+      <div class="inline-flex items-center justify-center w-10 h-10 bg-red-600/10 rounded-full">
+        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Error content -->
+    <div class="flex-1 space-y-3">
+      <h3 class="text-lg font-semibold text-white">
+        Unable to generate suggestions
+      </h3>
+
+      <p class="text-sm text-gray-300">
+        <%= message %>
+      </p>
+
+      <!-- Action buttons based on error type -->
+      <div class="flex items-center space-x-3 pt-2">
+        <% if message.include?("not enough items") || message.include?("minimum") %>
+          <%= link_to "Upload More Items",
+              wardrobe_items_path,
+              data: { turbo_frame: "_top" },
+              class: "px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-medium rounded-lg hover:shadow-lg hover:shadow-purple-600/30 transition-all duration-200" %>
+        <% else %>
+          <button type="button"
+                  onclick="window.location.reload()"
+                  class="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-medium rounded-lg hover:shadow-lg hover:shadow-purple-600/30 transition-all duration-200">
+            Try Again
+          </button>
+        <% end %>
+
+        <button type="button"
+                onclick="window.location.reload()"
+                class="px-4 py-2 bg-white/5 hover:bg-white/10 text-white text-sm font-medium rounded-lg border border-white/10 transition-colors">
+          Go Back
+        </button>
+      </div>
+
+      <!-- Support link -->
+      <p class="text-xs text-gray-500">
+        Still having issues?
+        <a href="mailto:support@outfitmaker.app" class="text-purple-400 hover:text-purple-300 underline">
+          Contact support
+        </a>
+      </p>
+    </div>
+  </div>
+</div>

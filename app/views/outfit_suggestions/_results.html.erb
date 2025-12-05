@@ -1,0 +1,44 @@
+<div class="space-y-6">
+  <!-- Success header -->
+  <div class="text-center">
+    <div class="inline-flex items-center justify-center w-12 h-12 bg-green-600/10 rounded-full mb-3">
+      <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg>
+    </div>
+    <h3 class="text-xl font-bold text-white mb-2">
+      Here are your outfit suggestions
+    </h3>
+    <p class="text-gray-400 text-sm">
+      Based on: "<%= suggestion.context %>"
+    </p>
+  </div>
+
+  <!-- Outfit cards grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <% outfits.each_with_index do |outfit, index| %>
+      <%= render "outfit_suggestions/suggestion_card", outfit: outfit, index: index %>
+    <% end %>
+  </div>
+
+  <!-- Actions footer -->
+  <div class="flex items-center justify-between pt-4 border-t border-white/10">
+    <button type="button"
+            onclick="window.location.reload()"
+            class="text-sm text-gray-400 hover:text-white transition-colors">
+      ← Back to form
+    </button>
+
+    <div class="flex items-center space-x-3">
+      <span class="text-xs text-gray-500">
+        Generated in <%= suggestion.response_time_ms %>ms
+      </span>
+
+      <% unless current_user.can_request_suggestion? %>
+        <a href="#" class="text-xs px-3 py-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full hover:shadow-lg hover:shadow-purple-600/30 transition-all duration-200">
+          Upgrade for More
+        </a>
+      <% end %>
+    </div>
+  </div>
+</div>
