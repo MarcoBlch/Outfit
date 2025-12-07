@@ -4,7 +4,9 @@
       <!-- Image Section -->
       <div class="w-full sm:w-1/2">
         <div class="aspect-square rounded-xl overflow-hidden bg-black/20 flex items-center justify-center border border-white/5">
-          <% if @wardrobe_item.image.attached? %>
+          <% if @wardrobe_item.cleaned_image.attached? %>
+            <%= image_tag @wardrobe_item.cleaned_image, class: "w-full h-full object-contain" %>
+          <% elsif @wardrobe_item.image.attached? %>
             <%= image_tag @wardrobe_item.image, class: "w-full h-full object-contain" %>
           <% else %>
             <span class="text-gray-500">No Image</span>

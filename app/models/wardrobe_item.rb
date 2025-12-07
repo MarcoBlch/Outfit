@@ -3,6 +3,7 @@ class WardrobeItem < ApplicationRecord
   has_many :outfit_items, dependent: :destroy
   has_many :outfits, through: :outfit_items
   has_one_attached :image
+  has_one_attached :cleaned_image
 
   has_neighbors :embedding
 

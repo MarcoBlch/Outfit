@@ -51,6 +51,24 @@ class ImageAnalysisJob < ApplicationJob
         }
       )
 
+      # Call Background Removal Service
+      begin
+        clean_path = BackgroundRemovalService.new(image_path).remove_background
+        if clean_path
+          wardrobe_item.cleaned_image.attach(
+            io: File.open(clean_path),
+            filename: "cleaned_#{wardrobe_item.id}.png",
+            content_type: 'image/png'
+          )
+          # Clean up temp file
+          File.delete(clean_path) if File.exist?(clean_path)
+          Rails.logger.info "Attached cleaned image to Item ##{wardrobe_item.id}"
+        end
+      rescue => e
+        Rails.logger.error "Background Removal failed: #{e.message}"
+        # We continue even if bg removal fails
+      end
+
       # Broadcast the update to the frontend
       # This replaces the specific card in the grid with the updated version
       Turbo::StreamsChannel.broadcast_replace_to(

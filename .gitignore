@@ -54,3 +54,5 @@ models_*.txt
 locations_*.txt
 text_output*.txt
 rails_server.log
+.venv/
+.venv/
