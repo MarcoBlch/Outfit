@@ -29,7 +29,7 @@
   <!-- Outfit cards grid -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <% outfits.each_with_index do |outfit, index| %>
-      <%= render "outfit_suggestions/suggestion_card", outfit: outfit, index: index %>
+      <%= render "outfit_suggestions/suggestion_card", outfit: outfit, index: index, suggestion: suggestion %>
     <% end %>
   </div>
 

@@ -1,9 +1,8 @@
 FactoryBot.define do
   factory :outfit do
-    user { nil }
-    name { "MyString" }
-    metadata { "" }
-    last_worn_at { "2025-12-02 00:13:13" }
+    association :user
+    name { Faker::Lorem.words(number: 2).join(' ') }
+    last_worn_at { Time.current }
     favorite { false }
   end
 end

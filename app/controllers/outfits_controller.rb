@@ -37,6 +37,7 @@ class OutfitsController < ApplicationController
         format.json { render json: @outfit, status: :created, include: :outfit_items }
       end
     else
+      Rails.logger.error "OUTFIT SAVE FAILED: #{@outfit.errors.full_messages}"
       @wardrobe_items = current_user.wardrobe_items.order(created_at: :desc)
       respond_to do |format|
         format.html { render :new, status: :unprocessable_entity }

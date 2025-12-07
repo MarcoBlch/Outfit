@@ -38,6 +38,12 @@
       <h1 class="text-xl font-bold text-white">New Outfit</h1>
       
       <%= form_with model: @outfit, local: true, class: "flex items-center space-x-4" do |f| %>
+        <% if @outfit.errors.any? %>
+          <div class="absolute top-16 right-0 bg-red-500 text-white p-2 rounded text-xs z-50">
+            <%= @outfit.errors.full_messages.join(", ") %>
+          </div>
+        <% end %>
+        <%= f.label :name, "Outfit Name", class: "sr-only" %>
         <%= f.text_field :name, placeholder: "Outfit Name", class: "bg-transparent border-0 border-b border-gray-600 text-white placeholder-gray-500 focus:ring-0 focus:border-primary px-0" %>
         
         <!-- Canvas Container for Inputs (populated by JS) -->
