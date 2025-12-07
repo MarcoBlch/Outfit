@@ -1,0 +1,38 @@
+<div class="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h3 class="text-lg font-semibold text-white">Search Results</h3>
+      <p class="text-sm text-slate-400">
+        Found <%= metadata[:results_count] %> similar item<%= metadata[:results_count] == 1 ? '' : 's' %>
+        <% if search_type == "image" && metadata[:embedding_time_ms] %>
+          <span class="text-slate-500">(<%= metadata[:embedding_time_ms] %>ms)</span>
+        <% end %>
+      </p>
+    </div>
+    <% if search_type == "text" && metadata[:query] %>
+      <span class="px-3 py-1 bg-blue-600/20 text-blue-400 text-sm rounded-full">
+        "<%= truncate(metadata[:query], length: 30) %>"
+      </span>
+    <% elsif search_type == "image" %>
+      <span class="px-3 py-1 bg-purple-600/20 text-purple-400 text-sm rounded-full">
+        Image Search
+      </span>
+    <% end %>
+  </div>
+
+  <% if results.any? %>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <% results.each do |result| %>
+        <%= render "wardrobe_searches/item_card", result: result %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-12">
+      <svg class="w-12 h-12 text-slate-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <p class="text-slate-400">No similar items found in your wardrobe.</p>
+      <p class="text-slate-500 text-sm mt-1">Try a different search or add more items to your wardrobe.</p>
+    </div>
+  <% end %>
+</div>

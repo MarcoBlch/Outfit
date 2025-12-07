@@ -13,6 +13,22 @@ Rails.application.routes.draw do
   resources :outfits
   resources :outfit_suggestions, only: [:index, :new, :create, :show]
   resource :user_profile, only: [:new, :create, :edit, :update]
+
+  # Subscriptions / Pricing
+  resources :subscriptions, only: [:new, :create] do
+    collection do
+      get :success
+      get :cancel
+      post :webhook
+      post :cancel_subscription
+      post :reactivate
+      get :portal
+    end
+  end
+
+  # Wardrobe Image Search (Premium Feature)
+  resources :wardrobe_searches, only: [:new, :create]
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
