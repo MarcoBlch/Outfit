@@ -23,5 +23,8 @@ module OutfitMaker
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Use SQL format for schema dump to support pgvector types
+    config.active_record.schema_format = :sql
   end
 end
