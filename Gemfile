@@ -93,3 +93,4 @@ gem "google-cloud-ai_platform"
 gem "dotenv-rails", groups: [:development, :test]
 gem "rack-cors"
 gem "mime-types"
+gem "stripe"

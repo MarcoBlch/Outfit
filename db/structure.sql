@@ -1,4 +1,4 @@
-\restrict QejSN3SP9OfeNieI0cqdWpxYSm58OSgHYGxHYjPhLhLhXqf8WBdf5htppH8DQhd
+\restrict kxfcEclHeztp3ARoLmt7l1At3Swqd9CfFAWFIG4eC6MpUZ1qnC7xKlU6Gb7Zwrh
 
 -- Dumped from database version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
 -- Dumped by pg_dump version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
@@ -264,6 +264,44 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: subscriptions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.subscriptions (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    stripe_subscription_id character varying,
+    stripe_customer_id character varying,
+    stripe_price_id character varying,
+    status integer DEFAULT 0,
+    current_period_start timestamp(6) without time zone,
+    current_period_end timestamp(6) without time zone,
+    cancel_at_period_end boolean DEFAULT false,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.subscriptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.subscriptions_id_seq OWNED BY public.subscriptions.id;
+
+
+--
 -- Name: user_profiles; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -417,6 +455,13 @@ ALTER TABLE ONLY public.outfits ALTER COLUMN id SET DEFAULT nextval('public.outf
 
 
 --
+-- Name: subscriptions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscriptions ALTER COLUMN id SET DEFAULT nextval('public.subscriptions_id_seq'::regclass);
+
+
+--
 -- Name: user_profiles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -499,6 +544,14 @@ ALTER TABLE ONLY public.outfits
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: subscriptions subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscriptions
+    ADD CONSTRAINT subscriptions_pkey PRIMARY KEY (id);
 
 
 --
@@ -596,6 +649,27 @@ CREATE INDEX index_outfits_on_user_id ON public.outfits USING btree (user_id);
 
 
 --
+-- Name: index_subscriptions_on_stripe_customer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_subscriptions_on_stripe_customer_id ON public.subscriptions USING btree (stripe_customer_id);
+
+
+--
+-- Name: index_subscriptions_on_stripe_subscription_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_subscriptions_on_stripe_subscription_id ON public.subscriptions USING btree (stripe_subscription_id);
+
+
+--
+-- Name: index_subscriptions_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_subscriptions_on_user_id ON public.subscriptions USING btree (user_id);
+
+
+--
 -- Name: index_user_profiles_on_body_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -684,6 +758,14 @@ ALTER TABLE ONLY public.user_profiles
 
 
 --
+-- Name: subscriptions fk_rails_933bdff476; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscriptions
+    ADD CONSTRAINT fk_rails_933bdff476 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: active_storage_variant_records fk_rails_993965df05; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -719,11 +801,12 @@ ALTER TABLE ONLY public.wardrobe_items
 -- PostgreSQL database dump complete
 --
 
-\unrestrict QejSN3SP9OfeNieI0cqdWpxYSm58OSgHYGxHYjPhLhLhXqf8WBdf5htppH8DQhd
+\unrestrict kxfcEclHeztp3ARoLmt7l1At3Swqd9CfFAWFIG4eC6MpUZ1qnC7xKlU6Gb7Zwrh
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251207204638'),
 ('20251205232318'),
 ('20251205232317'),
 ('20251204000001'),
