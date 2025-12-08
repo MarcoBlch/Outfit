@@ -13,7 +13,7 @@ class BackgroundRemovalService
     # Use absolute path to venv to be safe or relative from root
     rembg_path = Rails.root.join('.venv', 'bin', 'rembg')
     
-    stdout, stderr, status = Open3.capture3("#{rembg_path} i \"#{@image_path}\" \"#{output_path}\"")
+    stdout, stderr, status = Open3.capture3(rembg_path.to_s, 'i', @image_path.to_s, output_path)
 
     if status.success? && File.exist?(output_path)
       return output_path
