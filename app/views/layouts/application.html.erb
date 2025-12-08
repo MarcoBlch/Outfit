@@ -15,9 +15,11 @@
     <div id="flash_messages">
       <%= render "shared/flash" %>
     </div>
-    
+
     <%= turbo_frame_tag "modal" %>
-    
+
+    <div data-controller="toast" data-action="image-upload:toast@window->toast#show"></div>
+
     <main class="flex-grow">
       <%= yield %>
     </main>

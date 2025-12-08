@@ -6,11 +6,31 @@ export default class extends Controller {
     static values = { preselected: Array }
 
     connect() {
+        console.log("Canvas controller connected")
         this.canvasTarget.addEventListener("dragover", this.handleDragOver.bind(this))
         this.canvasTarget.addEventListener("drop", this.handleDrop.bind(this))
 
+        this.setupInteract()
+    }
+
+    disconnect() {
+        console.log("Canvas controller disconnecting")
+        // Destroy all interact instances
+        if (this.interactables) {
+            this.interactables.forEach(interactable => {
+                if (interactable && interactable.unset) {
+                    interactable.unset()
+                }
+            })
+        }
+    }
+
+    setupInteract() {
+        // Store reference for cleanup
+        this.interactables = []
+
         // Initialize interact.js
-        interact(".canvas-item")
+        const canvasItems = interact(".canvas-item")
             .draggable({
                 listeners: { move: this.dragMoveListener.bind(this) },
                 modifiers: [
@@ -39,6 +59,8 @@ export default class extends Controller {
                 this.selectItem(event.currentTarget)
                 event.stopPropagation()
             })
+
+        this.interactables.push(canvasItems)
 
         // Deselect when clicking canvas background
         this.canvasTarget.addEventListener('click', (e) => {
