@@ -1,4 +1,4 @@
-\restrict kxfcEclHeztp3ARoLmt7l1At3Swqd9CfFAWFIG4eC6MpUZ1qnC7xKlU6Gb7Zwrh
+\restrict rGn3iijtbKtonqqpr8kqRCO5Dk6zPnFPy5TSLTv2LVJouVtdEOtBFYPF7ns9FeI
 
 -- Dumped from database version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
 -- Dumped by pg_dump version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
@@ -607,6 +607,20 @@ CREATE UNIQUE INDEX index_active_storage_variant_records_uniqueness ON public.ac
 
 
 --
+-- Name: index_outfit_items_on_outfit_and_wardrobe_item; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_outfit_items_on_outfit_and_wardrobe_item ON public.outfit_items USING btree (outfit_id, wardrobe_item_id);
+
+
+--
+-- Name: INDEX index_outfit_items_on_outfit_and_wardrobe_item; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON INDEX public.index_outfit_items_on_outfit_and_wardrobe_item IS 'Prevents duplicate items in outfits, speeds up lookups';
+
+
+--
 -- Name: index_outfit_items_on_outfit_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -639,6 +653,20 @@ CREATE INDEX index_outfit_suggestions_on_user_id ON public.outfit_suggestions US
 --
 
 CREATE INDEX index_outfit_suggestions_on_user_id_and_created_at ON public.outfit_suggestions USING btree (user_id, created_at);
+
+
+--
+-- Name: index_outfits_on_favorite; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_outfits_on_favorite ON public.outfits USING btree (favorite) WHERE (favorite = true);
+
+
+--
+-- Name: INDEX index_outfits_on_favorite; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON INDEX public.index_outfits_on_favorite IS 'Partial index for filtering favorite outfits';
 
 
 --
@@ -709,6 +737,48 @@ CREATE INDEX index_users_on_jti ON public.users USING btree (jti);
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING btree (reset_password_token);
+
+
+--
+-- Name: index_users_on_subscription_tier; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_subscription_tier ON public.users USING btree (subscription_tier);
+
+
+--
+-- Name: INDEX index_users_on_subscription_tier; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON INDEX public.index_users_on_subscription_tier IS 'Improves admin analytics queries';
+
+
+--
+-- Name: index_wardrobe_items_on_category; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_wardrobe_items_on_category ON public.wardrobe_items USING btree (category);
+
+
+--
+-- Name: INDEX index_wardrobe_items_on_category; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON INDEX public.index_wardrobe_items_on_category IS 'Improves performance for category filtering';
+
+
+--
+-- Name: index_wardrobe_items_on_color; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_wardrobe_items_on_color ON public.wardrobe_items USING btree (color);
+
+
+--
+-- Name: INDEX index_wardrobe_items_on_color; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON INDEX public.index_wardrobe_items_on_color IS 'Improves performance for color filtering';
 
 
 --
@@ -801,11 +871,12 @@ ALTER TABLE ONLY public.wardrobe_items
 -- PostgreSQL database dump complete
 --
 
-\unrestrict kxfcEclHeztp3ARoLmt7l1At3Swqd9CfFAWFIG4eC6MpUZ1qnC7xKlU6Gb7Zwrh
+\unrestrict rGn3iijtbKtonqqpr8kqRCO5Dk6zPnFPy5TSLTv2LVJouVtdEOtBFYPF7ns9FeI
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251208121643'),
 ('20251207204638'),
 ('20251205232318'),
 ('20251205232317'),
