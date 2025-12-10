@@ -17,9 +17,10 @@ RSpec.describe 'Search Functionality', type: :system do
     # The search input has placeholder "Search items...". 
     # It relies on Turbo/Stimulus to submit on input.
     fill_in 'query', with: 'red' # Name is 'query'
-    
+
     # Wait for Turbo update (Capybara waits for content)
-    expect(page).to have_content('Shirt', visible: :all)
+    # Use have_css with text matcher to check for content regardless of visibility
+    expect(page).to have_css('*', text: 'Shirt', visible: :all)
     # If we had a non-matching item, we should check it's GONE to verify search works.
     expect(page).not_to have_content('Jeans')
   end
