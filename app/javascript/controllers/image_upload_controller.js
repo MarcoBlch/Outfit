@@ -62,12 +62,12 @@ export default class extends Controller {
     const maxSize = 10 * 1024 * 1024 // 10MB
 
     if (!validTypes.includes(file.type)) {
-      alert("Please upload a valid image file (JPEG, PNG, GIF, or WebP)")
+      this.dispatch("toast", { detail: { message: "Please upload a valid image file (JPEG, PNG, GIF, or WebP)", type: "error" } })
       return false
     }
 
     if (file.size > maxSize) {
-      alert("Image must be smaller than 10MB")
+      this.dispatch("toast", { detail: { message: "Image must be smaller than 10MB", type: "error" } })
       return false
     }
 
