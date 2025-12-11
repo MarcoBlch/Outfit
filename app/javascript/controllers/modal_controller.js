@@ -36,12 +36,12 @@ export default class extends Controller {
         // Wait for transition to finish before hiding
         setTimeout(() => {
             this.containerTarget.classList.add("hidden")
-            // If this modal was opened via Turbo Frame, navigate back to previous page
+            // If this modal was opened via Turbo Frame, navigate back to root
             if (this.element.parentElement.tagName === "TURBO-FRAME") {
                 this.element.parentElement.src = null
                 this.element.remove()
-                // Navigate back to root or previous page
-                window.Turbo.visit(window.location.pathname === '/user_profile/edit' ? '/' : window.location.pathname)
+                // Always navigate to root when closing modals
+                window.Turbo.visit('/')
             }
         }, 300)
     }
