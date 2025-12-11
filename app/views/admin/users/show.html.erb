@@ -1,0 +1,270 @@
+<% content_for :page_title, "User Details" %>
+
+<div class="space-y-6">
+  <!-- Back Button -->
+  <div>
+    <%= link_to admin_users_path, class: "inline-flex items-center text-sm text-gray-400 hover:text-white transition-colors" do %>
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+      </svg>
+      Back to Users
+    <% end %>
+  </div>
+
+  <!-- User Header Card -->
+  <div class="glass rounded-xl p-6">
+    <div class="flex items-start justify-between">
+      <div class="flex items-center space-x-4">
+        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-white text-2xl font-bold">
+          <%= @user.email[0].upcase %>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-white"><%= @user.email %></h2>
+          <p class="text-sm text-gray-400 mt-1">User ID: <%= @user.id %></p>
+          <div class="flex items-center space-x-2 mt-2">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium <%= tier_badge_color(@user.subscription_tier) %>">
+              <%= @user.subscription_tier&.capitalize || 'Free' %>
+            </span>
+            <% if @user.current_sign_in_at %>
+              <span class="text-xs text-gray-400">Last active <%= time_ago_in_words(@user.current_sign_in_at) %> ago</span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier Upgrade Dropdown -->
+      <div class="relative" data-controller="dropdown">
+        <button type="button"
+                data-action="click->dropdown#toggle"
+                class="inline-flex items-center px-4 py-2 rounded-lg bg-primary hover:bg-primary-dark text-white text-sm font-medium transition-colors">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+          </svg>
+          Change Tier
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+
+        <div data-dropdown-target="menu"
+             class="hidden absolute right-0 mt-2 w-48 rounded-lg glass border border-white/10 shadow-xl z-10">
+          <%= button_to "Set to Free",
+              update_tier_admin_user_path(@user),
+              params: { tier: 'free' },
+              method: :patch,
+              class: "block w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors rounded-t-lg",
+              form: { data: { turbo_confirm: "Change user tier to Free?" } }
+          %>
+          <%= button_to "Set to Premium",
+              update_tier_admin_user_path(@user),
+              params: { tier: 'premium' },
+              method: :patch,
+              class: "block w-full text-left px-4 py-2 text-sm text-purple-400 hover:bg-white/10 transition-colors",
+              form: { data: { turbo_confirm: "Change user tier to Premium?" } }
+          %>
+          <%= button_to "Set to Pro",
+              update_tier_admin_user_path(@user),
+              params: { tier: 'pro' },
+              method: :patch,
+              class: "block w-full text-left px-4 py-2 text-sm text-pink-400 hover:bg-white/10 transition-colors rounded-b-lg",
+              form: { data: { turbo_confirm: "Change user tier to Pro?" } }
+          %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <!-- Wardrobe Items -->
+    <div class="glass rounded-xl p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-400">Wardrobe Items</p>
+          <p class="mt-2 text-3xl font-bold text-white"><%= @user.wardrobe_items.count %></p>
+          <p class="mt-1 text-xs text-gray-400">of <%= @user.wardrobe_item_limit %> limit</p>
+        </div>
+        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Outfits Created -->
+    <div class="glass rounded-xl p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-400">Outfits Created</p>
+          <p class="mt-2 text-3xl font-bold text-white"><%= @user.outfits.count %></p>
+          <% if @user.outfits.any? %>
+            <p class="mt-1 text-xs text-gray-400">Last <%= time_ago_in_words(@user.outfits.order(:created_at).last.created_at) %> ago</p>
+          <% end %>
+        </div>
+        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Suggestions Used -->
+    <div class="glass rounded-xl p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-400">AI Suggestions</p>
+          <p class="mt-2 text-3xl font-bold text-white"><%= @user.outfit_suggestions.count %></p>
+          <p class="mt-1 text-xs text-gray-400"><%= @user.remaining_suggestions_today %> left today</p>
+        </div>
+        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Account Age -->
+    <div class="glass rounded-xl p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-400">Member Since</p>
+          <p class="mt-2 text-lg font-bold text-white"><%= @user.created_at.strftime("%b %d, %Y") %></p>
+          <p class="mt-1 text-xs text-gray-400"><%= time_ago_in_words(@user.created_at) %> ago</p>
+        </div>
+        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Profile Information -->
+  <% if @user.user_profile.present? %>
+    <div class="glass rounded-xl p-6">
+      <h3 class="text-lg font-semibold text-white mb-4">Profile Information</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <p class="text-sm text-gray-400">Gender</p>
+          <p class="text-white mt-1"><%= @user.user_profile.gender&.capitalize || 'Not set' %></p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-400">Age</p>
+          <p class="text-white mt-1"><%= @user.user_profile.age || 'Not set' %></p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-400">Location</p>
+          <p class="text-white mt-1"><%= @user.user_profile.location || 'Not set' %></p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-400">Style Preference</p>
+          <p class="text-white mt-1"><%= @user.user_profile.style_preference&.titleize || 'Not set' %></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Activity Timeline -->
+  <div class="glass rounded-xl p-6">
+    <h3 class="text-lg font-semibold text-white mb-4">Recent Activity</h3>
+    <div class="space-y-4">
+      <% if @recent_activities.any? %>
+        <% @recent_activities.each do |activity| %>
+          <div class="flex items-start space-x-3 py-3 border-b border-white/5 last:border-0">
+            <div class="w-8 h-8 rounded-full <%= activity[:color] %> flex items-center justify-center flex-shrink-0">
+              <%= activity[:icon] %>
+            </div>
+            <div class="flex-1">
+              <p class="text-sm text-white"><%= activity[:text] %></p>
+              <p class="text-xs text-gray-400 mt-1"><%= activity[:time] %></p>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="text-center text-gray-400 py-8">No recent activity</p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Usage Charts -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- AI Suggestions Over Time -->
+    <div class="glass rounded-xl p-6">
+      <h3 class="text-lg font-semibold text-white mb-4">AI Suggestions (Last 30 Days)</h3>
+      <%= line_chart @user_suggestions_over_time,
+          library: {
+            backgroundColor: 'transparent',
+            borderColor: 'rgb(168, 85, 247)',
+            tension: 0.4,
+            fill: true,
+            backgroundColor: 'rgba(168, 85, 247, 0.1)',
+            scales: {
+              y: {
+                ticks: { color: 'rgb(156, 163, 175)' },
+                grid: { color: 'rgba(255, 255, 255, 0.05)' }
+              },
+              x: {
+                ticks: { color: 'rgb(156, 163, 175)' },
+                grid: { color: 'rgba(255, 255, 255, 0.05)' }
+              }
+            },
+            plugins: {
+              legend: { display: false }
+            }
+          },
+          height: "250px"
+      %>
+    </div>
+
+    <!-- Wardrobe Items Over Time -->
+    <div class="glass rounded-xl p-6">
+      <h3 class="text-lg font-semibold text-white mb-4">Wardrobe Growth (Last 30 Days)</h3>
+      <%= line_chart @user_wardrobe_growth,
+          library: {
+            backgroundColor: 'transparent',
+            borderColor: 'rgb(34, 197, 94)',
+            tension: 0.4,
+            fill: true,
+            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+            scales: {
+              y: {
+                ticks: { color: 'rgb(156, 163, 175)' },
+                grid: { color: 'rgba(255, 255, 255, 0.05)' }
+              },
+              x: {
+                ticks: { color: 'rgb(156, 163, 175)' },
+                grid: { color: 'rgba(255, 255, 255, 0.05)' }
+              }
+            },
+            plugins: {
+              legend: { display: false }
+            }
+          },
+          height: "250px"
+      %>
+    </div>
+  </div>
+</div>
+
+<!-- Dropdown Stimulus Controller -->
+<script>
+  import { Controller } from "@hotwired/stimulus"
+
+  export default class extends Controller {
+    static targets = ["menu"]
+
+    toggle() {
+      this.menuTarget.classList.toggle("hidden")
+    }
+
+    hide(event) {
+      if (!this.element.contains(event.target)) {
+        this.menuTarget.classList.add("hidden")
+      }
+    }
+  }
+</script>
