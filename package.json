@@ -6,12 +6,15 @@
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.20",
     "@tailwindcss/cli": "^4.1.17",
+    "chart.js": "^4.5.1",
+    "chartkick": "^5.0.1",
     "heroicons": "^2.2.0",
     "interactjs": "^1.10.27",
     "tailwindcss": "^4.1.17"
   },
   "scripts": {
     "build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify",
+    "build:css:watch": "npx @tailwindcss/cli -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --watch=always",
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets"
   },
   "devDependencies": {

@@ -94,3 +94,6 @@ gem "dotenv-rails", groups: [:development, :test]
 gem "rack-cors"
 gem "mime-types"
 gem "stripe"
+gem "chartkick"
+gem "groupdate"
+gem "kaminari"
