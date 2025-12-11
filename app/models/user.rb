@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_many :wardrobe_items, dependent: :destroy
   has_many :outfits, dependent: :destroy
   has_many :outfit_suggestions, dependent: :destroy
+  has_many :ad_impressions, dependent: :destroy
   has_one :user_profile, dependent: :destroy
   has_one :subscription, dependent: :destroy
   include Devise::JWT::RevocationStrategies::JTIMatcher
@@ -11,6 +12,30 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
+
+  # Scopes for admin dashboard queries
+  scope :admins, -> { where(admin: true) }
+  scope :non_admins, -> { where(admin: false) }
+
+  # Subscription tier scopes
+  scope :free_tier, -> { where(subscription_tier: 'free') }
+  scope :premium_tier, -> { where(subscription_tier: 'premium') }
+  scope :pro_tier, -> { where(subscription_tier: 'pro') }
+  scope :paying, -> { where(subscription_tier: ['premium', 'pro']) }
+
+  # Activity scopes
+  scope :active, -> { joins(:outfit_suggestions).where('outfit_suggestions.created_at >= ?', 7.days.ago).distinct }
+  scope :inactive, -> {
+    left_joins(:outfit_suggestions)
+      .where('outfit_suggestions.created_at < ? OR outfit_suggestions.id IS NULL', 30.days.ago)
+      .distinct
+  }
+  scope :recent_signups, ->(days = 7) { where('users.created_at >= ?', days.days.ago) }
+  scope :by_signup_date, ->(start_date, end_date) { where(created_at: start_date..end_date) }
+
+  # Ordering scopes
+  scope :newest_first, -> { order(created_at: :desc) }
+  scope :oldest_first, -> { order(created_at: :asc) }
 
   # AI Outfit Suggestions - Rate Limiting
   def remaining_suggestions_today
@@ -36,8 +61,25 @@ class User < ApplicationRecord
     subscription_tier == "premium" || subscription_tier == "pro"
   end
 
+  def pro?
+    subscription_tier == "pro"
+  end
+
   def free_tier?
     subscription_tier == "free" || subscription_tier.blank?
+  end
+
+  # Admin helpers
+  def admin?
+    admin == true
+  end
+
+  def make_admin!
+    update!(admin: true)
+  end
+
+  def revoke_admin!
+    update!(admin: false)
   end
 
   # Subscription helpers
