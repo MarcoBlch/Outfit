@@ -1,4 +1,4 @@
-\restrict rGn3iijtbKtonqqpr8kqRCO5Dk6zPnFPy5TSLTv2LVJouVtdEOtBFYPF7ns9FeI
+\restrict 9F9eemyHPhIZvy2Po1eEbSVKmoueh1OQDg6phdLClqzRm2yP8OfPRxDYsSHvjtE
 
 -- Dumped from database version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
 -- Dumped by pg_dump version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
@@ -129,6 +129,40 @@ CREATE SEQUENCE public.active_storage_variant_records_id_seq
 --
 
 ALTER SEQUENCE public.active_storage_variant_records_id_seq OWNED BY public.active_storage_variant_records.id;
+
+
+--
+-- Name: ad_impressions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ad_impressions (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    placement character varying NOT NULL,
+    clicked boolean DEFAULT false NOT NULL,
+    revenue numeric(10,4) DEFAULT 0.0,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: ad_impressions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ad_impressions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ad_impressions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ad_impressions_id_seq OWNED BY public.ad_impressions.id;
 
 
 --
@@ -354,7 +388,8 @@ CREATE TABLE public.users (
     ai_suggestions_today integer DEFAULT 0,
     ai_suggestions_reset_at date,
     subscription_tier character varying DEFAULT 'free'::character varying,
-    location character varying
+    location character varying,
+    admin boolean DEFAULT false NOT NULL
 );
 
 
@@ -434,6 +469,13 @@ ALTER TABLE ONLY public.active_storage_variant_records ALTER COLUMN id SET DEFAU
 
 
 --
+-- Name: ad_impressions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_impressions ALTER COLUMN id SET DEFAULT nextval('public.ad_impressions_id_seq'::regclass);
+
+
+--
 -- Name: outfit_items id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -504,6 +546,14 @@ ALTER TABLE ONLY public.active_storage_blobs
 
 ALTER TABLE ONLY public.active_storage_variant_records
     ADD CONSTRAINT active_storage_variant_records_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ad_impressions ad_impressions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_impressions
+    ADD CONSTRAINT ad_impressions_pkey PRIMARY KEY (id);
 
 
 --
@@ -607,6 +657,34 @@ CREATE UNIQUE INDEX index_active_storage_variant_records_uniqueness ON public.ac
 
 
 --
+-- Name: index_ad_impressions_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_impressions_on_created_at ON public.ad_impressions USING btree (created_at);
+
+
+--
+-- Name: index_ad_impressions_on_placement; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_impressions_on_placement ON public.ad_impressions USING btree (placement);
+
+
+--
+-- Name: index_ad_impressions_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_impressions_on_user_id ON public.ad_impressions USING btree (user_id);
+
+
+--
+-- Name: index_ad_impressions_on_user_id_and_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_impressions_on_user_id_and_created_at ON public.ad_impressions USING btree (user_id, created_at);
+
+
+--
 -- Name: index_outfit_items_on_outfit_and_wardrobe_item; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -635,6 +713,20 @@ CREATE INDEX index_outfit_items_on_wardrobe_item_id ON public.outfit_items USING
 
 
 --
+-- Name: index_outfit_suggestions_on_context; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_outfit_suggestions_on_context ON public.outfit_suggestions USING hash (context);
+
+
+--
+-- Name: index_outfit_suggestions_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_outfit_suggestions_on_created_at ON public.outfit_suggestions USING btree (created_at);
+
+
+--
 -- Name: index_outfit_suggestions_on_status; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -656,6 +748,13 @@ CREATE INDEX index_outfit_suggestions_on_user_id_and_created_at ON public.outfit
 
 
 --
+-- Name: index_outfits_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_outfits_on_created_at ON public.outfits USING btree (created_at);
+
+
+--
 -- Name: index_outfits_on_favorite; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -667,6 +766,13 @@ CREATE INDEX index_outfits_on_favorite ON public.outfits USING btree (favorite) 
 --
 
 COMMENT ON INDEX public.index_outfits_on_favorite IS 'Partial index for filtering favorite outfits';
+
+
+--
+-- Name: index_outfits_on_favorite_true; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_outfits_on_favorite_true ON public.outfits USING btree (favorite) WHERE (favorite = true);
 
 
 --
@@ -719,6 +825,20 @@ CREATE UNIQUE INDEX index_user_profiles_on_user_id ON public.user_profiles USING
 
 
 --
+-- Name: index_users_on_admin_true; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_admin_true ON public.users USING btree (admin) WHERE (admin = true);
+
+
+--
+-- Name: index_users_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_created_at ON public.users USING btree (created_at);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -754,6 +874,13 @@ COMMENT ON INDEX public.index_users_on_subscription_tier IS 'Improves admin anal
 
 
 --
+-- Name: index_users_on_tier_and_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_tier_and_created_at ON public.users USING btree (subscription_tier, created_at);
+
+
+--
 -- Name: index_wardrobe_items_on_category; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -782,10 +909,24 @@ COMMENT ON INDEX public.index_wardrobe_items_on_color IS 'Improves performance f
 
 
 --
+-- Name: index_wardrobe_items_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_wardrobe_items_on_created_at ON public.wardrobe_items USING btree (created_at);
+
+
+--
 -- Name: index_wardrobe_items_on_embedding; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_wardrobe_items_on_embedding ON public.wardrobe_items USING hnsw (embedding public.vector_l2_ops);
+
+
+--
+-- Name: index_wardrobe_items_on_user_and_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_wardrobe_items_on_user_and_created_at ON public.wardrobe_items USING btree (user_id, created_at);
 
 
 --
@@ -844,6 +985,14 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 
 --
+-- Name: ad_impressions fk_rails_a3a15a6ee6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_impressions
+    ADD CONSTRAINT fk_rails_a3a15a6ee6 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: outfit_suggestions fk_rails_b87124b28d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -871,11 +1020,12 @@ ALTER TABLE ONLY public.wardrobe_items
 -- PostgreSQL database dump complete
 --
 
-\unrestrict rGn3iijtbKtonqqpr8kqRCO5Dk6zPnFPy5TSLTv2LVJouVtdEOtBFYPF7ns9FeI
+\unrestrict 9F9eemyHPhIZvy2Po1eEbSVKmoueh1OQDg6phdLClqzRm2yP8OfPRxDYsSHvjtE
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251211103030'),
 ('20251208121643'),
 ('20251207204638'),
 ('20251205232318'),
