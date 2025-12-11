@@ -10,10 +10,12 @@
     </label>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
       <% UserProfile.style_preferences.keys.each do |style| %>
-        <%= f.radio_button :style_preference, style, id: "style_#{style}", class: "peer hidden" %>
-        <label for="style_<%= style %>" class="flex flex-col items-center justify-center p-4 glass rounded-xl border-2 border-white/10 cursor-pointer transition-all duration-200 hover:border-purple-500/50 peer-checked:border-purple-500 peer-checked:bg-purple-600/20">
-          <span class="text-xs font-medium text-white capitalize"><%= style.humanize %></span>
-        </label>
+        <div class="relative">
+          <%= f.radio_button :style_preference, style, id: "style_#{style}", class: "peer absolute opacity-0" %>
+          <label for="style_<%= style %>" class="flex flex-col items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold bg-gray-800/50 text-gray-400 border-gray-700 hover:border-gray-600 hover:text-gray-300">
+            <span class="text-xs font-medium capitalize"><%= style.humanize %></span>
+          </label>
+        </div>
       <% end %>
     </div>
     <% if user_profile.errors[:style_preference].any? %>
@@ -31,10 +33,12 @@
     </label>
     <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
       <% UserProfile.body_types.keys.each do |body| %>
-        <%= f.radio_button :body_type, body, id: "body_#{body}", class: "peer hidden" %>
-        <label for="body_<%= body %>" class="flex flex-col items-center justify-center p-4 glass rounded-xl border-2 border-white/10 cursor-pointer transition-all duration-200 hover:border-purple-500/50 peer-checked:border-purple-500 peer-checked:bg-purple-600/20">
-          <span class="text-xs font-medium text-white capitalize"><%= body.to_s.humanize %></span>
-        </label>
+        <div class="relative">
+          <%= f.radio_button :body_type, body, id: "body_#{body}", class: "peer absolute opacity-0" %>
+          <label for="body_<%= body %>" class="flex flex-col items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold bg-gray-800/50 text-gray-400 border-gray-700 hover:border-gray-600 hover:text-gray-300">
+            <span class="text-xs font-medium capitalize"><%= body.to_s.humanize %></span>
+          </label>
+        </div>
       <% end %>
     </div>
     <% if user_profile.errors[:body_type].any? %>
@@ -52,10 +56,12 @@
     </label>
     <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
       <% %w[18-24 25-34 35-44 45-54 55+].each do |age| %>
-        <%= f.radio_button :age_range, age, id: "age_#{age.gsub(/[^0-9a-z]/i, '')}", class: "peer hidden" %>
-        <label for="age_<%= age.gsub(/[^0-9a-z]/i, '') %>" class="flex flex-col items-center justify-center p-4 glass rounded-xl border-2 border-white/10 cursor-pointer transition-all duration-200 hover:border-purple-500/50 peer-checked:border-purple-500 peer-checked:bg-purple-600/20">
-          <span class="text-sm font-medium text-white"><%= age %></span>
-        </label>
+        <div class="relative">
+          <%= f.radio_button :age_range, age, id: "age_#{age.gsub(/[^0-9a-z]/i, '')}", class: "peer absolute opacity-0" %>
+          <label for="age_<%= age.gsub(/[^0-9a-z]/i, '') %>" class="flex flex-col items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold bg-gray-800/50 text-gray-400 border-gray-700 hover:border-gray-600 hover:text-gray-300">
+            <span class="text-sm font-medium"><%= age %></span>
+          </label>
+        </div>
       <% end %>
     </div>
     <% if user_profile.errors[:age_range].any? %>
@@ -91,16 +97,18 @@
         { name: 'Olive', hex: '#84CC16' }
       ] %>
       <% colors.each do |color| %>
-        <%= f.check_box :favorite_colors, {
-          multiple: true,
-          id: "color_#{color[:name].downcase}",
-          class: "peer hidden",
-          checked: user_profile.favorite_colors.include?(color[:name])
-        }, color[:name], nil %>
-        <label for="color_<%= color[:name].downcase %>" class="flex flex-col items-center justify-center p-3 glass rounded-xl border-2 border-white/10 cursor-pointer transition-all duration-200 hover:border-purple-500/50 peer-checked:border-purple-500 peer-checked:bg-purple-600/20">
-          <div class="w-8 h-8 rounded-full mb-1 <%= color[:hex] == '#FFFFFF' ? 'border border-gray-600' : '' %>" style="background-color: <%= color[:hex] %>"></div>
-          <span class="text-xs text-gray-400"><%= color[:name] %></span>
-        </label>
+        <div class="relative">
+          <%= f.check_box :favorite_colors, {
+            multiple: true,
+            id: "color_#{color[:name].downcase}",
+            class: "peer absolute opacity-0",
+            checked: user_profile.favorite_colors.include?(color[:name])
+          }, color[:name], nil %>
+          <label for="color_<%= color[:name].downcase %>" class="flex flex-col items-center justify-center p-3 rounded-xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:border-purple-500 peer-checked:scale-105 bg-gray-800/50 border-gray-700 hover:border-gray-600 hover:bg-gray-800/70">
+            <div class="w-8 h-8 rounded-full mb-1 <%= color[:hex] == '#FFFFFF' ? 'border border-gray-600' : '' %>" style="background-color: <%= color[:hex] %>"></div>
+            <span class="text-xs peer-checked:text-white peer-checked:font-semibold text-gray-400"><%= color[:name] %></span>
+          </label>
+        </div>
       <% end %>
     </div>
   </div>

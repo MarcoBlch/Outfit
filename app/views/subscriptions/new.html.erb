@@ -14,9 +14,15 @@
         <div class="flex items-center justify-between flex-wrap gap-4">
           <div>
             <div class="flex items-center gap-2">
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-500 text-white">
-                Premium Member
-              </span>
+              <% if current_user.pro? %>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                  Pro Member
+                </span>
+              <% else %>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-500 text-white">
+                  Premium Member
+                </span>
+              <% end %>
               <% if @current_subscription&.will_cancel? %>
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-orange-500 text-white">
                   Cancelling
@@ -52,7 +58,7 @@
     <% end %>
 
     <!-- Pricing Cards -->
-    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+    <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
       <!-- Free Tier -->
       <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
         <div class="text-center mb-6">
@@ -63,55 +69,49 @@
           </div>
         </div>
 
-        <ul class="space-y-4 mb-8">
-          <li class="flex items-center gap-3 text-slate-300">
-            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-            <span>Up to <strong class="text-white">50</strong> wardrobe items</span>
-          </li>
-          <li class="flex items-center gap-3 text-slate-300">
-            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-start gap-3 text-slate-300">
+            <svg class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
             <span><strong class="text-white">3</strong> AI suggestions per day</span>
           </li>
-          <li class="flex items-center gap-3 text-slate-300">
-            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <li class="flex items-start gap-3 text-slate-300">
+            <svg class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
-            <span>Unlimited outfit creations</span>
+            <span>Basic wardrobe management</span>
           </li>
-          <li class="flex items-center gap-3 text-slate-300">
-            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <li class="flex items-start gap-3 text-slate-300">
+            <svg class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
-            <span>Basic weather integration</span>
+            <span>Outfit creation studio</span>
           </li>
-          <li class="flex items-center gap-3 text-slate-500">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <li class="flex items-start gap-3 text-slate-500">
+            <svg class="w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
             <span>Image-based search</span>
           </li>
-          <li class="flex items-center gap-3 text-slate-500">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <li class="flex items-start gap-3 text-slate-500">
+            <svg class="w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
-            <span>Priority support</span>
+            <span>Background removal</span>
           </li>
         </ul>
 
-        <% unless current_user.premium? %>
+        <% if current_user.subscription_tier == 'free' %>
           <div class="text-center">
-            <span class="inline-flex items-center px-4 py-2 bg-white/10 text-slate-400 font-medium rounded-lg">
+            <button disabled class="w-full px-4 py-2 bg-white/10 text-slate-400 font-medium rounded-lg cursor-not-allowed">
               Current Plan
-            </span>
+            </button>
           </div>
         <% end %>
       </div>
 
-      <!-- Premium Tier -->
+      <!-- Premium Tier (Most Popular) -->
       <div class="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-sm rounded-2xl p-8 border-2 border-purple-500/50 relative">
         <div class="absolute -top-4 left-1/2 -translate-x-1/2">
           <span class="inline-flex items-center px-4 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-bold rounded-full">
@@ -122,60 +122,100 @@
         <div class="text-center mb-6 pt-2">
           <h2 class="text-2xl font-bold text-white mb-2">Premium</h2>
           <div class="flex items-baseline justify-center gap-1">
-            <span class="text-4xl font-bold text-white">$7.99</span>
+            <span class="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">$7.99</span>
             <span class="text-slate-400">/month</span>
           </div>
         </div>
 
-        <ul class="space-y-4 mb-8">
-          <li class="flex items-center gap-3 text-slate-300">
-            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-start gap-3 text-slate-300">
+            <svg class="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
-            <span>Up to <strong class="text-white">300</strong> wardrobe items</span>
+            <span><strong class="text-white">30 AI suggestions per day</strong></span>
           </li>
-          <li class="flex items-center gap-3 text-slate-300">
-            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <li class="flex items-start gap-3 text-slate-300">
+            <svg class="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
-            <span><strong class="text-white">30</strong> AI suggestions per day</span>
+            <span>AI-powered image search</span>
           </li>
-          <li class="flex items-center gap-3 text-slate-300">
-            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <li class="flex items-start gap-3 text-slate-300">
+            <svg class="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
-            <span>Unlimited outfit creations</span>
+            <span>Background removal</span>
           </li>
-          <li class="flex items-center gap-3 text-slate-300">
-            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-            <span><strong class="text-white">Full</strong> weather integration</span>
-          </li>
-          <li class="flex items-center gap-3 text-slate-300">
-            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-            <span><strong class="text-white">5</strong> image searches per day</span>
-          </li>
-          <li class="flex items-center gap-3 text-slate-300">
-            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <li class="flex items-start gap-3 text-slate-300">
+            <svg class="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
             <span>Priority support</span>
           </li>
         </ul>
 
-        <% if current_user.premium? %>
+        <% if current_user.subscription_tier == 'premium' %>
           <div class="text-center">
-            <span class="inline-flex items-center px-4 py-2 bg-purple-500/30 text-purple-300 font-medium rounded-lg">
+            <button disabled class="w-full px-4 py-2 bg-purple-500/30 text-purple-300 font-medium rounded-lg cursor-not-allowed">
               Current Plan
-            </span>
+            </button>
           </div>
         <% else %>
           <%= button_to "Upgrade to Premium", subscriptions_path,
+              params: { tier: 'premium' },
               method: :post,
               class: "w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold rounded-lg transition-all transform hover:scale-[1.02] shadow-lg shadow-purple-500/30" %>
+        <% end %>
+      </div>
+
+      <!-- Pro Tier -->
+      <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+        <div class="text-center mb-6">
+          <h2 class="text-2xl font-bold text-white mb-2">Pro</h2>
+          <div class="flex items-baseline justify-center gap-1">
+            <span class="text-4xl font-bold text-white">$14.99</span>
+            <span class="text-slate-400">/month</span>
+          </div>
+        </div>
+
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-start gap-3 text-slate-300">
+            <svg class="w-5 h-5 text-pink-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span><strong class="text-white">100 AI suggestions per day</strong></span>
+          </li>
+          <li class="flex items-start gap-3 text-slate-300">
+            <svg class="w-5 h-5 text-pink-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>All Premium features</span>
+          </li>
+          <li class="flex items-start gap-3 text-slate-300">
+            <svg class="w-5 h-5 text-pink-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>Virtual try-on (coming soon)</span>
+          </li>
+          <li class="flex items-start gap-3 text-slate-300">
+            <svg class="w-5 h-5 text-pink-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>24/7 dedicated support</span>
+          </li>
+        </ul>
+
+        <% if current_user.subscription_tier == 'pro' %>
+          <div class="text-center">
+            <button disabled class="w-full px-4 py-2 bg-white/10 text-slate-400 font-medium rounded-lg cursor-not-allowed">
+              Current Plan
+            </button>
+          </div>
+        <% else %>
+          <%= button_to "Upgrade to Pro", subscriptions_path,
+              params: { tier: 'pro' },
+              method: :post,
+              class: "w-full px-6 py-3 bg-white/10 text-white font-semibold hover:bg-white/20 transition-all border border-white/20 rounded-lg" %>
         <% end %>
       </div>
     </div>
@@ -190,45 +230,93 @@
               <th class="py-4 px-6 text-left text-slate-300 font-medium">Feature</th>
               <th class="py-4 px-6 text-center text-slate-300 font-medium">Free</th>
               <th class="py-4 px-6 text-center text-purple-400 font-medium">Premium</th>
+              <th class="py-4 px-6 text-center text-pink-400 font-medium">Pro</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-white/5">
             <tr>
-              <td class="py-4 px-6 text-slate-300">Wardrobe Items</td>
-              <td class="py-4 px-6 text-center text-white">50</td>
-              <td class="py-4 px-6 text-center text-white font-medium">300</td>
-            </tr>
-            <tr>
               <td class="py-4 px-6 text-slate-300">AI Outfit Suggestions</td>
               <td class="py-4 px-6 text-center text-white">3/day</td>
               <td class="py-4 px-6 text-center text-white font-medium">30/day</td>
+              <td class="py-4 px-6 text-center text-white font-medium">100/day</td>
             </tr>
             <tr>
               <td class="py-4 px-6 text-slate-300">Image-based Search</td>
-              <td class="py-4 px-6 text-center text-slate-500">-</td>
-              <td class="py-4 px-6 text-center text-white font-medium">5/day</td>
-            </tr>
-            <tr>
-              <td class="py-4 px-6 text-slate-300">Weather Integration</td>
-              <td class="py-4 px-6 text-center text-white">Basic</td>
-              <td class="py-4 px-6 text-center text-white font-medium">Full</td>
-            </tr>
-            <tr>
-              <td class="py-4 px-6 text-slate-300">Outfit History</td>
-              <td class="py-4 px-6 text-center text-white">30 days</td>
-              <td class="py-4 px-6 text-center text-white font-medium">Unlimited</td>
-            </tr>
-            <tr>
-              <td class="py-4 px-6 text-slate-300">Priority Support</td>
               <td class="py-4 px-6 text-center text-slate-500">-</td>
               <td class="py-4 px-6 text-center">
                 <svg class="w-5 h-5 text-purple-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
               </td>
+              <td class="py-4 px-6 text-center">
+                <svg class="w-5 h-5 text-pink-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </td>
+            </tr>
+            <tr>
+              <td class="py-4 px-6 text-slate-300">Background Removal</td>
+              <td class="py-4 px-6 text-center text-slate-500">-</td>
+              <td class="py-4 px-6 text-center">
+                <svg class="w-5 h-5 text-purple-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </td>
+              <td class="py-4 px-6 text-center">
+                <svg class="w-5 h-5 text-pink-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </td>
+            </tr>
+            <tr>
+              <td class="py-4 px-6 text-slate-300">Weather-Aware Suggestions</td>
+              <td class="py-4 px-6 text-center">
+                <svg class="w-5 h-5 text-green-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </td>
+              <td class="py-4 px-6 text-center">
+                <svg class="w-5 h-5 text-purple-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </td>
+              <td class="py-4 px-6 text-center">
+                <svg class="w-5 h-5 text-pink-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </td>
+            </tr>
+            <tr>
+              <td class="py-4 px-6 text-slate-300">Virtual Try-On</td>
+              <td class="py-4 px-6 text-center text-slate-500">-</td>
+              <td class="py-4 px-6 text-center text-slate-500">-</td>
+              <td class="py-4 px-6 text-center text-pink-400">Coming Soon</td>
+            </tr>
+            <tr>
+              <td class="py-4 px-6 text-slate-300">Support</td>
+              <td class="py-4 px-6 text-center text-white">Community</td>
+              <td class="py-4 px-6 text-center text-white font-medium">Priority</td>
+              <td class="py-4 px-6 text-center text-white font-medium">24/7 Dedicated</td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- Feature Explanation -->
+    <div class="mt-12 max-w-3xl mx-auto">
+      <div class="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-xl p-6">
+        <div class="flex items-start gap-4">
+          <svg class="w-6 h-6 text-blue-400 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <div>
+            <h4 class="text-lg font-semibold text-white mb-2">What are Weather-Aware Suggestions?</h4>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              All AI outfit suggestions automatically consider your local weather conditions. The AI will recommend layers and jackets when it's cold, breathable fabrics in heat, and weather-appropriate footwear for rain or snow. This feature is included with all tiers - the only difference is how many suggestions you can get per day (3 for Free, 30 for Premium, 100 for Pro).
+            </p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -274,8 +362,15 @@
       </div>
     </div>
 
-    <!-- Back Link -->
+    <!-- Trust/Security Footer -->
     <div class="mt-12 text-center">
+      <p class="text-slate-400 text-sm">
+        All plans include 30-day money-back guarantee • Cancel anytime • Secure payment via Stripe
+      </p>
+    </div>
+
+    <!-- Back Link -->
+    <div class="mt-8 text-center">
       <%= link_to "Back to Wardrobe", wardrobe_items_path, class: "text-slate-400 hover:text-white transition-colors" %>
     </div>
   </div>
