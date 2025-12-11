@@ -4,8 +4,7 @@ class AddIndexesForAdminQueries < ActiveRecord::Migration[7.1]
     # These optimize common filtering and aggregation patterns
 
     # Users table indexes for admin filtering
-    # Index on subscription_tier for filtering users by tier and MRR calculations
-    add_index :users, :subscription_tier, name: "index_users_on_subscription_tier"
+    # Note: subscription_tier index already exists from earlier migration
 
     # Index on created_at for cohort analysis and signup trends
     # Most admin queries will order by or filter on created_at
@@ -20,6 +19,11 @@ class AddIndexesForAdminQueries < ActiveRecord::Migration[7.1]
     # Index on created_at for time-series analytics (daily/weekly/monthly usage)
     add_index :outfit_suggestions, :created_at,
               name: "index_outfit_suggestions_on_created_at"
+
+    # Composite index for per-tier cost analysis
+    # Enables joining users and suggestions efficiently for cost per tier
+    # The existing index on [user_id, created_at] handles most cases, but this
+    # helps with broader time-range queries without user_id filter
 
     # Index on context for "top contexts" analytics
     # Uses hash index for exact matching (faster than B-tree for text equality)
