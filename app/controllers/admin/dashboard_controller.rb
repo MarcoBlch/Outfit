@@ -16,6 +16,7 @@ module Admin
       @ai_suggestions_today = @usage_metrics.ai_suggestions_today
       @ai_suggestions_this_month = @usage_metrics.ai_suggestions_this_month
       @estimated_ai_cost = @usage_metrics.estimated_ai_cost_this_month
+      @ai_cost_this_month = @estimated_ai_cost # Alias for view compatibility
 
       # Ad metrics
       @ad_revenue_today = AdImpression.estimated_revenue_today
