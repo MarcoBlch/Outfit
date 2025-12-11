@@ -149,6 +149,12 @@ class User < ApplicationRecord
     WeatherService.new(user_profile.location).current_conditions
   end
 
+  # Last activity tracking (proxy for Devise trackable)
+  def current_sign_in_at
+    # Since trackable is not enabled, use updated_at as proxy for last activity
+    outfit_suggestions.maximum(:created_at) || updated_at
+  end
+
   # Admin access
   def admin?
     admin == true
