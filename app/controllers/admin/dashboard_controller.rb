@@ -34,6 +34,7 @@ module Admin
 
       # Activity metrics
       @active_users_last_30_days = User.active_last_30_days.count
+      @new_users_this_week = User.where('created_at >= ?', 1.week.ago).count
     end
   end
 end
