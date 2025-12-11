@@ -26,6 +26,30 @@ module Admin
       @recent_users = User.recent.limit(5)
       @recent_suggestions = OutfitSuggestion.recent.includes(:user).limit(10)
 
+      # Build recent activities feed
+      @recent_activities = []
+      @recent_users.each do |user|
+        @recent_activities << {
+          type: 'user_signup',
+          user: user,
+          time: user.created_at,
+          color: 'from-blue-600 to-blue-400',
+          icon: 'user',
+          text: "#{user.email} signed up"
+        }
+      end
+      @recent_suggestions.first(5).each do |suggestion|
+        @recent_activities << {
+          type: 'ai_suggestion',
+          user: suggestion.user,
+          time: suggestion.created_at,
+          color: 'from-purple-600 to-pink-400',
+          icon: 'sparkles',
+          text: "#{suggestion.user.email} got AI suggestion"
+        }
+      end
+      @recent_activities = @recent_activities.sort_by { |a| a[:time] }.reverse.first(10)
+
       # User tier breakdown
       @users_by_tier = {
         free: User.free_tier.count,
