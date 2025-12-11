@@ -7,6 +7,9 @@ class OutfitSuggestion < ApplicationRecord
   scope :recent, -> { order(created_at: :desc) }
   scope :completed, -> { where(status: 'completed') }
   scope :today, -> { where('created_at >= ?', Time.current.beginning_of_day) }
+  scope :this_week, -> { where('created_at >= ?', 1.week.ago) }
+  scope :this_month, -> { where('created_at >= ?', 1.month.ago) }
+  scope :failed, -> { where(status: 'failed') }
 
   # Store validated outfit combinations
   # Structure: [

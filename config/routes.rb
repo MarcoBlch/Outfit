@@ -29,6 +29,20 @@ Rails.application.routes.draw do
   # Wardrobe Image Search (Premium Feature)
   resources :wardrobe_searches, only: [:new, :create]
 
+  # Admin Dashboard
+  namespace :admin do
+    root to: "dashboard#index"
+
+    resources :users, only: [:index, :show] do
+      member do
+        patch :update_tier
+      end
+    end
+
+    get "metrics/subscriptions", to: "metrics#subscriptions"
+    get "metrics/usage", to: "metrics#usage"
+  end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

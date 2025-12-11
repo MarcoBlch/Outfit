@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_many :wardrobe_items, dependent: :destroy
   has_many :outfits, dependent: :destroy
   has_many :outfit_suggestions, dependent: :destroy
+  has_many :ad_impressions, dependent: :destroy
   has_one :user_profile, dependent: :destroy
   has_one :subscription, dependent: :destroy
   include Devise::JWT::RevocationStrategies::JTIMatcher
@@ -34,6 +35,10 @@ class User < ApplicationRecord
 
   def premium?
     subscription_tier == "premium" || subscription_tier == "pro"
+  end
+
+  def pro?
+    subscription_tier == "pro"
   end
 
   def free_tier?
@@ -106,4 +111,18 @@ class User < ApplicationRecord
 
     WeatherService.new(user_profile.location).current_conditions
   end
+
+  # Admin access
+  def admin?
+    admin == true
+  end
+
+  # Scopes for admin queries
+  scope :admins, -> { where(admin: true) }
+  scope :premium_tier, -> { where(subscription_tier: "premium") }
+  scope :pro_tier, -> { where(subscription_tier: "pro") }
+  scope :free_tier, -> { where(subscription_tier: "free").or(where(subscription_tier: nil)) }
+  scope :paying_customers, -> { where(subscription_tier: ["premium", "pro"]) }
+  scope :recent, -> { order(created_at: :desc) }
+  scope :active_last_30_days, -> { where("updated_at >= ?", 30.days.ago) }
 end
