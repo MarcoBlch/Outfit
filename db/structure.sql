@@ -1,4 +1,4 @@
-\restrict 1QWKbWT02M3gOnB1XsDQKUy4jGaBSwQkKF3YJuZqx82VH5vKzrB8o2rSOxFFSLw
+\restrict ecp9O6BxFgvSzLQFpmloR6hnTPMe2CzF0HBURTqjTRSpQPYfGcPNpvz1ThC88XX
 
 -- Dumped from database version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
 -- Dumped by pg_dump version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
@@ -352,7 +352,8 @@ CREATE TABLE public.user_profiles (
     location character varying,
     metadata jsonb DEFAULT '{}'::jsonb,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    presentation_style character varying
 );
 
 
@@ -1045,12 +1046,15 @@ ALTER TABLE ONLY public.wardrobe_items
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 1QWKbWT02M3gOnB1XsDQKUy4jGaBSwQkKF3YJuZqx82VH5vKzrB8o2rSOxFFSLw
+\unrestrict ecp9O6BxFgvSzLQFpmloR6hnTPMe2CzF0HBURTqjTRSpQPYfGcPNpvz1ThC88XX
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251211210635'),
 ('20251211103033'),
+('20251211103032'),
+('20251211103031'),
 ('20251211103030'),
 ('20251208121643'),
 ('20251207204638'),

@@ -21,6 +21,15 @@ class UserProfile < ApplicationRecord
     plus_size: 4
   }, prefix: true
 
+  # Presentation style enum
+  enum presentation_style: {
+    feminine: 0,
+    masculine: 1,
+    androgynous: 2,
+    fluid: 3,
+    prefer_not_to_say: 4
+  }
+
   # Validations
   validates :age_range, inclusion: {
     in: %w[18-24 25-34 35-44 45-54 55+],
@@ -47,7 +56,8 @@ class UserProfile < ApplicationRecord
       body_type.present? &&
       age_range.present? &&
       favorite_colors.any? &&
-      location.present?
+      location.present? &&
+      presentation_style.present?
   end
 
   # Completion percentage for progress indicators
@@ -57,7 +67,8 @@ class UserProfile < ApplicationRecord
       body_type.present?,
       age_range.present?,
       favorite_colors.any?,
-      location.present?
+      location.present?,
+      presentation_style.present?
     ]
     (fields.count(true).to_f / fields.size * 100).to_i
   end
