@@ -3,7 +3,9 @@ class OutfitsController < ApplicationController
   before_action :set_outfit, only: %i[show update destroy]
 
   def index
-    @outfits = current_user.outfits.includes(:wardrobe_items)
+    # Eager load wardrobe items and their image attachments to avoid N+1 queries
+    @outfits = current_user.outfits
+                           .includes(wardrobe_items: { image_attachment: :blob, cleaned_image_attachment: :blob })
     respond_to do |format|
       format.html
       format.json { render json: @outfits, include: :outfit_items }
@@ -19,12 +21,18 @@ class OutfitsController < ApplicationController
 
   def new
     @outfit = Outfit.new
-    @wardrobe_items = current_user.wardrobe_items.order(created_at: :desc)
+    @wardrobe_items = current_user.wardrobe_items
+                                  .with_attached_image
+                                  .with_attached_cleaned_image
+                                  .order(created_at: :desc)
 
     # Pre-select items if passed from AI suggestions
     if params[:wardrobe_item_ids].present?
       @preselected_item_ids = Array(params[:wardrobe_item_ids]).map(&:to_i)
-      @preselected_items = current_user.wardrobe_items.where(id: @preselected_item_ids)
+      @preselected_items = current_user.wardrobe_items
+                                       .with_attached_image
+                                       .with_attached_cleaned_image
+                                       .where(id: @preselected_item_ids)
     end
   end
 
@@ -38,7 +46,10 @@ class OutfitsController < ApplicationController
       end
     else
       Rails.logger.error "OUTFIT SAVE FAILED: #{@outfit.errors.full_messages}"
-      @wardrobe_items = current_user.wardrobe_items.order(created_at: :desc)
+      @wardrobe_items = current_user.wardrobe_items
+                                    .with_attached_image
+                                    .with_attached_cleaned_image
+                                    .order(created_at: :desc)
       respond_to do |format|
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @outfit.errors, status: :unprocessable_entity }
