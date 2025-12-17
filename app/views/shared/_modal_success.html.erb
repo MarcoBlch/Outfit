@@ -1,25 +1,21 @@
-<div data-controller="modal"
-     data-modal-target="container"
-     data-modal-auto-open-value="true"
+<div id="success-modal-container"
      class="relative z-50"
      aria-labelledby="modal-title"
      role="dialog"
      aria-modal="true">
 
   <!-- Background backdrop -->
-  <div data-modal-target="backdrop"
-       class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm transition-opacity duration-300 opacity-0"
-       data-action="click->modal#closeBackground"></div>
+  <div class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm transition-opacity duration-300 opacity-100"
+       onclick="closeSuccessModal()"></div>
 
   <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
     <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
       <!-- Modal panel -->
-      <div data-modal-target="panel"
-           class="relative transform overflow-hidden rounded-2xl bg-gray-900 border border-white/10 text-left shadow-xl transition-all duration-300 opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95 sm:my-8 sm:w-full sm:max-w-lg">
+      <div class="relative transform overflow-hidden rounded-2xl bg-gray-900 border border-white/10 text-left shadow-xl transition-all duration-300 opacity-100 scale-100 sm:my-8 sm:w-full sm:max-w-lg">
 
         <div class="absolute right-0 top-0 hidden pr-4 pt-4 sm:block z-10">
           <button type="button"
-                  data-action="modal#close"
+                  onclick="closeSuccessModal()"
                   class="rounded-md bg-gray-900 text-gray-400 hover:text-white focus:outline-none">
             <span class="sr-only">Close</span>
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -50,7 +46,7 @@
             <!-- Continue Button -->
             <div class="pt-4">
               <button type="button"
-                      data-action="click->modal#close"
+                      onclick="closeSuccessModal()"
                       class="inline-flex px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium rounded-xl shadow-lg shadow-purple-600/20 hover:shadow-purple-600/40 transition-all duration-200">
                 Continue
               </button>
@@ -61,3 +57,29 @@
     </div>
   </div>
 </div>
+
+<script>
+  var successModalRedirectUrl = "<%= j redirect_path %>";
+
+  function closeSuccessModal() {
+    console.log('closeSuccessModal called, redirecting to:', successModalRedirectUrl);
+    // Remove the modal container
+    var container = document.getElementById('success-modal-container');
+    if (container) {
+      container.remove();
+    }
+    // Navigate to the redirect URL
+    if (successModalRedirectUrl) {
+      if (window.Turbo && window.Turbo.visit) {
+        window.Turbo.visit(successModalRedirectUrl);
+      } else {
+        window.location.href = successModalRedirectUrl;
+      }
+    }
+  }
+
+  // Auto-redirect after 3 seconds
+  setTimeout(function() {
+    closeSuccessModal();
+  }, 3000);
+</script>

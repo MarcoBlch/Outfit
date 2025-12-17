@@ -1,4 +1,4 @@
-<%= form_with model: user_profile, url: user_profile.persisted? ? user_profile_path : user_profile_path, method: user_profile.persisted? ? :patch : :post, id: "profile-form", class: "space-y-6" do |f| %>
+<%= form_with model: user_profile, url: user_profile.persisted? ? user_profile_path : user_profile_path, method: user_profile.persisted? ? :patch : :post, id: "profile-form", data: { turbo_frame: "modal" }, class: "space-y-6" do |f| %>
 
   <!-- Question 1: Style Preference -->
   <div class="space-y-3">
