@@ -1,0 +1,336 @@
+<% content_for :page_title, "Product Analytics" %>
+
+<div class="space-y-6">
+  <!-- Summary Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <!-- Total Views -->
+    <div class="glass rounded-xl p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs text-gray-400 uppercase tracking-wide">Total Views</p>
+          <p class="text-3xl font-bold text-white mt-2"><%= number_with_delimiter(@total_views) %></p>
+        </div>
+        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Clicks -->
+    <div class="glass rounded-xl p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs text-gray-400 uppercase tracking-wide">Total Clicks</p>
+          <p class="text-3xl font-bold text-white mt-2"><%= number_with_delimiter(@total_clicks) %></p>
+          <p class="text-xs text-gray-400 mt-1">CTR: <%= @avg_ctr %>%</p>
+        </div>
+        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Conversions -->
+    <div class="glass rounded-xl p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs text-gray-400 uppercase tracking-wide">Total Conversions</p>
+          <p class="text-3xl font-bold text-white mt-2"><%= number_with_delimiter(@total_conversions) %></p>
+          <p class="text-xs text-gray-400 mt-1">Rate: <%= @avg_conversion_rate %>%</p>
+        </div>
+        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Revenue -->
+    <div class="glass rounded-xl p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs text-gray-400 uppercase tracking-wide">Total Revenue</p>
+          <p class="text-3xl font-bold text-white mt-2">$<%= number_with_precision(@total_revenue, precision: 2, delimiter: ',') %></p>
+          <p class="text-xs text-gray-400 mt-1">Avg: $<%= @avg_revenue_per_conversion %>/conv</p>
+        </div>
+        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters and Export -->
+  <div class="glass rounded-xl p-6">
+    <%= form_with url: admin_product_recommendations_path, method: :get, class: "space-y-4" do |f| %>
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <!-- Category Filter -->
+        <div>
+          <label for="category" class="block text-sm font-medium text-gray-400 mb-2">Category</label>
+          <%= f.select :category,
+              options_for_select(
+                [['All Categories', 'all'], ['Tops', 'tops'], ['Bottoms', 'bottoms'], ['Shoes', 'shoes'], ['Accessories', 'accessories'], ['Outerwear', 'outerwear']],
+                params[:category] || 'all'
+              ),
+              {},
+              class: "w-full px-4 py-2 rounded-lg glass border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+          %>
+        </div>
+
+        <!-- Priority Filter -->
+        <div>
+          <label for="priority" class="block text-sm font-medium text-gray-400 mb-2">Priority</label>
+          <%= f.select :priority,
+              options_for_select(
+                [['All Priorities', 'all'], ['High', 'high'], ['Medium', 'medium'], ['Low', 'low']],
+                params[:priority] || 'all'
+              ),
+              {},
+              class: "w-full px-4 py-2 rounded-lg glass border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+          %>
+        </div>
+
+        <!-- Performance Filter -->
+        <div>
+          <label for="performance" class="block text-sm font-medium text-gray-400 mb-2">Performance</label>
+          <%= f.select :performance,
+              options_for_select(
+                [
+                  ['All', ''],
+                  ['High CTR (>5%)', 'high_ctr'],
+                  ['High Revenue (>$50)', 'high_revenue'],
+                  ['High Conversion (>10%)', 'high_conversion'],
+                  ['With AI Images', 'with_images'],
+                  ['With Products', 'with_products']
+                ],
+                params[:performance]
+              ),
+              {},
+              class: "w-full px-4 py-2 rounded-lg glass border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+          %>
+        </div>
+
+        <!-- Sort -->
+        <div>
+          <label for="sort" class="block text-sm font-medium text-gray-400 mb-2">Sort By</label>
+          <%= f.select :sort,
+              options_for_select(
+                [
+                  ['Newest First', 'created_desc'],
+                  ['Oldest First', 'created_asc'],
+                  ['Views (High to Low)', 'views_desc'],
+                  ['Views (Low to High)', 'views_asc'],
+                  ['Clicks (High to Low)', 'clicks_desc'],
+                  ['Clicks (Low to High)', 'clicks_asc'],
+                  ['CTR (High to Low)', 'ctr_desc'],
+                  ['CTR (Low to High)', 'ctr_asc'],
+                  ['Revenue (High to Low)', 'revenue_desc'],
+                  ['Revenue (Low to High)', 'revenue_asc'],
+                  ['Conversion (High to Low)', 'conversion_desc'],
+                  ['Conversion (Low to High)', 'conversion_asc']
+                ],
+                params[:sort] || 'created_desc'
+              ),
+              {},
+              class: "w-full px-4 py-2 rounded-lg glass border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+          %>
+        </div>
+
+        <!-- Date Range -->
+        <div>
+          <label for="from_date" class="block text-sm font-medium text-gray-400 mb-2">From Date</label>
+          <%= f.date_field :from_date,
+              value: params[:from_date],
+              class: "w-full px-4 py-2 rounded-lg glass border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+          %>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <%= f.submit "Apply Filters", class: "px-6 py-2 rounded-lg bg-primary hover:bg-primary-dark text-white font-medium transition-colors cursor-pointer" %>
+          <%= link_to "Clear Filters", admin_product_recommendations_path, class: "px-6 py-2 rounded-lg glass hover:bg-white/10 text-white font-medium transition-colors" %>
+        </div>
+
+        <!-- Export to CSV -->
+        <%= link_to admin_product_recommendations_path(format: :csv, **params.permit(:category, :priority, :performance, :sort, :from_date, :to_date)), class: "flex items-center space-x-2 px-6 py-2 rounded-lg glass hover:bg-white/10 text-white font-medium transition-colors" do %>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          <span>Export CSV</span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Results Summary -->
+  <div class="glass rounded-xl p-4">
+    <p class="text-sm text-gray-400">
+      Showing <%= @recommendations.total_count %> recommendation<%= @recommendations.total_count == 1 ? '' : 's' %>
+    </p>
+  </div>
+
+  <!-- Recommendations Table -->
+  <div class="glass rounded-xl overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="bg-black/20 border-b border-white/10">
+          <tr>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Outfit</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Category</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Priority</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">AI Image</th>
+            <th class="px-6 py-4 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">Views</th>
+            <th class="px-6 py-4 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">Clicks</th>
+            <th class="px-6 py-4 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">CTR</th>
+            <th class="px-6 py-4 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">Conv.</th>
+            <th class="px-6 py-4 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">Revenue</th>
+            <th class="px-6 py-4 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">Products</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Created</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-white/5">
+          <% if @recommendations.any? %>
+            <% @recommendations.each do |rec| %>
+              <tr class="hover:bg-white/5 transition-colors">
+                <!-- Outfit Suggestion -->
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm">
+                    <div class="text-white font-medium">
+                      <%= link_to "Outfit ##{rec.outfit_suggestion_id}", outfit_suggestion_path(rec.outfit_suggestion_id),
+                          class: "text-primary hover:text-primary-dark transition-colors" %>
+                    </div>
+                    <div class="text-xs text-gray-400">ID: <%= rec.id %></div>
+                  </div>
+                </td>
+
+                <!-- Category -->
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/20 text-blue-400">
+                    <%= rec.category&.titleize || 'N/A' %>
+                  </span>
+                </td>
+
+                <!-- Priority -->
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <% priority_colors = {
+                    'high' => 'bg-red-500/20 text-red-400',
+                    'medium' => 'bg-yellow-500/20 text-yellow-400',
+                    'low' => 'bg-gray-500/20 text-gray-400'
+                  } %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= priority_colors[rec.priority] || 'bg-gray-500/20 text-gray-400' %>">
+                    <%= rec.priority&.titleize || 'N/A' %>
+                  </span>
+                </td>
+
+                <!-- AI Image Thumbnail -->
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <% if rec.ai_image_status == 'completed' && rec.ai_image_url.present? %>
+                    <div class="relative group">
+                      <img src="<%= rec.ai_image_url %>"
+                           alt="<%= rec.category %>"
+                           class="w-12 h-12 object-cover rounded-lg border border-white/10">
+                      <!-- Hover preview -->
+                      <div class="absolute left-0 top-14 z-10 hidden group-hover:block">
+                        <img src="<%= rec.ai_image_url %>"
+                             alt="<%= rec.category %>"
+                             class="w-48 h-48 object-cover rounded-lg border-2 border-white/20 shadow-xl">
+                      </div>
+                    </div>
+                  <% else %>
+                    <div class="w-12 h-12 rounded-lg glass flex items-center justify-center text-xs text-gray-400">
+                      <%= rec.ai_image_status&.titleize || 'None' %>
+                    </div>
+                  <% end %>
+                </td>
+
+                <!-- Views -->
+                <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-white">
+                  <%= number_with_delimiter(rec.views) %>
+                </td>
+
+                <!-- Clicks -->
+                <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-white">
+                  <%= number_with_delimiter(rec.clicks) %>
+                </td>
+
+                <!-- CTR -->
+                <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
+                  <% ctr = rec.ctr %>
+                  <span class="font-medium <%= ctr > 5 ? 'text-green-400' : ctr > 2 ? 'text-yellow-400' : 'text-gray-400' %>">
+                    <%= ctr %>%
+                  </span>
+                </td>
+
+                <!-- Conversions -->
+                <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-white">
+                  <%= number_with_delimiter(rec.conversions) %>
+                  <% if rec.conversion_rate > 0 %>
+                    <div class="text-xs text-gray-400">(<%= rec.conversion_rate %>%)</div>
+                  <% end %>
+                </td>
+
+                <!-- Revenue -->
+                <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
+                  <% revenue = rec.revenue_earned || 0.0 %>
+                  <span class="font-medium <%= revenue > 50 ? 'text-green-400' : revenue > 0 ? 'text-white' : 'text-gray-400' %>">
+                    $<%= number_with_precision(revenue, precision: 2) %>
+                  </span>
+                </td>
+
+                <!-- Products Count -->
+                <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-white">
+                  <%= rec.products_count %>
+                </td>
+
+                <!-- Created Date -->
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                  <%= rec.created_at.strftime("%b %d, %Y") %>
+                  <div class="text-xs text-gray-500"><%= rec.created_at.strftime("%I:%M %p") %></div>
+                </td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="11" class="px-6 py-12 text-center">
+                <div class="text-gray-400">
+                  <svg class="mx-auto h-12 w-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                  </svg>
+                  <p class="text-white font-medium">No product recommendations found</p>
+                  <p class="text-sm mt-1">Try adjusting your filters or create some outfit suggestions to generate recommendations</p>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <% if @recommendations.any? %>
+      <div class="bg-black/20 px-6 py-4 border-t border-white/10">
+        <div class="flex items-center justify-between">
+          <div class="text-sm text-gray-400">
+            Showing <%= @recommendations.offset_value + 1 %> to <%= [@recommendations.offset_value + @recommendations.size, @recommendations.total_count].min %> of <%= @recommendations.total_count %> recommendations
+          </div>
+          <div class="flex items-center space-x-2">
+            <%= paginate @recommendations,
+                outer_window: 1,
+                inner_window: 2,
+                window: 2
+            %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<turbo-frame id="product_recommendations_<%= @suggestion.id %>">
+  <% if @recommendations.any? %>
+    <!-- Recommendations Grid -->
+    <div class="space-y-6">
+      <% @recommendations.each do |recommendation| %>
+        <%= render "product_recommendations/recommendation", recommendation: recommendation %>
+      <% end %>
+    </div>
+  <% else %>
+    <!-- Empty State -->
+    <div class="glass rounded-xl p-12 text-center">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-600/20 rounded-full mb-4">
+        <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+        </svg>
+      </div>
+      <h3 class="text-xl font-bold text-white mb-2">
+        No Recommendations Yet
+      </h3>
+      <p class="text-gray-400 mb-6">
+        We're analyzing your wardrobe to find the perfect items to complete your look.
+      </p>
+      <p class="text-sm text-gray-500">
+        Check back soon for personalized shopping suggestions.
+      </p>
+    </div>
+  <% end %>
+</turbo-frame>

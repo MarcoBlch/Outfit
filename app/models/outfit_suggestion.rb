@@ -1,5 +1,6 @@
 class OutfitSuggestion < ApplicationRecord
   belongs_to :user
+  has_many :product_recommendations, dependent: :destroy
 
   validates :context, presence: true
   validates :status, inclusion: { in: %w[pending completed failed] }

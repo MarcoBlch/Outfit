@@ -11,7 +11,13 @@ Rails.application.routes.draw do
     end
   end
   resources :outfits
-  resources :outfit_suggestions, only: [:index, :new, :create, :show]
+  resources :outfit_suggestions, only: [:index, :new, :create, :show] do
+    member do
+      get :show_recommendations
+      post 'recommendations/:recommendation_id/record_view', to: 'outfit_suggestions#record_view', as: :record_recommendation_view
+      post 'recommendations/:recommendation_id/record_click', to: 'outfit_suggestions#record_click', as: :record_recommendation_click
+    end
+  end
   resource :user_profile, only: [:new, :create, :edit, :update]
 
   # Subscriptions / Pricing
@@ -38,6 +44,8 @@ Rails.application.routes.draw do
         patch :update_tier
       end
     end
+
+    resources :product_recommendations, only: [:index]
 
     get "metrics/subscriptions", to: "metrics#subscriptions"
     get "metrics/usage", to: "metrics#usage"
