@@ -184,8 +184,8 @@ RSpec.describe 'Product Recommendation Workflow', type: :integration do
       suggestion = create(:outfit_suggestion, user: user)
       recommendation = create(:product_recommendation, outfit_suggestion: suggestion)
 
-      stub_request(:post, /webservices\.amazon\.com/)
-        .to_return(status: 503, body: 'Service Unavailable')
+      stub_request(:get, /amazon-data-product-data\.p\.rapidapi\.com\/search/)
+        .to_return(status: 503, body: { error: 'Service Unavailable' }.to_json)
 
       # Products should remain empty but not crash
       expect(recommendation.has_products?).to be false
@@ -336,12 +336,25 @@ RSpec.describe 'Product Recommendation Workflow', type: :integration do
   end
 
   def stub_amazon_product_api
-    # Stub Amazon PA-API (paapi gem uses webservices.amazon.com)
-    stub_request(:post, /webservices\.amazon\.com/)
+    # Stub RapidAPI Amazon Data endpoint
+    stub_request(:get, /amazon-data-product-data\.p\.rapidapi\.com\/search/)
       .to_return(
         status: 200,
-        body: '<ItemSearchResponse></ItemSearchResponse>',
-        headers: { 'Content-Type' => 'text/xml' }
+        body: {
+          "products" => [
+            {
+              "asin" => "B08TEST123",
+              "title" => "Navy Blue Blazer Professional",
+              "price" => "149.99",
+              "currency" => "USD",
+              "product_url" => "https://www.amazon.com/dp/B08TEST123",
+              "image" => "https://m.media-amazon.com/images/I/test-blazer.jpg",
+              "rating" => 4.5,
+              "reviews_count" => 234
+            }
+          ]
+        }.to_json,
+        headers: { 'Content-Type' => 'application/json' }
       )
   end
 end
