@@ -85,7 +85,18 @@ class OutfitSuggestionsController < ApplicationController
   end
 
   def show
-    @suggestion = current_user.outfit_suggestions.find(params[:id])
+    @suggestion = current_user.outfit_suggestions
+                              .includes(:product_recommendations)
+                              .find(params[:id])
+
+    # Preload all wardrobe items that appear in the suggestions to avoid N+1 queries
+    if @suggestion.validated_suggestions.present?
+      item_ids = @suggestion.validated_suggestions.flat_map do |outfit|
+        (outfit[:items] || outfit["items"] || []).map { |item| item[:id] || item["id"] }
+      end.compact.uniq
+
+      @wardrobe_items = current_user.wardrobe_items.where(id: item_ids).index_by(&:id)
+    end
   end
 
   def show_recommendations

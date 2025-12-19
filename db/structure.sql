@@ -1,4 +1,4 @@
-\restrict Hxf32ARVX3aWJJOjbR8GrxMCfd9YWzUT8jeTOxP1ljytKlockxINtDRnsj5zTI4
+\restrict CAUqZzKP3YkuFUc3gVj0A7BgCPllVgnemNg2w4UyaWPRa8f851w5EP56q8HBZNX
 
 -- Dumped from database version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
 -- Dumped by pg_dump version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
@@ -1186,7 +1186,7 @@ ALTER TABLE ONLY public.wardrobe_items
 -- PostgreSQL database dump complete
 --
 
-\unrestrict Hxf32ARVX3aWJJOjbR8GrxMCfd9YWzUT8jeTOxP1ljytKlockxINtDRnsj5zTI4
+\unrestrict CAUqZzKP3YkuFUc3gVj0A7BgCPllVgnemNg2w4UyaWPRa8f851w5EP56q8HBZNX
 
 SET search_path TO "$user", public;
 

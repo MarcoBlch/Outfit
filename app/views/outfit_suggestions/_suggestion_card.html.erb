@@ -15,7 +15,11 @@
         <% items.each do |item| %>
           <%
             # Handle item being a WardrobeItem object or a hash
-            item_obj = item.is_a?(Hash) ? WardrobeItem.find(item["id"] || item[:id]) : item
+            item_obj = if item.is_a?(Hash)
+                         @wardrobe_items&.fetch(item["id"] || item[:id], nil) || WardrobeItem.find(item["id"] || item[:id])
+                       else
+                         item
+                       end
           %>
           <div class="relative w-full max-w-[120px]">
             <%= image_tag item_obj.image_url,
@@ -82,7 +86,11 @@
         <% items.each do |item| %>
           <%
             # Handle item being a WardrobeItem object or a hash
-            item_obj = item.is_a?(Hash) ? WardrobeItem.find(item["id"] || item[:id]) : item
+            item_obj = if item.is_a?(Hash)
+                         @wardrobe_items&.fetch(item["id"] || item[:id], nil) || WardrobeItem.find(item["id"] || item[:id])
+                       else
+                         item
+                       end
           %>
           <span class="text-xs px-2 py-1 bg-white/5 text-gray-400 rounded-full">
             <%= item_obj.category %> · <%= item_obj.color %>
