@@ -56,6 +56,13 @@
             </svg>
             <span>Usage Analytics</span>
           <% end %>
+
+          <%= link_to admin_product_recommendations_path, class: "flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors #{current_page?(admin_product_recommendations_path) ? 'bg-primary text-white' : 'text-gray-300 hover:bg-white/10 hover:text-white'}" do %>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+            </svg>
+            <span>Product Analytics</span>
+          <% end %>
         </nav>
 
         <!-- Footer -->

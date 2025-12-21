@@ -67,6 +67,9 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "webmock"
+  gem "shoulda-matchers"
+  gem "rails-controller-testing"
 end
 
 group :development, :test do
@@ -97,3 +100,4 @@ gem "stripe"
 gem "chartkick"
 gem "groupdate"
 gem "kaminari"
+gem "paapi", "~> 0.1"

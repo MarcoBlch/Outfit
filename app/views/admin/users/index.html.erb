@@ -116,22 +116,22 @@
 
                 <!-- Last Active -->
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
-                  <%= user.current_sign_in_at ? time_ago_in_words(user.current_sign_in_at) + " ago" : "Never" %>
+                  <%= user.last_activity_at ? time_ago_in_words(user.last_activity_at) + " ago" : (user.updated_at ? time_ago_in_words(user.updated_at) + " ago" : "Never") %>
                 </td>
 
                 <!-- Wardrobe Count -->
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
-                  <%= user.wardrobe_items.count %>
+                  <%= user.wardrobe_items_count %>
                 </td>
 
                 <!-- Outfits Count -->
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
-                  <%= user.outfits.count %>
+                  <%= user.outfits_count %>
                 </td>
 
                 <!-- AI Suggestions Count -->
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
-                  <%= user.outfit_suggestions.count %>
+                  <%= user.outfit_suggestions_count %>
                 </td>
 
                 <!-- Actions -->

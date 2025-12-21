@@ -87,6 +87,7 @@ class UserProfilesController < ApplicationController
     params.require(:user_profile).permit(
       :style_preference,
       :body_type,
+      :presentation_style,
       :age_range,
       :location,
       favorite_colors: []

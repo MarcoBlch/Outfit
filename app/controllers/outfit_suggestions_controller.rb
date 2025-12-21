@@ -49,6 +49,9 @@ class OutfitSuggestionsController < ApplicationController
       # Mark suggestion as completed with results
       @suggestion.mark_completed!(outfits, response_time_ms, 0.01)
 
+      # Trigger product recommendation workflow (non-blocking)
+      trigger_product_recommendations(@suggestion, outfits)
+
       # Respond with Turbo Stream to update the UI
       respond_to do |format|
         format.turbo_stream do
@@ -82,7 +85,52 @@ class OutfitSuggestionsController < ApplicationController
   end
 
   def show
+    @suggestion = current_user.outfit_suggestions
+                              .includes(:product_recommendations)
+                              .find(params[:id])
+
+    # Preload all wardrobe items that appear in the suggestions to avoid N+1 queries
+    if @suggestion.validated_suggestions.present?
+      item_ids = @suggestion.validated_suggestions.flat_map do |outfit|
+        (outfit[:items] || outfit["items"] || []).map { |item| item[:id] || item["id"] }
+      end.compact.uniq
+
+      @wardrobe_items = current_user.wardrobe_items.where(id: item_ids).index_by(&:id)
+    end
+  end
+
+  def show_recommendations
     @suggestion = current_user.outfit_suggestions.find(params[:id])
+    @recommendations = @suggestion.product_recommendations
+                                  .includes(:outfit_suggestion)
+                                  .order(priority: :desc, created_at: :desc)
+  end
+
+  def record_view
+    @suggestion = current_user.outfit_suggestions.find(params[:id])
+    @recommendation = @suggestion.product_recommendations.find(params[:recommendation_id])
+
+    @recommendation.record_view!
+
+    head :ok
+  rescue ActiveRecord::RecordNotFound
+    head :not_found
+  end
+
+  def record_click
+    @suggestion = current_user.outfit_suggestions.find(params[:id])
+    @recommendation = @suggestion.product_recommendations.find(params[:recommendation_id])
+
+    @recommendation.record_click!
+
+    # Return the affiliate URL if available
+    if @recommendation.affiliate_products.present? && @recommendation.affiliate_products.first['url'].present?
+      render json: { url: @recommendation.affiliate_products.first['url'] }, status: :ok
+    else
+      head :ok
+    end
+  rescue ActiveRecord::RecordNotFound
+    head :not_found
   end
 
   private
@@ -97,6 +145,79 @@ class OutfitSuggestionsController < ApplicationController
           ), status: :too_many_requests
         end
       end
+    end
+  end
+
+  def trigger_product_recommendations(suggestion, outfits)
+    # Run in a separate thread to avoid blocking the response
+    # Wrapped in rescue to ensure outfit suggestion creation always succeeds
+    begin
+      # Detect missing items using the MissingItemDetector service
+      detector = MissingItemDetector.new(
+        current_user,
+        outfit_context: suggestion.context,
+        suggested_outfits: outfits
+      )
+
+      missing_items = detector.detect_missing_items
+
+      # Create ProductRecommendation records for each missing item
+      missing_items.each do |item_data|
+        recommendation = suggestion.product_recommendations.create!(
+          category: item_data[:category],
+          description: item_data[:description],
+          color_preference: item_data[:color_preference],
+          style_notes: item_data[:style_notes],
+          reasoning: item_data[:reasoning],
+          priority: map_priority_to_enum(item_data[:priority]),
+          budget_range: map_budget_range(item_data[:budget_range]),
+          ai_image_status: :pending,
+          affiliate_products: []
+        )
+
+        # Enqueue background jobs for image generation and product fetching
+        GenerateProductImageJob.perform_later(recommendation.id)
+        FetchAffiliateProductsJob.perform_later(recommendation.id)
+
+        Rails.logger.info("Created ProductRecommendation ##{recommendation.id} for OutfitSuggestion ##{suggestion.id}")
+      end
+
+      Rails.logger.info("Successfully triggered product recommendations for OutfitSuggestion ##{suggestion.id}: #{missing_items.size} items")
+    rescue StandardError => e
+      # Log the error but don't raise it - we don't want to break the outfit suggestion flow
+      Rails.logger.error("Failed to trigger product recommendations for OutfitSuggestion ##{suggestion.id}: #{e.message}")
+      Rails.logger.error(e.backtrace.join("\n"))
+    end
+  end
+
+  def map_priority_to_enum(priority_string)
+    case priority_string.to_s.downcase
+    when 'high'
+      :high
+    when 'low'
+      :low
+    else
+      :medium
+    end
+  end
+
+  def map_budget_range(budget_string)
+    # Parse budget string like "$60-120" to determine range
+    # Default to mid_range if parsing fails
+    return :mid_range if budget_string.blank?
+
+    # Extract max value from range like "$60-120"
+    max_value = budget_string.scan(/\d+/).map(&:to_i).max || 100
+
+    case max_value
+    when 0..50
+      :budget
+    when 51..150
+      :mid_range
+    when 151..300
+      :premium
+    else
+      :luxury
     end
   end
 end

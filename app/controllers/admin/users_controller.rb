@@ -4,6 +4,13 @@ module Admin
 
     def index
       @users = User.includes(:user_profile, :subscription)
+                   .left_joins(:wardrobe_items, :outfits, :outfit_suggestions)
+                   .select("users.*,
+                            COUNT(DISTINCT wardrobe_items.id) AS wardrobe_items_count,
+                            COUNT(DISTINCT outfits.id) AS outfits_count,
+                            COUNT(DISTINCT outfit_suggestions.id) AS outfit_suggestions_count,
+                            MAX(outfit_suggestions.created_at) AS last_activity_at")
+                   .group("users.id")
                    .order(created_at: :desc)
 
       # Apply filters

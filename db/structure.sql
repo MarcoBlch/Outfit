@@ -1,4 +1,4 @@
-\restrict 1QWKbWT02M3gOnB1XsDQKUy4jGaBSwQkKF3YJuZqx82VH5vKzrB8o2rSOxFFSLw
+\restrict CAUqZzKP3YkuFUc3gVj0A7BgCPllVgnemNg2w4UyaWPRa8f851w5EP56q8HBZNX
 
 -- Dumped from database version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
 -- Dumped by pg_dump version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
@@ -293,6 +293,53 @@ ALTER SEQUENCE public.outfits_id_seq OWNED BY public.outfits.id;
 
 
 --
+-- Name: product_recommendations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.product_recommendations (
+    id bigint NOT NULL,
+    outfit_suggestion_id bigint NOT NULL,
+    category character varying NOT NULL,
+    description text,
+    color_preference character varying,
+    reasoning text,
+    priority integer DEFAULT 0 NOT NULL,
+    style_notes text,
+    budget_range integer DEFAULT 0 NOT NULL,
+    ai_image_url character varying,
+    ai_image_cost numeric(10,4) DEFAULT 0.0,
+    ai_image_status integer DEFAULT 0 NOT NULL,
+    ai_image_error text,
+    affiliate_products jsonb DEFAULT '[]'::jsonb,
+    views integer DEFAULT 0 NOT NULL,
+    clicks integer DEFAULT 0 NOT NULL,
+    conversions integer DEFAULT 0 NOT NULL,
+    revenue_earned numeric(10,2) DEFAULT 0.0,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: product_recommendations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.product_recommendations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: product_recommendations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.product_recommendations_id_seq OWNED BY public.product_recommendations.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -352,7 +399,8 @@ CREATE TABLE public.user_profiles (
     location character varying,
     metadata jsonb DEFAULT '{}'::jsonb,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    presentation_style integer
 );
 
 
@@ -501,6 +549,13 @@ ALTER TABLE ONLY public.outfits ALTER COLUMN id SET DEFAULT nextval('public.outf
 
 
 --
+-- Name: product_recommendations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.product_recommendations ALTER COLUMN id SET DEFAULT nextval('public.product_recommendations_id_seq'::regclass);
+
+
+--
 -- Name: subscriptions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -593,6 +648,14 @@ ALTER TABLE ONLY public.outfits
 
 
 --
+-- Name: product_recommendations product_recommendations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.product_recommendations
+    ADD CONSTRAINT product_recommendations_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -630,6 +693,20 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.wardrobe_items
     ADD CONSTRAINT wardrobe_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: idx_on_outfit_suggestion_id_created_at_2a431f0c6b; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_outfit_suggestion_id_created_at_2a431f0c6b ON public.product_recommendations USING btree (outfit_suggestion_id, created_at);
+
+
+--
+-- Name: idx_on_outfit_suggestion_id_priority_6665178e4b; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_outfit_suggestion_id_priority_6665178e4b ON public.product_recommendations USING btree (outfit_suggestion_id, priority);
 
 
 --
@@ -808,6 +885,62 @@ CREATE INDEX index_outfits_on_user_id ON public.outfits USING btree (user_id);
 
 
 --
+-- Name: index_product_recommendations_on_ai_image_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_product_recommendations_on_ai_image_status ON public.product_recommendations USING btree (ai_image_status);
+
+
+--
+-- Name: index_product_recommendations_on_category; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_product_recommendations_on_category ON public.product_recommendations USING btree (category);
+
+
+--
+-- Name: index_product_recommendations_on_clicks_and_views; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_product_recommendations_on_clicks_and_views ON public.product_recommendations USING btree (clicks, views);
+
+
+--
+-- Name: index_product_recommendations_on_conversions_and_clicks; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_product_recommendations_on_conversions_and_clicks ON public.product_recommendations USING btree (conversions, clicks);
+
+
+--
+-- Name: index_product_recommendations_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_product_recommendations_on_created_at ON public.product_recommendations USING btree (created_at);
+
+
+--
+-- Name: index_product_recommendations_on_outfit_suggestion_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_product_recommendations_on_outfit_suggestion_id ON public.product_recommendations USING btree (outfit_suggestion_id);
+
+
+--
+-- Name: index_product_recommendations_on_revenue; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_product_recommendations_on_revenue ON public.product_recommendations USING btree (revenue_earned);
+
+
+--
+-- Name: index_product_recommendations_on_views_and_clicks; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_product_recommendations_on_views_and_clicks ON public.product_recommendations USING btree (views, clicks) WHERE (views > 0);
+
+
+--
 -- Name: index_subscriptions_on_stripe_customer_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -978,6 +1111,14 @@ ALTER TABLE ONLY public.outfit_items
 
 
 --
+-- Name: product_recommendations fk_rails_62cae04c06; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.product_recommendations
+    ADD CONSTRAINT fk_rails_62cae04c06 FOREIGN KEY (outfit_suggestion_id) REFERENCES public.outfit_suggestions(id);
+
+
+--
 -- Name: outfit_items fk_rails_7635961dd7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1045,12 +1186,18 @@ ALTER TABLE ONLY public.wardrobe_items
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 1QWKbWT02M3gOnB1XsDQKUy4jGaBSwQkKF3YJuZqx82VH5vKzrB8o2rSOxFFSLw
+\unrestrict CAUqZzKP3YkuFUc3gVj0A7BgCPllVgnemNg2w4UyaWPRa8f851w5EP56q8HBZNX
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251218142817'),
+('20251217103659'),
+('20251216142155'),
+('20251211210635'),
 ('20251211103033'),
+('20251211103032'),
+('20251211103031'),
 ('20251211103030'),
 ('20251208121643'),
 ('20251207204638'),

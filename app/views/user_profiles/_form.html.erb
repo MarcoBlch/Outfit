@@ -1,4 +1,4 @@
-<%= form_with model: user_profile, url: user_profile.persisted? ? user_profile_path : user_profile_path, method: user_profile.persisted? ? :patch : :post, id: "profile-form", class: "space-y-6" do |f| %>
+<%= form_with model: user_profile, url: user_profile.persisted? ? user_profile_path : user_profile_path, method: user_profile.persisted? ? :patch : :post, id: "profile-form", data: { turbo_frame: "modal" }, class: "space-y-6" do |f| %>
 
   <!-- Question 1: Style Preference -->
   <div class="space-y-3">
@@ -46,11 +46,35 @@
     <% end %>
   </div>
 
-  <!-- Question 3: Age Range -->
+  <!-- Question 3: Presentation Style -->
   <div class="space-y-3">
     <label class="block text-sm font-medium text-gray-300">
       <span class="flex items-center space-x-2">
         <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">3</span>
+        <span>How do you prefer to present your style?</span>
+      </span>
+    </label>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+      <% UserProfile.presentation_styles.keys.each do |presentation| %>
+        <div class="relative">
+          <%= f.radio_button :presentation_style, presentation, id: "presentation_#{presentation}", class: "peer absolute opacity-0" %>
+          <label for="presentation_<%= presentation %>" class="flex flex-col items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold bg-gray-800/50 text-gray-400 border-gray-700 hover:border-gray-600 hover:text-gray-300">
+            <span class="text-xs font-medium capitalize"><%= presentation.to_s.humanize %></span>
+          </label>
+        </div>
+      <% end %>
+    </div>
+    <p class="text-xs text-gray-500">This helps us suggest outfits that match your personal style expression</p>
+    <% if user_profile.errors[:presentation_style].any? %>
+      <p class="text-sm text-red-400"><%= user_profile.errors[:presentation_style].first %></p>
+    <% end %>
+  </div>
+
+  <!-- Question 4: Age Range -->
+  <div class="space-y-3">
+    <label class="block text-sm font-medium text-gray-300">
+      <span class="flex items-center space-x-2">
+        <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">4</span>
         <span>What's your age range?</span>
       </span>
     </label>
@@ -69,11 +93,11 @@
     <% end %>
   </div>
 
-  <!-- Question 4: Favorite Colors -->
+  <!-- Question 5: Favorite Colors -->
   <div class="space-y-3">
     <label class="block text-sm font-medium text-gray-300">
       <span class="flex items-center space-x-2">
-        <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">4</span>
+        <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">5</span>
         <span>What are your favorite colors? (Select 2-5)</span>
       </span>
     </label>
@@ -113,11 +137,11 @@
     </div>
   </div>
 
-  <!-- Question 5: Location -->
+  <!-- Question 6: Location -->
   <div class="space-y-3">
     <label for="user_profile_location" class="block text-sm font-medium text-gray-300">
       <span class="flex items-center space-x-2">
-        <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">5</span>
+        <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">6</span>
         <span>Where are you located? (For weather-aware suggestions)</span>
       </span>
     </label>

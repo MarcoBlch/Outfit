@@ -3,8 +3,12 @@ class WardrobeItemsController < ApplicationController
   before_action :set_wardrobe_item, only: %i[show update destroy]
 
   def index
-    @wardrobe_items = current_user.wardrobe_items.order(created_at: :desc)
-    
+    # Eager load image attachments to avoid N+1 queries
+    @wardrobe_items = current_user.wardrobe_items
+                                  .with_attached_image
+                                  .with_attached_cleaned_image
+                                  .order(created_at: :desc)
+
     # Filtering
     @wardrobe_items = @wardrobe_items.where(category: params[:category]) if params[:category].present?
     @wardrobe_items = @wardrobe_items.where(color: params[:color]) if params[:color].present?
@@ -90,11 +94,13 @@ class WardrobeItemsController < ApplicationController
 
   def search
     @wardrobe_items = current_user.wardrobe_items
-    
+                                  .with_attached_image
+                                  .with_attached_cleaned_image
+
     if params[:query].present?
       @wardrobe_items = @wardrobe_items.where("category ILIKE ? OR color ILIKE ?", "%#{params[:query]}%", "%#{params[:query]}%")
     end
-    
+
     render turbo_stream: turbo_stream.update("wardrobe_grid", partial: "wardrobe_items/grid", locals: { wardrobe_items: @wardrobe_items })
   end
 
