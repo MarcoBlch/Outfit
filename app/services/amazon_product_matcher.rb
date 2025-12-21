@@ -20,7 +20,7 @@ class AmazonProductMatcher
   def initialize(product_recommendation)
     @recommendation = product_recommendation
     @rapidapi_key = ENV['RAPIDAPI_KEY']
-    @rapidapi_host = ENV['RAPIDAPI_HOST'] || 'amazon-data-product-data.p.rapidapi.com'
+    @rapidapi_host = ENV['RAPIDAPI_HOST'] || 'real-time-amazon-data.p.rapidapi.com'
     @partner_tag = ENV['AMAZON_ASSOCIATE_TAG'] || ENV['AMAZON_PARTNER_TAG']
     @marketplace = ENV['AMAZON_MARKETPLACE'] || 'US'
   end
@@ -171,15 +171,27 @@ class AmazonProductMatcher
       items = parsed['products'] || parsed['results'] || parsed['data'] || []
     end
 
+    Rails.logger.debug("RapidAPI response: total items received = #{items.count}")
+
     return [] unless items.is_a?(Array)
 
     items.first(limit).each do |item|
       product = parse_rapidapi_item(item)
-      products << product if product
+      if product
+        products << product
+        Rails.logger.debug("Successfully parsed product: ASIN=#{product['asin']}, Price=$#{product['price']}")
+      else
+        Rails.logger.debug("Failed to parse item: ASIN=#{item['asin'] || 'N/A'}")
+      end
     end
 
+    Rails.logger.debug("Total products before budget filter: #{products.count}")
+
     # Filter by budget range if specified
-    filter_by_budget(products)
+    filtered_products = filter_by_budget(products)
+    Rails.logger.debug("Total products after budget filter: #{filtered_products.count}")
+
+    filtered_products
   rescue JSON::ParserError => e
     Rails.logger.error("Error parsing RapidAPI JSON response: #{e.message}")
     []
@@ -281,11 +293,15 @@ class AmazonProductMatcher
 
   def filter_by_budget(products)
     budget_range = @recommendation.budget_range&.to_sym
+    Rails.logger.debug("filter_by_budget: budget_range = #{budget_range.inspect}, valid? = #{BUDGET_PRICE_RANGES.key?(budget_range)}")
+
     return products unless budget_range && BUDGET_PRICE_RANGES.key?(budget_range)
 
     range = BUDGET_PRICE_RANGES[budget_range]
     min_price = range[:min]
     max_price = range[:max]
+
+    Rails.logger.debug("Budget filter: min=$#{min_price}, max=$#{max_price || 'unlimited'}")
 
     products.select do |product|
       # Get price from our stored data
@@ -298,7 +314,10 @@ class AmazonProductMatcher
       within_min = min_price.nil? || price >= min_price
       within_max = max_price.nil? || price <= max_price
 
-      within_min && within_max
+      in_range = within_min && within_max
+      Rails.logger.debug("  Product price $#{price}: in_range=#{in_range} (min_ok=#{within_min}, max_ok=#{within_max})")
+
+      in_range
     end
   end
 end
