@@ -84,7 +84,11 @@ class ProductImageGenerator
     )
 
     unless response.success?
-      error_message = response.parsed_response&.dig("detail") || response.body
+      error_message = if response.parsed_response.is_a?(Hash)
+                        response.parsed_response["detail"] || response.body
+                      else
+                        response.body
+                      end
       Rails.logger.error("Replicate API Error: #{response.code} - #{error_message}")
       raise GenerationError, "Replicate API failed: #{error_message}"
     end
