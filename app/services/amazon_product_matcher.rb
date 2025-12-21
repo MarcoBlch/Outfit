@@ -14,8 +14,8 @@ class AmazonProductMatcher
     luxury: { min: 250, max: nil }      # $250+
   }.freeze
 
-  # RapidAPI Amazon Data endpoint
-  RAPIDAPI_BASE_URL = 'https://amazon-data-product-data.p.rapidapi.com'
+  # RapidAPI Real-Time Amazon Data endpoint
+  RAPIDAPI_BASE_URL = 'https://real-time-amazon-data.p.rapidapi.com'
 
   def initialize(product_recommendation)
     @recommendation = product_recommendation
@@ -104,8 +104,10 @@ class AmazonProductMatcher
     uri = URI("#{RAPIDAPI_BASE_URL}/search")
     params = {
       query: query,
+      page: '1',
       country: @marketplace,
-      category: determine_category_id
+      sort_by: 'RELEVANCE',
+      product_condition: 'ALL'
     }
     uri.query = URI.encode_www_form(params)
 
@@ -159,10 +161,15 @@ class AmazonProductMatcher
   def parse_rapidapi_response(response_body, limit)
     products = []
 
-    data = JSON.parse(response_body)
+    parsed = JSON.parse(response_body)
 
-    # RapidAPI Amazon Data returns products in a 'products' or 'results' array
-    items = data['products'] || data['results'] || data['data'] || []
+    # Real-Time Amazon Data API response structure: { status: "OK", data: { products: [...] } }
+    if parsed['status'] == 'OK' && parsed['data']
+      items = parsed['data']['products'] || []
+    else
+      # Fallback for other structures
+      items = parsed['products'] || parsed['results'] || parsed['data'] || []
+    end
 
     return [] unless items.is_a?(Array)
 
@@ -186,16 +193,16 @@ class AmazonProductMatcher
     asin = item['asin'] || item['ASIN']
     return nil unless asin.present?
 
-    # Extract title
-    title = item['title'] || item['product_title'] || item['name']
+    # Extract title (Real-Time Amazon Data uses 'product_title')
+    title = item['product_title'] || item['title'] || item['name']
     return nil unless title.present?
 
     # Extract price information
     price_info = extract_rapidapi_price(item)
     return nil unless price_info # Skip items without prices
 
-    # Extract image URL
-    image_url = item['image'] || item['image_url'] || item['thumbnail'] ||
+    # Extract image URL (Real-Time Amazon Data uses 'product_photo')
+    image_url = item['product_photo'] || item['image'] || item['image_url'] || item['thumbnail'] ||
                 item.dig('images', 0) || item.dig('main_image', 'url')
 
     # Build affiliate URL with partner tag
@@ -209,11 +216,11 @@ class AmazonProductMatcher
                       "#{product_url}#{separator}tag=#{@partner_tag}"
                     end
 
-    # Extract rating and review count if available
-    rating = item['rating'] || item['stars'] || item['product_star_rating']
+    # Extract rating and review count (Real-Time Amazon Data uses 'product_star_rating', 'product_num_ratings')
+    rating = item['product_star_rating'] || item['rating'] || item['stars']
     rating = rating.to_f if rating.is_a?(String)
 
-    review_count = item['reviews_count'] || item['ratings_total'] || item['review_count']
+    review_count = item['product_num_ratings'] || item['reviews_count'] || item['ratings_total'] || item['review_count']
     review_count = review_count.to_i if review_count.is_a?(String)
 
     # Return with string keys to match JSONB storage format
