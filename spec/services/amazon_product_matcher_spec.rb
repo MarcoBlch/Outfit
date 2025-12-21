@@ -13,7 +13,7 @@ RSpec.describe AmazonProductMatcher, type: :service do
   end
 
   let(:rapidapi_key) { "test_rapidapi_key_123" }
-  let(:rapidapi_host) { "amazon-data-product-data.p.rapidapi.com" }
+  let(:rapidapi_host) { "real-time-amazon-data.p.rapidapi.com" }
   let(:partner_tag) { "outfitmaker0d-20" }
 
   subject(:matcher) { described_class.new(product_recommendation) }
@@ -103,7 +103,7 @@ RSpec.describe AmazonProductMatcher, type: :service do
     end
 
     before do
-      stub_request(:get, /amazon-data-product-data\.p\.rapidapi\.com\/search/)
+      stub_request(:get, /real-time-amazon-data\.p\.rapidapi\.com\/search/)
         .with(
           headers: {
             'X-RapidAPI-Key' => rapidapi_key,
@@ -116,7 +116,7 @@ RSpec.describe AmazonProductMatcher, type: :service do
     it "makes request to RapidAPI with correct headers" do
       matcher.find_matching_products(limit: 5)
 
-      expect(WebMock).to have_requested(:get, /amazon-data-product-data\.p\.rapidapi\.com\/search/)
+      expect(WebMock).to have_requested(:get, /real-time-amazon-data\.p\.rapidapi\.com\/search/)
         .with(
           headers: {
             'X-RapidAPI-Key' => rapidapi_key,
@@ -128,7 +128,7 @@ RSpec.describe AmazonProductMatcher, type: :service do
     it "builds correct search query from recommendation" do
       matcher.find_matching_products(limit: 5)
 
-      expect(WebMock).to have_requested(:get, /amazon-data-product-data\.p\.rapidapi\.com\/search/)
+      expect(WebMock).to have_requested(:get, /real-time-amazon-data\.p\.rapidapi\.com\/search/)
         .with(query: hash_including({
           'query' => match(/dress pants black/i),
           'country' => 'US'
@@ -269,7 +269,7 @@ RSpec.describe AmazonProductMatcher, type: :service do
 
     context "when API call fails" do
       before do
-        stub_request(:get, /amazon-data-product-data\.p\.rapidapi\.com\/search/)
+        stub_request(:get, /real-time-amazon-data\.p\.rapidapi\.com\/search/)
           .to_return(status: 500, body: { error: "Service unavailable" }.to_json)
       end
 
@@ -298,7 +298,7 @@ RSpec.describe AmazonProductMatcher, type: :service do
 
     context "when API times out" do
       before do
-        stub_request(:get, /amazon-data-product-data\.p\.rapidapi\.com\/search/)
+        stub_request(:get, /real-time-amazon-data\.p\.rapidapi\.com\/search/)
           .to_timeout
       end
 
