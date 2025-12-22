@@ -74,16 +74,29 @@ class MissingItemDetector
   end
 
   def detect_missing_items
+    Rails.logger.info("MissingItemDetector: Starting detection for user ##{@user.id}")
+
     # Build comprehensive prompt
     user_prompt = build_detection_prompt
+    Rails.logger.info("MissingItemDetector: Built prompt (#{user_prompt.length} chars)")
 
     # Call Gemini API
     response = call_gemini_api(user_prompt)
+    Rails.logger.info("MissingItemDetector: Received response from Gemini API")
 
     # Parse and validate response
-    parse_and_validate_response(response)
+    result = parse_and_validate_response(response)
+    Rails.logger.info("MissingItemDetector: Parsed #{result.size} missing items")
+
+    if result.empty?
+      Rails.logger.warn("MissingItemDetector: AI returned empty array - wardrobe may be complete")
+      Rails.logger.warn("MissingItemDetector: Raw response preview: #{response.inspect[0..500]}")
+    end
+
+    result
   rescue StandardError => e
-    Rails.logger.error("Missing Item Detection Failed: #{e.message}\n#{e.backtrace.join("\n")}")
+    Rails.logger.error("MissingItemDetector: Detection failed with #{e.class.name}: #{e.message}")
+    Rails.logger.error(e.backtrace.first(10).join("\n"))
     # Return empty array on failure to prevent blocking user experience
     []
   end

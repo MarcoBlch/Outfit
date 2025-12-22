@@ -10,6 +10,11 @@ class WardrobeItem < ApplicationRecord
   # validates :category, presence: true
   validates :image, presence: true
 
+  # Broadcast updates to home page when item is created or updated
+  after_create_commit :broadcast_to_recent_items
+  after_update_commit :broadcast_to_recent_items
+  after_destroy_commit :broadcast_to_recent_items
+
   # Helper methods for metadata access
   def tags
     metadata&.dig('tags') || []
@@ -21,5 +26,15 @@ class WardrobeItem < ApplicationRecord
 
   def image_url
     image.attached? ? Rails.application.routes.url_helpers.rails_blob_url(image, only_path: true) : nil
+  end
+
+  private
+
+  def broadcast_to_recent_items
+    broadcast_refresh_later_to(
+      "user_#{user_id}_recent_items",
+      partial: "pages/recent_items",
+      locals: { recent_items: user.wardrobe_items.with_attached_image.order(created_at: :desc).limit(4) }
+    )
   end
 end

@@ -23,25 +23,31 @@ class ProductImageGenerator
     # Build the prompt from recommendation details
     prompt = build_prompt
 
-    Rails.logger.info("Generating AI image for ProductRecommendation ##{@recommendation.id}")
+    Rails.logger.info("=== ProductImageGenerator: Starting generation for ProductRecommendation ##{@recommendation.id} ===")
+    Rails.logger.info("Category: #{@recommendation.category}")
+    Rails.logger.info("Color: #{@recommendation.color_preference}")
     Rails.logger.info("Prompt: #{prompt}")
 
     # Call Replicate API to generate image
     image_url = call_replicate_api(prompt)
 
     if image_url
-      Rails.logger.info("Successfully generated image: #{image_url}")
+      Rails.logger.info("=== Successfully generated image for ProductRecommendation ##{@recommendation.id}: #{image_url} ===")
       image_url
     else
-      Rails.logger.error("Image generation returned nil for ProductRecommendation ##{@recommendation.id}")
-      nil
+      error_msg = "Image generation returned nil for ProductRecommendation ##{@recommendation.id}"
+      Rails.logger.error("=== #{error_msg} ===")
+      raise GenerationError, error_msg
     end
   rescue GenerationError => e
-    Rails.logger.error("ProductImageGenerator failed for ##{@recommendation.id}: #{e.message}")
-    nil
+    Rails.logger.error("=== ProductImageGenerator failed for ##{@recommendation.id}: #{e.message} ===")
+    # Re-raise to trigger retry mechanism in job
+    raise
   rescue StandardError => e
-    Rails.logger.error("Unexpected error in ProductImageGenerator: #{e.message}\n#{e.backtrace.join("\n")}")
-    nil
+    Rails.logger.error("=== Unexpected error in ProductImageGenerator for ##{@recommendation.id}: #{e.class.name} - #{e.message} ===")
+    Rails.logger.error(e.backtrace.first(10).join("\n"))
+    # Wrap in GenerationError to trigger retry
+    raise GenerationError, "Unexpected error: #{e.message}"
   end
 
   private
@@ -132,11 +138,15 @@ class ProductImageGenerator
     max_attempts = 60 # 5 minutes maximum (5 second intervals)
     attempt = 0
 
+    Rails.logger.info("Starting to poll for prediction #{prediction_id}")
+
     loop do
       attempt += 1
 
       if attempt > max_attempts
-        raise GenerationError, "Image generation timed out after #{max_attempts * 5} seconds"
+        error_msg = "Image generation timed out after #{max_attempts * 5} seconds"
+        Rails.logger.error("Prediction #{prediction_id}: #{error_msg}")
+        raise GenerationError, error_msg
       end
 
       # Get prediction status
@@ -150,7 +160,9 @@ class ProductImageGenerator
       )
 
       unless response.success?
-        raise GenerationError, "Failed to check prediction status: #{response.code}"
+        error_msg = "Failed to check prediction status: #{response.code} - #{response.body[0..200]}"
+        Rails.logger.error("Prediction #{prediction_id}: #{error_msg}")
+        raise GenerationError, error_msg
       end
 
       prediction = response.parsed_response
@@ -165,23 +177,29 @@ class ProductImageGenerator
         image_url = output.is_a?(Array) ? output.first : output
 
         unless image_url
+          Rails.logger.error("Prediction #{prediction_id}: No image URL in output. Full response: #{prediction.inspect[0..500]}")
           raise GenerationError, "No image URL in successful prediction output"
         end
 
+        Rails.logger.info("Prediction #{prediction_id} succeeded with URL: #{image_url}")
         return image_url
       when "failed", "canceled"
         error_message = prediction["error"] || "Unknown error"
+        logs = prediction["logs"] || "No logs available"
+        Rails.logger.error("Prediction #{prediction_id} #{status}")
+        Rails.logger.error("Error: #{error_message}")
+        Rails.logger.error("Logs: #{logs[0..1000]}")
         raise GenerationError, "Image generation #{status}: #{error_message}"
       when "starting", "processing"
         # Continue polling
         sleep 5
       else
-        Rails.logger.warn("Unknown prediction status: #{status}")
+        Rails.logger.warn("Prediction #{prediction_id}: Unknown status '#{status}' - continuing to poll")
         sleep 5
       end
     end
   rescue HTTParty::Error, Net::OpenTimeout => e
-    Rails.logger.error("Network error polling Replicate API: #{e.message}")
+    Rails.logger.error("Network error polling Replicate API for prediction #{prediction_id}: #{e.message}")
     raise GenerationError, "Network error while polling: #{e.message}"
   end
 end

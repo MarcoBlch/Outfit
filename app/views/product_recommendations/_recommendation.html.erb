@@ -174,13 +174,15 @@
         </div>
 
       <% else %>
-        <!-- No Products State -->
-        <div class="p-6 bg-white/5 rounded-lg border border-white/10 text-center">
-          <svg class="w-12 h-12 text-gray-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-          </svg>
-          <p class="text-sm text-gray-400 mb-2">Product recommendations coming soon</p>
-          <p class="text-xs text-gray-500">We're finding the best matches for you</p>
+        <!-- No Products State - Coming Soon Message -->
+        <div class="p-6 bg-gradient-to-br from-purple-600/10 to-pink-600/10 rounded-lg border border-purple-500/20 text-center">
+          <div class="inline-flex items-center justify-center w-12 h-12 bg-purple-600/20 rounded-full mb-3">
+            <svg class="w-6 h-6 text-purple-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <p class="text-sm font-medium text-purple-300 mb-2">Suggestions to buy coming soon</p>
+          <p class="text-xs text-gray-400">We're curating the best product matches for this recommendation</p>
         </div>
       <% end %>
     </div>

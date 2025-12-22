@@ -1,8 +1,13 @@
 <turbo-frame id="product_recommendations_<%= @suggestion.id %>">
-  <% if @recommendations.any? %>
+  <%
+    # Filter recommendations to only show those with completed AI images
+    recommendations_with_images = @recommendations.select { |r| r.ai_image_status == 'completed' && r.ai_image_url.present? }
+  %>
+
+  <% if recommendations_with_images.any? %>
     <!-- Recommendations Grid -->
     <div class="space-y-6">
-      <% @recommendations.each do |recommendation| %>
+      <% recommendations_with_images.each do |recommendation| %>
         <%= render "product_recommendations/recommendation", recommendation: recommendation %>
       <% end %>
     </div>

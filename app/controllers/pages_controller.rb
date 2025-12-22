@@ -10,14 +10,14 @@ class PagesController < ApplicationController
                                 .limit(4)
 
     # Eager load wardrobe items and their images for outfits
+    # Using preload instead of includes to avoid AVOID warnings when not filtering
     @recent_outfits = current_user.outfits
-                                  .includes(wardrobe_items: { image_attachment: :blob, cleaned_image_attachment: :blob })
+                                  .preload(wardrobe_items: { image_attachment: :blob, cleaned_image_attachment: :blob })
                                   .order(created_at: :desc)
                                   .limit(3)
 
-    # Simple "Outfit of the Day" logic (random for now)
+    # Simple "Outfit of the Day" logic (random for now) - not currently used in view
     @outfit_of_the_day = current_user.outfits
-                                     .includes(wardrobe_items: { image_attachment: :blob, cleaned_image_attachment: :blob })
                                      .order("RANDOM()")
                                      .first
   end

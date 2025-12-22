@@ -152,6 +152,10 @@ class OutfitSuggestionsController < ApplicationController
     # Run in a separate thread to avoid blocking the response
     # Wrapped in rescue to ensure outfit suggestion creation always succeeds
     begin
+      Rails.logger.info("=== Starting product recommendation detection for OutfitSuggestion ##{suggestion.id} ===")
+      Rails.logger.info("Context: #{suggestion.context}")
+      Rails.logger.info("Number of suggested outfits: #{outfits.size}")
+
       # Detect missing items using the MissingItemDetector service
       detector = MissingItemDetector.new(
         current_user,
@@ -161,8 +165,17 @@ class OutfitSuggestionsController < ApplicationController
 
       missing_items = detector.detect_missing_items
 
+      Rails.logger.info("Detected #{missing_items.size} missing items")
+
+      if missing_items.empty?
+        Rails.logger.warn("No missing items detected for OutfitSuggestion ##{suggestion.id}. Wardrobe may be complete or detection failed.")
+        return
+      end
+
       # Create ProductRecommendation records for each missing item
-      missing_items.each do |item_data|
+      missing_items.each_with_index do |item_data, index|
+        Rails.logger.info("Creating recommendation #{index + 1}/#{missing_items.size}: #{item_data[:category]} - #{item_data[:description][0..50]}...")
+
         recommendation = suggestion.product_recommendations.create!(
           category: item_data[:category],
           description: item_data[:description],
@@ -179,13 +192,14 @@ class OutfitSuggestionsController < ApplicationController
         GenerateProductImageJob.perform_later(recommendation.id)
         FetchAffiliateProductsJob.perform_later(recommendation.id)
 
-        Rails.logger.info("Created ProductRecommendation ##{recommendation.id} for OutfitSuggestion ##{suggestion.id}")
+        Rails.logger.info("Created ProductRecommendation ##{recommendation.id} (#{item_data[:category]}) and enqueued jobs")
       end
 
-      Rails.logger.info("Successfully triggered product recommendations for OutfitSuggestion ##{suggestion.id}: #{missing_items.size} items")
+      Rails.logger.info("=== Successfully completed product recommendations for OutfitSuggestion ##{suggestion.id}: #{missing_items.size} items ===")
     rescue StandardError => e
       # Log the error but don't raise it - we don't want to break the outfit suggestion flow
-      Rails.logger.error("Failed to trigger product recommendations for OutfitSuggestion ##{suggestion.id}: #{e.message}")
+      Rails.logger.error("=== FAILED to trigger product recommendations for OutfitSuggestion ##{suggestion.id} ===")
+      Rails.logger.error("Error: #{e.class.name} - #{e.message}")
       Rails.logger.error(e.backtrace.join("\n"))
     end
   end
