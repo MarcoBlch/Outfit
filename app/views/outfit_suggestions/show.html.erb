@@ -113,20 +113,34 @@
 
   <!-- Complete Your Look Section -->
   <% if @suggestion.status == "completed" && @suggestion.product_recommendations.exists? %>
-    <div class="space-y-6 pt-8">
+    <div class="space-y-6 pt-8" id="complete-your-look">
+      <!-- Scroll Indicator (animated arrow) -->
+      <div class="flex justify-center mb-4">
+        <div class="animate-bounce">
+          <svg class="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+          </svg>
+        </div>
+      </div>
+
       <!-- Section Header -->
       <div class="relative">
         <div class="absolute inset-0 flex items-center" aria-hidden="true">
           <div class="w-full border-t border-white/10"></div>
         </div>
         <div class="relative flex justify-center">
-          <div class="px-6 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full shadow-lg shadow-purple-600/30">
+          <div class="px-6 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full shadow-lg shadow-purple-600/30 animate-pulse">
             <h2 class="text-2xl font-bold py-3">
-              Complete Your Look
+              ✨ Complete Your Look
             </h2>
           </div>
         </div>
       </div>
+
+      <!-- Description -->
+      <p class="text-center text-gray-400 text-sm max-w-2xl mx-auto">
+        AI-curated products to complement your outfits. Each recommendation is personalized based on your style and the items you already own.
+      </p>
 
       <!-- Description -->
       <div class="text-center max-w-2xl mx-auto space-y-2">
