@@ -31,8 +31,10 @@ class WardrobeItem < ApplicationRecord
   private
 
   def broadcast_to_recent_items
-    broadcast_refresh_later_to(
+    # Broadcast replacement of the recent-items turbo-frame
+    broadcast_replace_later_to(
       "user_#{user_id}_recent_items",
+      target: "recent-items",
       partial: "pages/recent_items",
       locals: { recent_items: user.wardrobe_items.with_attached_image.order(created_at: :desc).limit(4) }
     )

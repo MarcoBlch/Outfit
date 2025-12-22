@@ -15,10 +15,12 @@ class Outfit < ApplicationRecord
   private
 
   def broadcast_to_recent_outfits
-    broadcast_refresh_later_to(
+    # Broadcast replacement of the recent-outfits turbo-frame
+    broadcast_replace_later_to(
       "user_#{user_id}_recent_outfits",
+      target: "recent-outfits",
       partial: "pages/recent_outfits",
-      locals: { recent_outfits: user.outfits.includes(wardrobe_items: { image_attachment: :blob }).order(created_at: :desc).limit(3) }
+      locals: { recent_outfits: user.outfits.preload(:wardrobe_items, :outfit_items).order(created_at: :desc).limit(6) }
     )
   end
 end

@@ -7,11 +7,12 @@ class AmazonProductMatcher
   class MatchingError < StandardError; end
 
   # Budget range price mappings (in USD)
+  # Ranges are designed to be inclusive and avoid filtering out too many products
   BUDGET_PRICE_RANGES = {
-    budget: { min: 0, max: 50 },        # $0-50
-    mid_range: { min: 30, max: 150 },   # $30-150
-    premium: { min: 100, max: 300 },    # $100-300
-    luxury: { min: 250, max: nil }      # $250+
+    budget: { min: 0, max: 50 },        # $0-50 - affordable basics
+    mid_range: { min: 0, max: 150 },    # $0-150 - most everyday items (includes budget items too)
+    premium: { min: 80, max: 300 },     # $80-300 - quality items
+    luxury: { min: 200, max: nil }      # $200+ - luxury items
   }.freeze
 
   # RapidAPI Real-Time Amazon Data endpoint
