@@ -59,8 +59,8 @@
       <% end %>
 
       <!-- Shop Now Button with Analytics -->
-      <% if affiliate_product['url'].present? %>
-        <%= link_to affiliate_product['url'],
+      <% if affiliate_product['affiliate_url'].present? %>
+        <%= link_to affiliate_product['affiliate_url'],
             target: "_blank",
             rel: "noopener noreferrer sponsored",
             class: "px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-medium rounded-lg hover:shadow-lg hover:shadow-purple-600/40 transition-all duration-200 whitespace-nowrap",
@@ -69,7 +69,7 @@
               action: "click->product-recommendation#trackClick",
               product_recommendation_recommendation_id_value: recommendation.id,
               product_recommendation_suggestion_id_value: recommendation.outfit_suggestion_id,
-              product_recommendation_product_url_value: affiliate_product['url']
+              product_recommendation_product_url_value: affiliate_product['affiliate_url']
             } do %>
           <span class="inline-flex items-center space-x-1">
             <span>Shop Now</span>
