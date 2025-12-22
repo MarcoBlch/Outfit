@@ -19,7 +19,7 @@
           </div>
           <p class="text-xs text-gray-500">PNG, JPG up to 10MB</p>
         </div>
-        <%= f.file_field :image, class: "hidden", data: { upload_target: "input", action: "change->upload#previewFile" }, accept: "image/*" %>
+        <%= f.file_field :image, class: "hidden", data: { upload_target: "input", action: "change->upload#previewFile" }, accept: "image/*", capture: "environment" %>
       </div>
 
       <!-- Preview -->

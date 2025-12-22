@@ -1,4 +1,4 @@
-<nav class="sticky top-0 z-50 glass border-b border-white/10">
+<nav class="sticky top-0 z-50 glass border-b border-white/10" data-controller="mobile-menu">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <!-- Logo -->
@@ -83,12 +83,96 @@
 
       <!-- Mobile menu button -->
       <div class="-mr-2 flex md:hidden">
-        <button type="button" class="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+        <button type="button"
+                class="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                data-action="click->mobile-menu#toggle">
           <span class="sr-only">Open main menu</span>
-          <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <!-- Hamburger Icon -->
+          <svg class="block h-6 w-6" data-mobile-menu-target="openIcon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
           </svg>
+          <!-- Close Icon -->
+          <svg class="hidden h-6 w-6" data-mobile-menu-target="closeIcon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="hidden md:hidden" data-mobile-menu-target="menu">
+    <div class="border-t border-white/10 px-2 pt-2 pb-3 space-y-1">
+      <%= link_to "Dashboard", root_path,
+          class: "block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors min-h-[44px] flex items-center",
+          data: { action: "click->mobile-menu#closeOnLinkClick" } %>
+
+      <%= link_to "Wardrobe", wardrobe_items_path,
+          class: "block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors min-h-[44px] flex items-center",
+          data: { action: "click->mobile-menu#closeOnLinkClick" } %>
+
+      <%= link_to "Studio", new_outfit_path,
+          class: "block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors min-h-[44px] flex items-center",
+          data: { action: "click->mobile-menu#closeOnLinkClick" } %>
+
+      <% if user_signed_in? %>
+        <%= link_to outfit_suggestions_path,
+            class: "block px-3 py-2 rounded-md text-base font-medium transition-colors min-h-[44px]",
+            data: { action: "click->mobile-menu#closeOnLinkClick" } do %>
+          <span class="flex items-center space-x-2">
+            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+            <span class="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              AI Suggestions
+              <% if current_user.remaining_suggestions_today > 0 %>
+                (<%= current_user.remaining_suggestions_today %>)
+              <% end %>
+            </span>
+          </span>
+        <% end %>
+
+        <% if current_user.admin? %>
+          <%= link_to admin_root_path,
+              class: "block px-3 py-2 rounded-md text-base font-medium transition-colors min-h-[44px]",
+              data: { action: "click->mobile-menu#closeOnLinkClick" } do %>
+            <span class="flex items-center space-x-2">
+              <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+              </svg>
+              <span class="text-amber-400">Admin</span>
+            </span>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <!-- Mobile Actions -->
+    <div class="border-t border-white/10 pt-4 pb-3">
+      <div class="px-2 space-y-1">
+        <%= link_to new_wardrobe_item_path,
+            class: "flex items-center justify-center px-4 py-3 rounded-lg bg-primary hover:bg-primary-dark text-white text-base font-medium transition-colors shadow-lg shadow-primary/20 min-h-[44px]",
+            data: { action: "click->mobile-menu#closeOnLinkClick" } do %>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+          </svg>
+          Upload Item
+        <% end %>
+
+        <% if user_signed_in? %>
+          <%= link_to edit_user_profile_path,
+              class: "flex items-center px-4 py-3 rounded-lg bg-white/10 hover:bg-white/20 text-white text-base font-medium transition-colors min-h-[44px]",
+              data: { action: "click->mobile-menu#closeOnLinkClick" } do %>
+            <div class="h-8 w-8 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 border border-white/10 flex items-center justify-center text-white text-xs font-bold mr-3">
+              <%= current_user.email[0].upcase %>
+            </div>
+            Edit Profile
+          <% end %>
+        <% else %>
+          <%= link_to "Sign In", new_user_session_path,
+              class: "flex items-center justify-center px-4 py-3 rounded-lg bg-white/10 hover:bg-white/20 text-white text-base font-medium transition-colors min-h-[44px]",
+              data: { action: "click->mobile-menu#closeOnLinkClick" } %>
+        <% end %>
       </div>
     </div>
   </div>
