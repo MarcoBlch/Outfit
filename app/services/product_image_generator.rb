@@ -9,11 +9,12 @@ class ProductImageGenerator
   # Using Stable Diffusion XL (SDXL) model for high-quality product images
   SDXL_MODEL_VERSION = "stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b"
 
-  PROMPT_TEMPLATE = "Professional product photography of %{category} in %{color_preference}, %{style_notes}, clean white background, studio lighting, commercial quality, high resolution, 4k"
+  PROMPT_TEMPLATE = "Professional product photography of %{gender_prefix}%{category} in %{color_preference}, %{style_notes}, clean white background, studio lighting, commercial quality, high resolution, 4k"
 
   def initialize(product_recommendation)
     @recommendation = product_recommendation
     @api_token = ENV['REPLICATE_API_TOKEN']
+    @user = @recommendation.outfit_suggestion.user
   end
 
   def generate_image
@@ -52,12 +53,30 @@ class ProductImageGenerator
   end
 
   def build_prompt
+    gender_prefix = determine_gender_prefix
+
     format(
       PROMPT_TEMPLATE,
+      gender_prefix: gender_prefix,
       category: @recommendation.category.presence || "clothing item",
       color_preference: @recommendation.color_preference.presence || "neutral colors",
       style_notes: @recommendation.style_notes.presence || "modern style"
     )
+  end
+
+  def determine_gender_prefix
+    presentation = @user.user_profile&.presentation_style&.downcase
+
+    case presentation
+    when 'masculine'
+      "men's "
+    when 'feminine'
+      "women's "
+    when 'androgynous', 'non_binary'
+      "unisex "
+    else
+      "" # neutral, no gender prefix
+    end
   end
 
   def call_replicate_api(prompt)

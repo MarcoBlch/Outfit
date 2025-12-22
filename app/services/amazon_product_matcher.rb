@@ -23,6 +23,7 @@ class AmazonProductMatcher
     @rapidapi_host = ENV['RAPIDAPI_HOST'] || 'real-time-amazon-data.p.rapidapi.com'
     @partner_tag = ENV['AMAZON_ASSOCIATE_TAG'] || ENV['AMAZON_PARTNER_TAG']
     @marketplace = ENV['AMAZON_MARKETPLACE'] || 'US'
+    @user = @recommendation.outfit_suggestion.user
   end
 
   def find_matching_products(limit: 5)
@@ -69,6 +70,10 @@ class AmazonProductMatcher
   def build_search_query
     parts = []
 
+    # Add gender/presentation prefix for better targeting
+    gender_keyword = determine_gender_keyword
+    parts << gender_keyword if gender_keyword.present?
+
     # Add category
     parts << @recommendation.category if @recommendation.category.present?
 
@@ -84,6 +89,21 @@ class AmazonProductMatcher
 
     # Join and clean up
     parts.compact.join(' ').gsub('-', ' ')
+  end
+
+  def determine_gender_keyword
+    presentation = @user.user_profile&.presentation_style&.downcase
+
+    case presentation
+    when 'masculine'
+      "men's"
+    when 'feminine'
+      "women's"
+    when 'androgynous', 'non_binary'
+      "unisex"
+    else
+      nil # Don't add gender keyword if not specified
+    end
   end
 
   def extract_style_keywords(style_notes)

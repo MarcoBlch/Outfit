@@ -85,24 +85,24 @@ class OutfitSuggestionsController < ApplicationController
   end
 
   def show
-    @suggestion = current_user.outfit_suggestions
-                              .includes(:product_recommendations)
-                              .find(params[:id])
+    @suggestion = current_user.outfit_suggestions.find(params[:id])
 
-    # Preload all wardrobe items that appear in the suggestions to avoid N+1 queries
+    # Preload all wardrobe items with their images to avoid N+1 queries
     if @suggestion.validated_suggestions.present?
       item_ids = @suggestion.validated_suggestions.flat_map do |outfit|
         (outfit[:items] || outfit["items"] || []).map { |item| item[:id] || item["id"] }
       end.compact.uniq
 
-      @wardrobe_items = current_user.wardrobe_items.where(id: item_ids).index_by(&:id)
+      @wardrobe_items = current_user.wardrobe_items
+                                    .where(id: item_ids)
+                                    .includes(image_attachment: :blob)
+                                    .index_by(&:id)
     end
   end
 
   def show_recommendations
     @suggestion = current_user.outfit_suggestions.find(params[:id])
     @recommendations = @suggestion.product_recommendations
-                                  .includes(:outfit_suggestion)
                                   .order(priority: :desc, created_at: :desc)
   end
 
