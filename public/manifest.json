@@ -1,6 +1,6 @@
 {
-  "name": "Outfit - AI Wardrobe Assistant",
-  "short_name": "Outfit",
+  "name": "Outfitmaker",
+  "short_name": "Outfitmaker",
   "description": "AI-powered wardrobe management and outfit suggestions",
   "start_url": "/",
   "scope": "/",

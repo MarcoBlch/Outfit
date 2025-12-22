@@ -1,4 +1,4 @@
-// Service Worker for Outfit PWA
+// Service Worker for Outfitmaker PWA
 const CACHE_VERSION = 'outfit-v1';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DYNAMIC_CACHE = `${CACHE_VERSION}-dynamic`;
@@ -162,7 +162,7 @@ self.addEventListener('push', (event) => {
   console.log('[Service Worker] Push notification received');
 
   const data = event.data ? event.data.json() : {};
-  const title = data.title || 'Outfit';
+  const title = data.title || 'Outfitmaker';
   const options = {
     body: data.body || 'You have a new notification',
     icon: '/icon-192.png',
