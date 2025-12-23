@@ -6,6 +6,12 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <!-- Performance: Resource Hints for External Domains -->
+    <link rel="dns-prefetch" href="//images-na.ssl-images-amazon.com">
+    <link rel="dns-prefetch" href="//m.media-amazon.com">
+    <link rel="dns-prefetch" href="//replicate.delivery">
+    <link rel="preconnect" href="//replicate.delivery" crossorigin>
+
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
 
