@@ -7,20 +7,44 @@ import { application } from "./application"
 import CanvasController from "./canvas_controller"
 application.register("canvas", CanvasController)
 
+import DropdownController from "./dropdown_controller"
+application.register("dropdown", DropdownController)
+
 import EditModeController from "./edit_mode_controller"
 application.register("edit-mode", EditModeController)
 
 import FilterController from "./filter_controller"
 application.register("filter", FilterController)
 
+import GestureController from "./gesture_controller"
+application.register("gesture", GestureController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import ImageUploadController from "./image_upload_controller"
+application.register("image-upload", ImageUploadController)
+
+import MobileMenuController from "./mobile_menu_controller"
+application.register("mobile-menu", MobileMenuController)
 
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
 
 import ModalSuccessController from "./modal_success_controller"
 application.register("modal-success", ModalSuccessController)
+
+import OutfitSuggestionController from "./outfit_suggestion_controller"
+application.register("outfit-suggestion", OutfitSuggestionController)
+
+import ProductRecommendationController from "./product_recommendation_controller"
+application.register("product-recommendation", ProductRecommendationController)
+
+import ScrollIntoViewController from "./scroll_into_view_controller"
+application.register("scroll-into-view", ScrollIntoViewController)
+
+import ToastController from "./toast_controller"
+application.register("toast", ToastController)
 
 import UploadController from "./upload_controller"
 application.register("upload", UploadController)

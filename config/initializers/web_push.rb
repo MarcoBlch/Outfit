@@ -36,8 +36,8 @@ else
     Rails.logger.info("VAPID keys not configured. Generating temporary keys for development.")
     Rails.logger.info("Run in console to generate persistent keys:")
     Rails.logger.info("  vapid_key = WebPush.generate_key")
-    Rails.logger.info("  puts \"VAPID_PUBLIC_KEY=#{vapid_key.public_key}\"")
-    Rails.logger.info("  puts \"VAPID_PRIVATE_KEY=#{vapid_key.private_key}\"")
+    Rails.logger.info('  puts "VAPID_PUBLIC_KEY=#{vapid_key.public_key}"')
+    Rails.logger.info('  puts "VAPID_PRIVATE_KEY=#{vapid_key.private_key}"')
   end
 end
 
