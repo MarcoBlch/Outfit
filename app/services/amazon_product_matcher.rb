@@ -23,8 +23,8 @@ class AmazonProductMatcher
     @rapidapi_key = ENV['RAPIDAPI_KEY']
     @rapidapi_host = ENV['RAPIDAPI_HOST'] || 'real-time-amazon-data.p.rapidapi.com'
     @partner_tag = ENV['AMAZON_ASSOCIATE_TAG'] || ENV['AMAZON_PARTNER_TAG']
-    @marketplace = ENV['AMAZON_MARKETPLACE'] || 'US'
     @user = @recommendation.outfit_suggestion.user
+    @marketplace = determine_marketplace_from_location
   end
 
   def find_matching_products(limit: 5)
@@ -340,5 +340,75 @@ class AmazonProductMatcher
 
       in_range
     end
+  end
+
+  def determine_marketplace_from_location
+    # Try to get user's location from their profile
+    location = @user.user_profile&.location&.downcase || ''
+
+    # Default to environment variable or US if no location match
+    default_marketplace = ENV['AMAZON_MARKETPLACE'] || 'US'
+
+    return default_marketplace if location.blank?
+
+    # Map common countries/cities to Amazon marketplaces
+    # https://real-time-amazon-data.p.rapidapi.com supports: US, UK, DE, FR, IT, ES, CA, AU, IN, JP, MX, BR, etc.
+    marketplace_map = {
+      # United States
+      'usa' => 'US', 'united states' => 'US', 'us' => 'US', 'america' => 'US',
+      'new york' => 'US', 'los angeles' => 'US', 'chicago' => 'US', 'san francisco' => 'US',
+
+      # United Kingdom
+      'uk' => 'UK', 'united kingdom' => 'UK', 'britain' => 'UK', 'england' => 'UK',
+      'london' => 'UK', 'manchester' => 'UK', 'birmingham' => 'UK',
+
+      # Germany
+      'germany' => 'DE', 'deutschland' => 'DE', 'de' => 'DE',
+      'berlin' => 'DE', 'munich' => 'DE', 'hamburg' => 'DE', 'frankfurt' => 'DE',
+
+      # France
+      'france' => 'FR', 'fr' => 'FR',
+      'paris' => 'FR', 'lyon' => 'FR', 'marseille' => 'FR', 'toulouse' => 'FR',
+
+      # Italy
+      'italy' => 'IT', 'italia' => 'IT', 'it' => 'IT',
+      'rome' => 'IT', 'milan' => 'IT', 'naples' => 'IT', 'florence' => 'IT',
+
+      # Spain
+      'spain' => 'ES', 'españa' => 'ES', 'es' => 'ES',
+      'madrid' => 'ES', 'barcelona' => 'ES', 'valencia' => 'ES', 'seville' => 'ES',
+
+      # Canada
+      'canada' => 'CA', 'ca' => 'CA',
+      'toronto' => 'CA', 'montreal' => 'CA', 'vancouver' => 'CA', 'ottawa' => 'CA',
+
+      # Australia
+      'australia' => 'AU', 'au' => 'AU',
+      'sydney' => 'AU', 'melbourne' => 'AU', 'brisbane' => 'AU', 'perth' => 'AU',
+
+      # India
+      'india' => 'IN', 'in' => 'IN',
+      'mumbai' => 'IN', 'delhi' => 'IN', 'bangalore' => 'IN', 'hyderabad' => 'IN',
+
+      # Japan
+      'japan' => 'JP', 'jp' => 'JP',
+      'tokyo' => 'JP', 'osaka' => 'JP', 'kyoto' => 'JP', 'yokohama' => 'JP',
+
+      # Mexico
+      'mexico' => 'MX', 'mx' => 'MX',
+      'mexico city' => 'MX', 'guadalajara' => 'MX', 'monterrey' => 'MX',
+
+      # Brazil
+      'brazil' => 'BR', 'brasil' => 'BR', 'br' => 'BR',
+      'são paulo' => 'BR', 'rio de janeiro' => 'BR', 'brasilia' => 'BR'
+    }
+
+    # Check for matches
+    marketplace_map.each do |keyword, marketplace_code|
+      return marketplace_code if location.include?(keyword)
+    end
+
+    Rails.logger.info("Could not determine marketplace from location '#{location}', using default: #{default_marketplace}")
+    default_marketplace
   end
 end
