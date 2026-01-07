@@ -43,6 +43,11 @@ RUN yarn install --frozen-lockfile
 # Copy application code
 COPY . .
 
+# Fix file permissions so rails user can read all files
+# Keep master.key at 600 for security
+RUN find app lib config/initializers -type f -exec chmod 644 {} \; && \
+    chmod 600 config/master.key 2>/dev/null || true
+
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
