@@ -4,6 +4,7 @@ tmp/
 log/
 storage/
 .git/
+.venv/
 *.log
 .env
 .env.*
