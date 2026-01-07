@@ -68,10 +68,48 @@ AMAZON_MARKETPLACE=US
 
 ---
 
-### 4. Replicate AI - REQUIRED
-**Purpose:** Background removal for product images
+### 4. Google AdSense - REQUIRED (for monetization)
+**Purpose:** Display ad banners to free-tier users
 
 **Steps:**
+1. Go to [Google AdSense](https://www.google.com/adsense)
+2. Sign up for an account (requires website approval)
+3. Submit your website for review (may take days to weeks)
+4. Once approved, create ad units:
+   - **Desktop Ad**: 728x90 leaderboard banner
+   - **Mobile Ad**: 320x50 mobile banner
+5. Copy your Client ID (looks like: `ca-pub-xxxxxxxxxxxxxxxxx`)
+6. Copy your Ad Slot IDs for each ad unit
+
+**Environment Variables:**
+```bash
+GOOGLE_ADSENSE_CLIENT_ID=ca-pub-xxxxxxxxxxxxxxxxx
+GOOGLE_ADSENSE_SLOT_ID=1234567890              # Desktop ad slot ID
+GOOGLE_ADSENSE_MOBILE_SLOT_ID=0987654321       # Mobile ad slot ID
+```
+
+**Cost:** Free to join. You earn revenue from ads (typically $0.50-$5 CPM)
+
+**Important Notes:**
+- **Requires approval** - Google reviews your site for quality, traffic, and content
+- **Traffic required** - Need decent traffic for approval (varies, but usually 100+ daily visitors)
+- **Ad placement** - Ads show ONLY to free-tier users (see `app/views/shared/_ad_banner.html.erb`)
+- **Premium users** - Premium subscribers see NO ads
+- **Revenue tracking** - App tracks ad impressions and clicks via `AdImpression` model
+
+**Without AdSense:**
+- App will show placeholder banners (see development preview)
+- No actual ads served until you add credentials
+- Premium subscriptions still work
+
+---
+
+### 5. Replicate AI - OPTIONAL (NOT REQUIRED - using local Python)
+**Purpose:** Background removal for product images
+
+**Current Setup:** The app uses **local Python (rembg)** for background removal, so you DON'T need a Replicate API key.
+
+**If you want to use Replicate instead:**
 1. Go to [Replicate](https://replicate.com/)
 2. Sign up / Log in
 3. Go to Account Settings → API Tokens
@@ -85,9 +123,11 @@ REPLICATE_API_TOKEN=your-replicate-token-here
 
 **Cost:** Pay-as-you-go. Background removal ~$0.002 per image
 
+**Note:** Local Python solution is FREE but uses server CPU. Replicate is paid but offloads processing.
+
 ---
 
-### 5. OpenWeather API - OPTIONAL
+### 6. OpenWeather API - OPTIONAL
 **Purpose:** Weather-aware outfit suggestions
 
 **Steps:**
@@ -107,7 +147,7 @@ OPENWEATHER_API_KEY=your-openweather-key-here
 
 ---
 
-### 6. Stripe - OPTIONAL (for payments)
+### 7. Stripe - OPTIONAL (for payments)
 **Purpose:** Handle subscription payments
 
 **Steps:**
@@ -133,7 +173,7 @@ STRIPE_WEBHOOK_SECRET=whsec_...
 
 ---
 
-### 7. Web Push (VAPID Keys) - OPTIONAL
+### 8. Web Push (VAPID Keys) - OPTIONAL
 **Purpose:** Send push notifications to users
 
 **Steps:**
@@ -236,16 +276,30 @@ Your Rails app can serve as the backend API. All these providers work well:
 
 Before deploying to production:
 
-- [ ] Get all REQUIRED API keys
-- [ ] Set up Stripe (if monetizing)
-- [ ] Generate VAPID keys (if using push notifications)
-- [ ] Set up Weather API (optional but recommended)
-- [ ] Choose hosting provider
+**Required API Keys:**
+- [ ] Google Cloud (Gemini AI) - for outfit suggestions
+- [ ] RapidAPI - for Amazon product data
+- [ ] Amazon Associate Tag - for affiliate links
+- [ ] Google AdSense - for ad revenue (requires site approval)
+
+**Optional but Recommended:**
+- [ ] OpenWeather API - for weather-based suggestions
+- [ ] Stripe - for premium subscriptions
+- [ ] VAPID keys - for push notifications
+
+**Hosting Setup:**
+- [ ] Choose hosting provider (Railway recommended)
 - [ ] Set environment variables in hosting dashboard
 - [ ] Run database migrations: `rails db:migrate`
 - [ ] Precompile assets: `rails assets:precompile`
 - [ ] Set `RAILS_ENV=production`
 - [ ] Set `RAILS_MASTER_KEY` or `SECRET_KEY_BASE`
+
+**Post-Deployment:**
+- [ ] Apply for Google AdSense (submit site for review)
+- [ ] Test ad placements appear correctly
+- [ ] Verify Amazon affiliate links work
+- [ ] Monitor ad impressions in admin dashboard
 
 ---
 
@@ -260,16 +314,32 @@ Before deploying to production:
 
 ---
 
+## Monetization Summary
+
+**Two revenue streams:**
+1. **Amazon Affiliate** - Earn 1-10% commission on product sales
+2. **Google AdSense** - Earn $0.50-$5 CPM from ad impressions (free users only)
+
+**Premium subscriptions** remove ads and unlock premium features via Stripe.
+
+---
+
 ## Cost Estimate
 
 **Minimum monthly cost to run:**
 - Hosting: $0-7/month (Railway free tier or Render/Heroku paid)
-- Google Cloud: ~$5-20/month (depending on usage)
-- RapidAPI: $10/month (Basic plan)
-- Replicate: ~$5-15/month (depending on image uploads)
-- OpenWeather: Free
-- Stripe: Only % of transactions
-- **Total: ~$20-50/month** for moderate usage
+- Google Cloud (Gemini AI): ~$5-20/month (depending on usage)
+- RapidAPI (Amazon data): $10/month (Basic plan)
+- Background removal: FREE (local Python rembg)
+- OpenWeather: FREE (free tier)
+- Google AdSense: FREE (you earn money)
+- Stripe: Only 2.9% + $0.30 per transaction
+- **Total: ~$15-37/month** for moderate usage
+
+**Revenue potential:**
+- Amazon affiliate: Variable (depends on sales)
+- Google AdSense: Variable (depends on traffic, typically $50-500/month with decent traffic)
+- Premium subscriptions: Variable (depends on conversion rate)
 
 ---
 
@@ -280,21 +350,28 @@ Run this to verify your API keys:
 ```bash
 rails console
 
-# Test Google Cloud
+# Test Google Cloud (Gemini AI)
 user = User.first
 OutfitSuggestionService.new(user, "casual outfit").generate_suggestion
 
-# Test RapidAPI
+# Test RapidAPI (Amazon products)
 ProductRecommendation.first&.affiliate_products
 
-# Test Weather
+# Test Weather API
 WeatherService.new("Paris, France").current_conditions
 
-# Test Replicate
-# Upload an image through the UI
+# Test Background Removal (local Python)
+# Upload an image through the UI and check background removal works
+
+# Test Google AdSense
+# Visit the app as a free-tier user - you should see ad placeholders
+# Once AdSense credentials are added, real ads will appear
 
 # Test Stripe
-# Go to /subscription page
+# Go to /subscription page and test payment flow
+
+# Test Admin Dashboard (Ad Analytics)
+# Login as admin and visit /admin to see ad impression tracking
 ```
 
 ---
