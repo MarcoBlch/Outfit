@@ -77,6 +77,4 @@ test:
 #
 production:
   <<: *default
-  database: outfit_production
-  username: outfit
-  password: <%= ENV["OUTFIT_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
