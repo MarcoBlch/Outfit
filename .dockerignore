@@ -35,3 +35,44 @@
 /app/assets/builds/*
 !/app/assets/builds/.keep
 /public/assets
+
+# Ignore Python virtual environment (995MB - critical for Railway)
+/.venv/
+.venv/
+
+# Ignore vendor directory (already in gitignore but needed for Docker)
+/vendor/
+
+# Ignore IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Ignore test and documentation files
+/spec/
+/test/
+/docs/
+*.md
+!README.md
+
+# Ignore CI/CD and Railway config
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+/.claude/
+.railwayignore
+
+# Ignore test output files
+*_output.txt
+*_output_*.txt
+check_*.txt
+verify_*_output*.txt
+debug_*.txt
+probe_*.txt
+models_*.txt
+locations_*.txt
+text_output*.txt
+rails_server.log
