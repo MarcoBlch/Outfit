@@ -16,16 +16,17 @@ SET row_security = off;
 
 --
 -- Name: vector; Type: EXTENSION; Schema: -; Owner: -
+-- TEMPORARILY DISABLED FOR RAILWAY DEPLOYMENT
 --
 
-CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public;
+-- CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public;
 
 
 --
 -- Name: EXTENSION vector; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION vector IS 'vector data type and ivfflat and hnsw access methods';
+-- COMMENT ON EXTENSION vector IS 'vector data type and ivfflat and hnsw access methods';
 
 
 SET default_tablespace = '';
