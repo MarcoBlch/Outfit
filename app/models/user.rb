@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  # Explicitly set primary key to avoid any inference issues
+  self.primary_key = 'id'
+
   # Include Devise modules FIRST, then JWT strategy
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable are available but not used
   devise :database_authenticatable, :registerable,
