@@ -4,14 +4,15 @@
 if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
   echo "=== Railway Deployment Starting ==="
 
-  # Check if tables exist
-  TABLE_COUNT=$(./bin/rails runner "puts ActiveRecord::Base.connection.tables.count" 2>/dev/null || echo "0")
+  # Check if schema_migrations table exists (indicates database is initialized)
+  SCHEMA_EXISTS=$(./bin/rails runner "puts ActiveRecord::Base.connection.table_exists?('schema_migrations')" 2>&1 | tail -1)
 
-  if [ "$TABLE_COUNT" -gt 2 ]; then
-    echo "Database has tables, running post-migrate tasks..."
-    ./bin/rails db:post_migrate 2>&1 || echo "Post-migrate completed with warnings"
+  if [ "$SCHEMA_EXISTS" == "true" ]; then
+    echo "Database initialized, running migrations and post-migrate tasks..."
+    ./bin/rails db:migrate 2>&1 || echo "Migrations completed with warnings"
+    ./bin/rails db:ensure_id_defaults 2>&1 || echo "ID defaults check completed"
   else
-    echo "Empty database, running migrations..."
+    echo "Empty database, running initial migrations..."
     ./bin/rails db:migrate 2>&1 || echo "Migrations completed"
   fi
 
