@@ -1,17 +1,19 @@
 class User < ApplicationRecord
+  # Include Devise modules FIRST, then JWT strategy
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable are available but not used
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable,
+         :jwt_authenticatable, jwt_revocation_strategy: self
+
+  # JTIMatcher must be included AFTER devise call
+  include Devise::JWT::RevocationStrategies::JTIMatcher
+
   has_many :wardrobe_items, dependent: :destroy
   has_many :outfits, dependent: :destroy
   has_many :outfit_suggestions, dependent: :destroy
   has_many :ad_impressions, dependent: :destroy
   has_one :user_profile, dependent: :destroy
   has_one :subscription, dependent: :destroy
-  include Devise::JWT::RevocationStrategies::JTIMatcher
-
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
-         :jwt_authenticatable, jwt_revocation_strategy: self
 
   # Scopes for admin dashboard queries
   scope :admins, -> { where(admin: true) }
