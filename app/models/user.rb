@@ -3,10 +3,16 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable are available but not used
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :jwt_authenticatable, jwt_revocation_strategy: self
+         :jwt_authenticatable, jwt_revocation_strategy: self,
+         authentication_keys: [:email]
 
   # JTIMatcher must be included AFTER devise call
   include Devise::JWT::RevocationStrategies::JTIMatcher
+
+  # Ensure proper primary key for JWT lookups
+  def self.find_for_jwt_authentication(sub)
+    find_by(id: sub)
+  end
 
   has_many :wardrobe_items, dependent: :destroy
   has_many :outfits, dependent: :destroy
