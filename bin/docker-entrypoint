@@ -1,8 +1,21 @@
 #!/bin/bash -e
 
-# If running the rails server then create or migrate existing database
+# If running the rails server then prepare database
 if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
-  ./bin/rails db:prepare
+  echo "=== Railway Deployment Starting ==="
+
+  # Check if tables exist
+  TABLE_COUNT=$(./bin/rails runner "puts ActiveRecord::Base.connection.tables.count" 2>/dev/null || echo "0")
+
+  if [ "$TABLE_COUNT" -gt 2 ]; then
+    echo "Database has tables, running post-migrate tasks..."
+    ./bin/rails db:post_migrate 2>&1 || echo "Post-migrate completed with warnings"
+  else
+    echo "Empty database, running migrations..."
+    ./bin/rails db:migrate 2>&1 || echo "Migrations completed"
+  fi
+
+  echo "=== Database ready ==="
 fi
 
 exec "${@}"
