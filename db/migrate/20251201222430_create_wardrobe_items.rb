@@ -5,10 +5,25 @@ class CreateWardrobeItems < ActiveRecord::Migration[7.1]
       t.string :category
       t.string :color
       t.jsonb :metadata
-      t.column :embedding, 'vector(768)'
+      # pgvector embedding - only add if extension is available
+      # t.column :embedding, 'vector(768)'
 
       t.timestamps
     end
-    add_index :wardrobe_items, :embedding, using: :hnsw, opclass: :vector_l2_ops
+
+    # Add vector column and index only if pgvector extension exists
+    if pgvector_available?
+      add_column :wardrobe_items, :embedding, 'vector(768)'
+      add_index :wardrobe_items, :embedding, using: :hnsw, opclass: :vector_l2_ops
+    end
+  end
+
+  private
+
+  def pgvector_available?
+    result = execute("SELECT 1 FROM pg_extension WHERE extname = 'vector'")
+    result.any?
+  rescue
+    false
   end
 end
