@@ -30,6 +30,10 @@ namespace :db do
     puts "Running post-migration tasks..."
     puts "=" * 80
 
+    # Run any pending migrations first
+    puts "\n--- Running Pending Migrations ---"
+    Rake::Task["db:migrate"].invoke
+
     # Ensure ID sequence defaults are set (idempotent)
     Rake::Task["db:ensure_id_defaults"].invoke
 
