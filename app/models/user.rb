@@ -17,6 +17,14 @@ class User < ApplicationRecord
     find_by(id: sub)
   end
 
+  # Validations
+  validates :username, presence: true, uniqueness: { case_sensitive: false },
+            format: { with: /\A[a-zA-Z0-9_]+\z/, message: "only allows letters, numbers, and underscores" },
+            length: { minimum: 3, maximum: 30 }
+
+  # Generate username from email before validation if not provided
+  before_validation :generate_username, on: :create, if: -> { username.blank? }
+
   has_many :wardrobe_items, dependent: :destroy
   has_many :outfits, dependent: :destroy
   has_many :outfit_suggestions, dependent: :destroy
@@ -179,4 +187,25 @@ class User < ApplicationRecord
   scope :paying_customers, -> { where(subscription_tier: ["premium", "pro"]) }
   scope :recent, -> { order(created_at: :desc) }
   scope :active_last_30_days, -> { where("updated_at >= ?", 30.days.ago) }
+
+  private
+
+  def generate_username
+    # Extract username from email (before @)
+    base_username = email.split('@').first.gsub(/[^a-zA-Z0-9_]/, '_')
+
+    # Ensure it's at least 3 characters
+    base_username = "user_#{base_username}" if base_username.length < 3
+
+    # Make it unique by adding numbers if needed
+    potential_username = base_username
+    counter = 1
+
+    while User.exists?(username: potential_username)
+      potential_username = "#{base_username}#{counter}"
+      counter += 1
+    end
+
+    self.username = potential_username
+  end
 end
