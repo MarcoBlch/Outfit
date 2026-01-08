@@ -67,14 +67,23 @@
             Upload
           <% end %>
 
-          <!-- Profile Link -->
+          <!-- Profile Menu -->
           <% if user_signed_in? %>
-            <%= link_to edit_user_profile_path, class: "flex max-w-xs items-center rounded-full bg-gray-800 text-sm hover:ring-2 hover:ring-white hover:ring-offset-2 hover:ring-offset-gray-800 transition-all" do %>
-              <span class="sr-only">Edit profile</span>
-              <div class="h-8 w-8 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 border border-white/10 flex items-center justify-center text-white text-xs font-bold">
-                <%= current_user.email[0].upcase %>
-              </div>
-            <% end %>
+            <div class="flex items-center space-x-3">
+              <span class="text-sm text-gray-300">@<%= current_user.username %></span>
+              <%= link_to edit_user_profile_path, class: "flex max-w-xs items-center rounded-full bg-gray-800 text-sm hover:ring-2 hover:ring-white hover:ring-offset-2 hover:ring-offset-gray-800 transition-all" do %>
+                <span class="sr-only">Edit profile</span>
+                <div class="h-8 w-8 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 border border-white/10 flex items-center justify-center text-white text-xs font-bold">
+                  <%= current_user.username[0].upcase %>
+                </div>
+              <% end %>
+              <%= button_to destroy_user_session_path, method: :delete, class: "px-4 py-2 rounded-lg bg-white/10 hover:bg-red-600/20 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10 hover:border-red-500/50" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline mr-1">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                </svg>
+                Logout
+              <% end %>
+            </div>
           <% else %>
             <%= link_to "Sign In", new_user_session_path, class: "px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-sm font-medium transition-colors" %>
           <% end %>
@@ -160,13 +169,26 @@
         <% end %>
 
         <% if user_signed_in? %>
+          <div class="px-4 py-2 text-sm text-gray-400">
+            Signed in as <span class="text-white font-medium">@<%= current_user.username %></span>
+          </div>
+
           <%= link_to edit_user_profile_path,
               class: "flex items-center px-4 py-3 rounded-lg bg-white/10 hover:bg-white/20 text-white text-base font-medium transition-colors min-h-[44px]",
               data: { action: "click->mobile-menu#closeOnLinkClick" } do %>
             <div class="h-8 w-8 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 border border-white/10 flex items-center justify-center text-white text-xs font-bold mr-3">
-              <%= current_user.email[0].upcase %>
+              <%= current_user.username[0].upcase %>
             </div>
             Edit Profile
+          <% end %>
+
+          <%= button_to destroy_user_session_path, method: :delete,
+              class: "w-full flex items-center justify-center px-4 py-3 rounded-lg bg-red-600/20 hover:bg-red-600/30 text-white text-base font-medium transition-colors min-h-[44px] border border-red-500/50",
+              data: { turbo: "false" } do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+            </svg>
+            Logout
           <% end %>
         <% else %>
           <%= link_to "Sign In", new_user_session_path,
