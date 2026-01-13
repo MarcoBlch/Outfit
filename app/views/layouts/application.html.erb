@@ -28,6 +28,16 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
 
+    <!-- Plausible Analytics -->
+    <% unless Rails.env.development? %>
+      <!-- Privacy-friendly analytics by Plausible -->
+      <script async src="https://plausible.io/js/pa-g8QxmybQdHM_5p5XI3CSR.js"></script>
+      <script>
+        window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+        plausible.init()
+      </script>
+    <% end %>
+
     <!-- Service Worker Registration -->
     <script>
       if ('serviceWorker' in navigator) {
