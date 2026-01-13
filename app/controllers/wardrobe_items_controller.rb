@@ -36,8 +36,16 @@ class WardrobeItemsController < ApplicationController
     if @wardrobe_item.save
       ImageAnalysisJob.perform_later(@wardrobe_item.id)
 
+      # Check if this is the 5th item (activation!)
+      is_activation = current_user.wardrobe_items.count == 5
+
       respond_to do |format|
-        format.html { redirect_to wardrobe_items_path, notice: "Item uploaded! AI analysis in progress..." }
+        format.html do
+          if is_activation
+            flash[:analytics_event] = "Activation"
+          end
+          redirect_to wardrobe_items_path, notice: "Item uploaded! AI analysis in progress..."
+        end
         format.json { render json: @wardrobe_item, status: :created }
       end
     else

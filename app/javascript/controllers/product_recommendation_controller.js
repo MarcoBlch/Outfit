@@ -62,6 +62,13 @@ export default class extends Controller {
       productUrl
     })
 
+    // Track in Plausible Analytics
+    if (typeof window.plausible !== 'undefined') {
+      window.plausible('Affiliate Click', {
+        props: { url: productUrl }
+      });
+    }
+
     // Send analytics request (non-blocking, don't wait for response)
     this.sendAnalyticsRequest(
       "record_click",

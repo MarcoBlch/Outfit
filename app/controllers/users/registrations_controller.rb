@@ -3,6 +3,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
 
+  def create
+    super do |resource|
+      if resource.persisted?
+        # Track signup event in Plausible
+        track_signup_event
+      end
+    end
+  end
+
   private
 
   def configure_sign_up_params
@@ -11,6 +20,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def configure_account_update_params
     devise_parameter_sanitizer.permit(:account_update, keys: [:username])
+  end
+
+  def track_signup_event
+    # Inject Plausible tracking script after successful signup
+    # This will execute in the browser after page load
+    flash[:analytics_event] = "Signup"
   end
 
   def respond_with(resource, _opts = {})

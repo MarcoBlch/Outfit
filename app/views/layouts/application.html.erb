@@ -35,6 +35,15 @@
       <script>
         window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
         plausible.init()
+
+        <% if flash[:analytics_event].present? %>
+        // Track event from flash
+        document.addEventListener('DOMContentLoaded', function() {
+          if (typeof window.plausible !== 'undefined') {
+            window.plausible('<%= flash[:analytics_event] %>');
+          }
+        });
+        <% end %>
       </script>
     <% end %>
 

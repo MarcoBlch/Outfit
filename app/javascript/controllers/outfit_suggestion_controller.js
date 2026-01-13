@@ -175,6 +175,11 @@ export default class extends Controller {
   handleSuccess() {
     this.stopLoading()
 
+    // Track engagement event in Plausible
+    if (typeof window.plausible !== 'undefined') {
+      window.plausible('Outfit Suggestion');
+    }
+
     // Update remaining count
     const newCount = Math.max(0, this.remainingValue - 1)
     this.updateRemainingCount(newCount)
