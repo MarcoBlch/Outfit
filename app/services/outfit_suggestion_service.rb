@@ -127,7 +127,8 @@ class OutfitSuggestionService
   private
 
   def call_gemini_api(user_prompt)
-    authorizer = Google::Auth.get_application_default
+    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+    authorizer = Google::Auth.get_application_default(scopes)
     token = authorizer.fetch_access_token!["access_token"]
 
     full_prompt = "#{SYSTEM_PROMPT}\n\n#{user_prompt}"

@@ -18,8 +18,9 @@ class ImageAnalysisService
     image_content = File.binread(image_path)
     encoded_image = Base64.strict_encode64(image_content)
 
-    # Get Access Token
-    authorizer = Google::Auth.get_application_default
+    # Get Access Token with proper scopes for Vertex AI
+    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+    authorizer = Google::Auth.get_application_default(scopes)
     token = authorizer.fetch_access_token!["access_token"]
 
     mime_type ||= MIME::Types.type_for(image_path).first&.content_type || "image/jpeg"

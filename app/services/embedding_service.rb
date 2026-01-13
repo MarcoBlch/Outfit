@@ -16,8 +16,9 @@ class EmbeddingService
   def embed(text)
     return [] if text.blank?
 
-    # Get Access Token
-    authorizer = Google::Auth.get_application_default
+    # Get Access Token with proper scopes for Vertex AI
+    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+    authorizer = Google::Auth.get_application_default(scopes)
     token = authorizer.fetch_access_token!["access_token"]
 
     # Construct Request Body
@@ -66,8 +67,9 @@ class EmbeddingService
       image_data
     end
 
-    # Get Access Token
-    authorizer = Google::Auth.get_application_default
+    # Get Access Token with proper scopes for Vertex AI
+    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+    authorizer = Google::Auth.get_application_default(scopes)
     token = authorizer.fetch_access_token!["access_token"]
 
     # Construct Request Body for multimodal embedding
