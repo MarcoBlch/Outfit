@@ -73,13 +73,18 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  # Mailgun configuration via HTTP API (more reliable than SMTP on cloud platforms)
-  config.action_mailer.delivery_method = :mailgun
-  config.action_mailer.mailgun_settings = {
-    api_key: ENV['MAILGUN_API_KEY'],
+  # Mailgun configuration via SMTP (using port 2525 which is less likely to be blocked)
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: 'smtp.mailgun.org',
+    port: 2525,
     domain: ENV['MAILGUN_DOMAIN'] || 'mg.outfitmaker.ai',
+    user_name: ENV['MAILGUN_SMTP_USERNAME'] || 'outfitmaker@mg.outfitmaker.ai',
+    password: ENV['MAILGUN_SMTP_PASSWORD'],
+    authentication: :plain,
+    enable_starttls_auto: true
   }
-  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.raise_delivery_errors = false  # Don't raise errors to avoid blocking signup
   config.action_mailer.default_url_options = { host: 'outfitmaker.ai', protocol: 'https' }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
