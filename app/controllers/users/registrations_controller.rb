@@ -9,8 +9,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
         # Track signup event in Plausible
         track_signup_event
 
-        # Send welcome email
-        UserMailer.welcome_email(resource).deliver_later
+        # Send welcome email (skip in development/test to avoid SMTP errors)
+        unless Rails.env.development? || Rails.env.test?
+          begin
+            UserMailer.welcome_email(resource).deliver_later
+          rescue => e
+            Rails.logger.error("Failed to send welcome email: #{e.message}")
+            # Don't fail signup if email fails
+          end
+        end
       end
     end
   end
