@@ -8,6 +8,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
       if resource.persisted?
         # Track signup event in Plausible
         track_signup_event
+
+        # Send welcome email
+        UserMailer.welcome_email(resource).deliver_later
       end
     end
   end

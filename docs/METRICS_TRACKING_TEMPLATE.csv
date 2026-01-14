@@ -1,0 +1,39 @@
+# OutfitMaker.ai Metrics Tracking Template
+# Import this into Google Sheets
+
+## TAB 1: Acquisition Funnel
+Date,Source,Landing Views,Signups,Signup Rate,Activated (5+ items),Activation Rate,Trial Starts,Trial Rate,Paid Conversions,Conversion Rate
+2026-01-20,Product Hunt,0,0,0%,0,0%,0,0%,0,0%
+2026-01-21,Reddit,0,0,0%,0,0%,0,0%,0,0%
+2026-01-22,Direct,0,0,0%,0,0%,0,0%,0,0%
+2026-01-23,Social,0,0,0%,0,0%,0,0%,0,0%
+TOTAL,All Sources,0,0,0%,0,0%,0,0%,0,0%
+
+## TAB 2: Retention Cohorts
+Signup Week,Total Users,Day 1 Return,Day 1 %,Day 7 Return,Day 7 %,Day 30 Return,Day 30 %,Day 90 Return,Day 90 %
+Week 1 (Jan 20),0,0,0%,0,0%,0,0%,0,0%
+Week 2 (Jan 27),0,0,0%,0,0%,0,0%,0,0%
+Week 3 (Feb 3),0,0,0%,0,0%,0,0%,0,0%
+Week 4 (Feb 10),0,0,0%,0,0%,0,0%,0,0%
+
+## TAB 3: Monetization
+Month,Total Users,Paid Users,Conversion %,MRR (€),Affiliate Revenue (€),Total Revenue (€),ARPU (€)
+Feb 2026,0,0,0%,0,0,0,0.00
+Mar 2026,0,0,0%,0,0,0,0.00
+Apr 2026,0,0,0%,0,0,0,0.00
+
+## TAB 4: Churn Analysis
+Month,Paid Start,New Paid,Churned,Paid End,Churn Rate,Net Growth
+Feb 2026,0,0,0,0,0%,0
+Mar 2026,0,0,0,0,0%,0
+
+## TAB 5: Dashboard Summary
+Metric,Current,Target,Status
+Total Active Users,0,500,0%
+Paid Users,0,50,0%
+MRR (€),0,500,0%
+Day 7 Retention,0%,40%,0%
+Day 30 Retention,0%,30%,0%
+Trial→Paid Conv,0%,8%,0%
+Monthly Churn,0%,<5%,Good
+Affiliate ARPU,€0.00,€1.00,0%
