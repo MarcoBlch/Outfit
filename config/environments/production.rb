@@ -79,8 +79,8 @@ Rails.application.configure do
     address: 'smtp.mailgun.org',
     port: 587,
     domain: ENV['MAILGUN_DOMAIN'] || 'mg.outfitmaker.ai',
-    user_name: "postmaster@#{ENV['MAILGUN_DOMAIN'] || 'mg.outfitmaker.ai'}",
-    password: ENV['MAILGUN_API_KEY'],
+    user_name: ENV['MAILGUN_SMTP_USERNAME'] || 'outfitmaker@mg.outfitmaker.ai',
+    password: ENV['MAILGUN_SMTP_PASSWORD'],
     authentication: :plain,
     enable_starttls_auto: true
   }
