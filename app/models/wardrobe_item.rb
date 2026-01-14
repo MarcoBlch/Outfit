@@ -32,11 +32,12 @@ class WardrobeItem < ApplicationRecord
 
   def broadcast_to_recent_items
     # Broadcast replacement of the recent-items turbo-frame
+    # Convert relation to array to avoid serialization error
     broadcast_replace_later_to(
       "user_#{user_id}_recent_items",
       target: "recent-items",
       partial: "pages/recent_items",
-      locals: { recent_items: user.wardrobe_items.with_attached_image.order(created_at: :desc).limit(4) }
+      locals: { recent_items: user.wardrobe_items.with_attached_image.order(created_at: :desc).limit(4).to_a }
     )
   end
 end
