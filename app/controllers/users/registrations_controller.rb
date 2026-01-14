@@ -12,7 +12,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
         # Send welcome email (skip in development/test to avoid SMTP errors)
         unless Rails.env.development? || Rails.env.test?
           begin
-            UserMailer.welcome_email(resource).deliver_later
+            # Use deliver_now to send immediately (deliver_later requires background job processor)
+            UserMailer.welcome_email(resource).deliver_now
+            Rails.logger.info("Welcome email sent to #{resource.email}")
           rescue => e
             Rails.logger.error("Failed to send welcome email: #{e.message}")
             # Don't fail signup if email fails
