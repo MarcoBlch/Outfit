@@ -1,0 +1,52 @@
+<section id="features" class="py-24 bg-outfit-bg" data-scroll-animate>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="text-center mb-16">
+      <h2 class="text-4xl sm:text-5xl font-bold text-white mb-4">
+        Everything you need to look your best
+      </h2>
+      <p class="text-xl text-text-secondary max-w-2xl mx-auto">
+        Powered by advanced AI that understands your style and helps you make the most of your wardrobe.
+      </p>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <%= render 'landing/feature_card',
+        icon: 'camera',
+        gradient: 'from-purple-500 to-pink-500',
+        title: 'Smart Photo Capture',
+        description: 'Snap a photo of any clothing item. Our AI automatically removes backgrounds and tags items by category, color, and style.' %>
+
+      <%= render 'landing/feature_card',
+        icon: 'sparkles',
+        gradient: 'from-indigo-500 to-purple-500',
+        title: 'AI Outfit Suggestions',
+        description: 'Get personalized outfit recommendations based on weather, occasion, and your personal style preferences.' %>
+
+      <%= render 'landing/feature_card',
+        icon: 'search',
+        gradient: 'from-pink-500 to-red-500',
+        title: 'Visual Search',
+        description: 'Find similar items in your wardrobe or discover shopping suggestions to complete your look.' %>
+
+      <%= render 'landing/feature_card',
+        icon: 'palette',
+        gradient: 'from-blue-500 to-cyan-500',
+        title: 'Style Quiz',
+        description: 'Take our quick style quiz to help our AI understand your preferences and create better suggestions.' %>
+
+      <%= render 'landing/feature_card',
+        icon: 'cloud',
+        gradient: 'from-green-500 to-teal-500',
+        title: 'Weather-Aware',
+        description: 'Get outfit suggestions that match the current weather conditions in your location.' %>
+
+      <%= render 'landing/feature_card',
+        icon: 'shopping-bag',
+        gradient: 'from-orange-500 to-yellow-500',
+        title: 'Complete Your Look',
+        description: 'Discover shopping suggestions on Amazon to fill gaps in your wardrobe and complete your style.' %>
+    </div>
+  </div>
+</section>

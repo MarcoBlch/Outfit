@@ -1,0 +1,51 @@
+<nav class="fixed top-0 left-0 right-0 z-50 bg-outfit-bg/80 backdrop-blur-lg border-b border-outfit-border" data-controller="mobile-menu">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <%= link_to root_path, class: "flex items-center space-x-2 group" do %>
+        <%= image_tag 'logo_option_4.svg', class: "w-10 h-10 group-hover:scale-105 transition-transform", alt: "OutfitMaker.ai Logo" %>
+        <span class="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+          OutfitMaker.ai
+        </span>
+      <% end %>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center space-x-8">
+        <%= link_to 'Features', '#features', class: 'text-text-secondary hover:text-text-primary transition-colors' %>
+        <%= link_to 'How It Works', '#how-it-works', class: 'text-text-secondary hover:text-text-primary transition-colors' %>
+        <%= link_to 'Pricing', '#pricing', class: 'text-text-secondary hover:text-text-primary transition-colors' %>
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="hidden md:flex items-center space-x-4">
+        <%= link_to 'Sign In', new_user_session_path, class: 'text-text-secondary hover:text-text-primary transition-colors' %>
+        <%= link_to new_user_registration_path, class: 'btn-primary inline-flex items-center' do %>
+          Start Free Trial
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        <% end %>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button type="button" class="md:hidden p-2 text-text-secondary" data-action="click->mobile-menu#toggle">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="md:hidden hidden" data-mobile-menu-target="menu">
+    <div class="px-4 pt-2 pb-4 space-y-2 bg-outfit-card border-t border-outfit-border">
+      <%= link_to 'Features', '#features', class: 'block py-2 text-text-secondary hover:text-text-primary' %>
+      <%= link_to 'How It Works', '#how-it-works', class: 'block py-2 text-text-secondary hover:text-text-primary' %>
+      <%= link_to 'Pricing', '#pricing', class: 'block py-2 text-text-secondary hover:text-text-primary' %>
+      <div class="pt-4 space-y-2">
+        <%= link_to 'Sign In', new_user_session_path, class: 'block py-2 text-center text-text-secondary' %>
+        <%= link_to 'Start Free Trial', new_user_registration_path, class: 'block btn-primary text-center' %>
+      </div>
+    </div>
+  </div>
+</nav>

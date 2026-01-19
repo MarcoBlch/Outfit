@@ -1,0 +1,90 @@
+<section id="demo" class="py-24 bg-gradient-to-b from-outfit-bg to-outfit-card" data-scroll-animate>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Left: Content -->
+      <div>
+        <div class="inline-block px-4 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full text-sm text-purple-300 mb-6">
+          See It In Action
+        </div>
+
+        <h2 class="text-4xl sm:text-5xl font-bold text-white mb-6">
+          From chaos to curated in seconds
+        </h2>
+
+        <p class="text-xl text-text-secondary mb-8">
+          Watch how OutfitMaker.ai transforms your wardrobe photos into a perfectly organized digital closet.
+        </p>
+
+        <!-- Feature List -->
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center mr-3 mt-1">
+              <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="text-white font-medium mb-1">Automatic Background Removal</h4>
+              <p class="text-text-secondary text-sm">No green screen needed. Our AI removes backgrounds instantly.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center mr-3 mt-1">
+              <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="text-white font-medium mb-1">Smart Auto-Tagging</h4>
+              <p class="text-text-secondary text-sm">Categories, colors, patterns—all tagged automatically.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center mr-3 mt-1">
+              <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="text-white font-medium mb-1">Instant Outfit Suggestions</h4>
+              <p class="text-text-secondary text-sm">Get AI-powered combinations in under 3 seconds.</p>
+            </div>
+          </div>
+        </div>
+
+        <%= link_to new_user_registration_path, class: 'btn-primary inline-flex items-center' do %>
+          Try It Free
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        <% end %>
+      </div>
+
+      <!-- Right: Visual/Video -->
+      <div class="relative">
+        <!-- Video Container or Large Screenshot -->
+        <div class="relative bg-outfit-card rounded-2xl border border-outfit-border overflow-hidden shadow-2xl">
+          <!-- Replace with actual video or screenshots -->
+          <div class="aspect-video bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+            <button class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform" data-controller="video-modal" data-action="click->video-modal#open">
+              <svg class="w-10 h-10 text-purple-600 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Feature Callouts -->
+          <div class="absolute top-4 right-4 bg-white/10 backdrop-blur-md px-3 py-2 rounded-lg border border-white/20">
+            <div class="text-xs text-white font-medium">2.3s processing time</div>
+          </div>
+        </div>
+
+        <!-- Decorative Elements -->
+        <div class="absolute -z-10 -top-8 -right-8 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl"></div>
+        <div class="absolute -z-10 -bottom-8 -left-8 w-64 h-64 bg-pink-500/20 rounded-full blur-3xl"></div>
+      </div>
+    </div>
+  </div>
+</section>

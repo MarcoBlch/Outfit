@@ -13,6 +13,15 @@
   --color-indigo-600: 239 84% 57%;
   --color-indigo-700: 239 76% 48%;
 
+  /* Dark Theme Colors for Modern Landing */
+  --color-outfit-bg: 0 0% 6%; /* #0F0F0F */
+  --color-outfit-card: 0 0% 10%; /* #1A1A1B */
+  --color-outfit-card-hover: 0 0% 14%; /* #242526 */
+  --color-outfit-border: 0 0% 17%; /* #2A2A2C */
+  --color-text-primary: 0 0% 100%; /* #FFFFFF */
+  --color-text-secondary: 0 0% 63%; /* #A0A0A3 */
+  --color-text-muted: 0 0% 42%; /* #6B6B6E */
+
   --color-bg-dark: 222 47% 11%; /* Deep Slate */
   --color-bg-card: 217 33% 17%; /* Lighter Slate */
   --color-bg-glass: 217 33% 17% / 0.7; /* Glassmorphism base */
@@ -22,6 +31,16 @@
 
   /* Font Family */
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Gradient Backgrounds */
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --gradient-warm: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+
+  /* Animations */
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-gradient: gradient 8s linear infinite;
 }
 
 /* Custom Utilities for Glassmorphism */
@@ -79,4 +98,59 @@ body {
 
 .highlight-fade-in {
   animation: highlight-fade-in 0.8s ease-out;
+}
+
+/* Float Animation for Hero Orbs */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Gradient Animation for Text */
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Button Utilities for Landing Page */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 text-white font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 border-2 text-white font-medium rounded-xl transition-all duration-200;
+    background-color: hsl(var(--color-outfit-card));
+    border-color: rgba(139, 92, 246, 0.5);
+  }
+
+  .btn-secondary:hover {
+    background-color: hsl(var(--color-outfit-card-hover));
+    border-color: rgb(139, 92, 246);
+  }
+
+  .btn-lg {
+    @apply px-8 py-4 text-lg;
+  }
+
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .bg-gradient-secondary {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  }
+
+  .bg-gradient-accent {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  }
 }

@@ -1,0 +1,63 @@
+<section class="py-24 bg-outfit-bg relative overflow-hidden" data-scroll-animate>
+  <!-- Background Effects -->
+  <div class="absolute inset-0">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-purple-500/20 via-pink-500/10 to-transparent blur-3xl"></div>
+  </div>
+
+  <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <!-- Badge -->
+    <div class="inline-flex items-center px-4 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full text-sm text-purple-300 mb-8">
+      <span class="w-2 h-2 bg-purple-500 rounded-full animate-pulse mr-2"></span>
+      Join 10,000+ users already organizing their wardrobes
+    </div>
+
+    <!-- Headline -->
+    <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
+      Ready to transform your
+      <span class="bg-gradient-primary bg-clip-text text-transparent">morning routine?</span>
+    </h2>
+
+    <!-- Subheadline -->
+    <p class="text-xl text-text-secondary mb-10 max-w-2xl mx-auto">
+      Start your free trial today. No credit card required. Cancel anytime.
+    </p>
+
+    <!-- CTA Buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+      <%= link_to new_user_registration_path, class: 'btn-primary btn-lg group inline-flex items-center' do %>
+        Get Started Free
+        <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+        </svg>
+      <% end %>
+      <span class="text-sm text-text-muted">
+        or
+      </span>
+      <%= link_to new_user_session_path, class: 'text-purple-400 hover:text-purple-300 font-medium transition-colors' do %>
+        Sign in to your account →
+      <% end %>
+    </div>
+
+    <!-- Trust Badges -->
+    <div class="flex flex-wrap justify-center items-center gap-6 text-sm text-text-muted">
+      <div class="flex items-center">
+        <svg class="w-5 h-5 text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+        No credit card required
+      </div>
+      <div class="flex items-center">
+        <svg class="w-5 h-5 text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        14-day free trial
+      </div>
+      <div class="flex items-center">
+        <svg class="w-5 h-5 text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+        Cancel anytime
+      </div>
+    </div>
+  </div>
+</section>

@@ -43,6 +43,9 @@ application.register("outfit-suggestion", OutfitSuggestionController)
 import ProductRecommendationController from "./product_recommendation_controller"
 application.register("product-recommendation", ProductRecommendationController)
 
+import ScrollAnimationController from "./scroll_animation_controller"
+application.register("scroll-animation", ScrollAnimationController)
+
 import ScrollIntoViewController from "./scroll_into_view_controller"
 application.register("scroll-into-view", ScrollIntoViewController)
 

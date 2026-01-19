@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>OutfitMaker.ai - Your AI-Powered Wardrobe Assistant</title>
+    <title>OutfitMaker.ai - AI-Powered Wardrobe Organizer</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="description" content="Organize your wardrobe, get AI-powered outfit suggestions, and discover your perfect style. Free to use.">
+    <meta name="description" content="Transform your wardrobe with AI. Get instant outfit suggestions, smart organization, and personalized style recommendations. Start free today.">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <!-- Open Graph / Social Media -->
-    <meta property="og:title" content="OutfitMaker.ai - Your AI-Powered Wardrobe Assistant">
-    <meta property="og:description" content="Organize your wardrobe, get AI-powered outfit suggestions, and discover your perfect style.">
+    <meta property="og:title" content="OutfitMaker.ai - AI-Powered Wardrobe Organizer">
+    <meta property="og:description" content="Transform your wardrobe with AI. Get instant outfit suggestions and smart organization. Start free today.">
     <meta property="og:type" content="website">
+    <meta property="og:image" content="/social-preview.png">
 
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
@@ -21,9 +22,9 @@
     <meta name="apple-mobile-web-app-title" content="OutfitMaker">
     <link rel="apple-touch-icon" href="/icon-192.png">
 
-    <!-- Theme Colors - Light theme for landing -->
-    <meta name="theme-color" content="#4f46e5">
-    <meta name="msapplication-TileColor" content="#4f46e5">
+    <!-- Theme Colors - Dark theme for modern landing -->
+    <meta name="theme-color" content="#0F0F0F">
+    <meta name="msapplication-TileColor" content="#0F0F0F">
 
     <!-- Google Fonts - Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,15 +44,15 @@
     <% end %>
 
     <style>
-      /* Override body styles for landing page */
+      /* Dark theme for modern landing page */
       body {
-        background-color: #ffffff !important;
-        color: #111827 !important;
+        background-color: #0F0F0F !important;
+        color: #FFFFFF !important;
       }
     </style>
   </head>
 
-  <body class="min-h-screen bg-white text-gray-900 antialiased" style="background-color: #ffffff; color: #111827;">
+  <body class="min-h-screen antialiased scroll-smooth" style="background-color: #0F0F0F; color: #FFFFFF;" data-controller="scroll-animation">
     <%= turbo_frame_tag "modal" %>
 
     <main>

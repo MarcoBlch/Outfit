@@ -1,0 +1,93 @@
+<section id="how-it-works" class="py-24 bg-outfit-bg" data-scroll-animate>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center mb-20">
+      <h2 class="text-4xl sm:text-5xl font-bold text-white mb-4">
+        Getting started is easy
+      </h2>
+      <p class="text-xl text-text-secondary max-w-2xl mx-auto">
+        Three simple steps to your perfectly organized wardrobe
+      </p>
+    </div>
+
+    <!-- Steps -->
+    <div class="relative">
+      <!-- Connection Line -->
+      <div class="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-purple-500/50 to-transparent -translate-y-1/2"></div>
+
+      <div class="grid md:grid-cols-3 gap-8 relative">
+        <!-- Step 1 -->
+        <div class="relative">
+          <div class="bg-outfit-card hover:bg-outfit-card-hover border border-outfit-border rounded-2xl p-8 transition-all duration-300 hover:-translate-y-2">
+            <!-- Number Badge -->
+            <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white font-bold text-xl mb-6 shadow-lg">
+              1
+            </div>
+
+            <!-- Icon -->
+            <div class="w-16 h-16 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6">
+              <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mb-3">Snap Photos</h3>
+            <p class="text-text-secondary leading-relaxed">
+              Take photos of your clothes or upload existing images. No special equipment needed—your phone camera works great.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="relative">
+          <div class="bg-outfit-card hover:bg-outfit-card-hover border border-outfit-border rounded-2xl p-8 transition-all duration-300 hover:-translate-y-2">
+            <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center text-white font-bold text-xl mb-6 shadow-lg">
+              2
+            </div>
+
+            <div class="w-16 h-16 bg-indigo-500/10 rounded-xl flex items-center justify-center mb-6">
+              <svg class="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mb-3">AI Organizes</h3>
+            <p class="text-text-secondary leading-relaxed">
+              Our AI automatically removes backgrounds, tags items by category, color, and style, and organizes everything beautifully.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="relative">
+          <div class="bg-outfit-card hover:bg-outfit-card-hover border border-outfit-border rounded-2xl p-8 transition-all duration-300 hover:-translate-y-2">
+            <div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-red-500 rounded-xl flex items-center justify-center text-white font-bold text-xl mb-6 shadow-lg">
+              3
+            </div>
+
+            <div class="w-16 h-16 bg-pink-500/10 rounded-xl flex items-center justify-center mb-6">
+              <svg class="w-8 h-8 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+              </svg>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mb-3">Get Outfits</h3>
+            <p class="text-text-secondary leading-relaxed">
+              Receive personalized outfit suggestions every day based on weather, occasion, and your unique style preferences.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center mt-16">
+      <%= link_to new_user_registration_path, class: 'btn-primary btn-lg inline-flex items-center' do %>
+        Start Organizing Your Wardrobe
+        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+        </svg>
+      <% end %>
+    </div>
+  </div>
+</section>
