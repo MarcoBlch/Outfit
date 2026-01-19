@@ -1,4 +1,4 @@
-\restrict CAUqZzKP3YkuFUc3gVj0A7BgCPllVgnemNg2w4UyaWPRa8f851w5EP56q8HBZNX
+\restrict Tf5klkKL71dePTYySNDZoSegH2qhVtbgJNmlnuHQ0BS4dEdMTh76j1Vk8pHXaLJ
 
 -- Dumped from database version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
 -- Dumped by pg_dump version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
@@ -16,17 +16,16 @@ SET row_security = off;
 
 --
 -- Name: vector; Type: EXTENSION; Schema: -; Owner: -
--- TEMPORARILY DISABLED FOR RAILWAY DEPLOYMENT
 --
 
--- CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public;
+CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public;
 
 
 --
 -- Name: EXTENSION vector; Type: COMMENT; Schema: -; Owner: -
 --
 
--- COMMENT ON EXTENSION vector IS 'vector data type and ivfflat and hnsw access methods';
+COMMENT ON EXTENSION vector IS 'vector data type and ivfflat and hnsw access methods';
 
 
 SET default_tablespace = '';
@@ -442,7 +441,8 @@ CREATE TABLE public.users (
     ai_suggestions_reset_at date,
     subscription_tier character varying DEFAULT 'free'::character varying,
     location character varying,
-    admin boolean DEFAULT false NOT NULL
+    admin boolean DEFAULT false NOT NULL,
+    username character varying
 );
 
 
@@ -1040,6 +1040,13 @@ CREATE INDEX index_users_on_tier_and_created_at ON public.users USING btree (sub
 
 
 --
+-- Name: index_users_on_username; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_username ON public.users USING btree (username);
+
+
+--
 -- Name: index_wardrobe_items_on_category; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1187,11 +1194,14 @@ ALTER TABLE ONLY public.wardrobe_items
 -- PostgreSQL database dump complete
 --
 
-\unrestrict CAUqZzKP3YkuFUc3gVj0A7BgCPllVgnemNg2w4UyaWPRa8f851w5EP56q8HBZNX
+\unrestrict Tf5klkKL71dePTYySNDZoSegH2qhVtbgJNmlnuHQ0BS4dEdMTh76j1Vk8pHXaLJ
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260108193500'),
+('20260108192200'),
+('20260108120000'),
 ('20251218142817'),
 ('20251217103659'),
 ('20251216142155'),

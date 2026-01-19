@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import AnalyticsController from "./analytics_controller"
+application.register("analytics", AnalyticsController)
+
 import CanvasController from "./canvas_controller"
 application.register("canvas", CanvasController)
 
@@ -48,3 +51,6 @@ application.register("toast", ToastController)
 
 import UploadController from "./upload_controller"
 application.register("upload", UploadController)
+
+import VideoModalController from "./video_modal_controller"
+application.register("video-modal", VideoModalController)

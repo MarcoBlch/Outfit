@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OutfitMaker.ai - Your AI-Powered Wardrobe Assistant</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Organize your wardrobe, get AI-powered outfit suggestions, and discover your perfect style. Free to use.">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="OutfitMaker.ai - Your AI-Powered Wardrobe Assistant">
+    <meta property="og:description" content="Organize your wardrobe, get AI-powered outfit suggestions, and discover your perfect style.">
+    <meta property="og:type" content="website">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- iOS PWA Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="OutfitMaker">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+
+    <!-- Theme Colors - Light theme for landing -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+
+    <!-- Plausible Analytics -->
+    <% unless Rails.env.development? %>
+      <script async src="https://plausible.io/js/pa-g8QxmybQdHM_5p5XI3CSR.js"></script>
+      <script>
+        window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+        plausible.init()
+      </script>
+    <% end %>
+
+    <style>
+      /* Override body styles for landing page */
+      body {
+        background-color: #ffffff !important;
+        color: #111827 !important;
+      }
+    </style>
+  </head>
+
+  <body class="min-h-screen bg-white text-gray-900 antialiased" style="background-color: #ffffff; color: #111827;">
+    <%= turbo_frame_tag "modal" %>
+
+    <main>
+      <%= yield %>
+    </main>
+  </body>
+</html>

@@ -1,4 +1,15 @@
 Rails.application.routes.draw do
+  # Landing page (unauthenticated)
+  root to: 'landing#index'
+
+  # Authenticated app (after login)
+  authenticated :user do
+    root to: 'pages#home', as: :authenticated_root
+  end
+
+  # Legal pages
+  get 'privacy', to: 'pages#privacy', as: :privacy
+  get 'terms', to: 'pages#terms', as: :terms
 
   devise_for :users, controllers: {
     sessions: 'users/sessions',
@@ -64,5 +75,5 @@ Rails.application.routes.draw do
   get "health/live" => "health#live"         # Liveness: app is responsive
 
   # Defines the root path route ("/")
-  root "pages#home"
+  # Root is now defined at the top (landing#index for logged out, pages#home for logged in)
 end

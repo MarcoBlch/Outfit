@@ -5,16 +5,23 @@
   --color-primary: 265 89% 66%; /* Soft Violet */
   --color-primary-dark: 265 89% 56%;
   --color-secondary: 190 90% 60%; /* Cyan/Teal accent */
-  
+
+  /* Landing Page Colors - Clean Indigo Palette */
+  --color-indigo-50: 226 100% 97%;
+  --color-indigo-100: 226 100% 94%;
+  --color-indigo-500: 239 84% 67%;
+  --color-indigo-600: 239 84% 57%;
+  --color-indigo-700: 239 76% 48%;
+
   --color-bg-dark: 222 47% 11%; /* Deep Slate */
   --color-bg-card: 217 33% 17%; /* Lighter Slate */
   --color-bg-glass: 217 33% 17% / 0.7; /* Glassmorphism base */
-  
+
   --color-text-main: 210 40% 98%;
   --color-text-muted: 215 20% 65%;
 
   /* Font Family */
-  --font-sans: "Inter", "sans-serif";
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 /* Custom Utilities for Glassmorphism */
