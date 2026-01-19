@@ -75,34 +75,133 @@
         <!-- Phone Mockup Container -->
         <div class="relative mx-auto w-full max-w-sm">
           <!-- Glass Card with App Preview -->
-          <div class="relative bg-outfit-card/40 backdrop-blur-xl rounded-3xl border border-white/10 p-8 shadow-2xl animate-float">
-            <!-- Mockup Content -->
-            <div class="aspect-[9/16] bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl border border-white/10 overflow-hidden">
-              <div class="h-full flex flex-col p-6">
-                <div class="flex-1 space-y-4">
-                  <div class="h-12 bg-white/10 rounded-lg"></div>
-                  <div class="grid grid-cols-2 gap-4">
-                    <div class="aspect-square bg-white/10 rounded-lg"></div>
-                    <div class="aspect-square bg-white/10 rounded-lg"></div>
-                    <div class="aspect-square bg-white/10 rounded-lg"></div>
-                    <div class="aspect-square bg-white/10 rounded-lg"></div>
+          <div class="relative bg-outfit-card/40 backdrop-blur-xl rounded-3xl border border-white/10 p-6 shadow-2xl animate-float">
+            <!-- Phone Mockup -->
+            <div class="aspect-[9/16] bg-gradient-to-b from-[#1a1a1b] to-[#0f0f0f] rounded-2xl border border-white/10 overflow-hidden shadow-inner">
+              <div class="h-full flex flex-col">
+                <!-- App Header -->
+                <div class="px-4 py-4 border-b border-white/5">
+                  <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-2">
+                      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 class="text-white text-sm font-semibold">My Wardrobe</h3>
+                        <p class="text-text-muted text-xs">124 items</p>
+                      </div>
+                    </div>
+                    <button class="p-1.5 rounded-lg bg-white/5 hover:bg-white/10">
+                      <svg class="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  <!-- Category Pills -->
+                  <div class="flex gap-2 overflow-x-auto pb-1">
+                    <span class="px-3 py-1 bg-purple-500/20 border border-purple-500/30 text-purple-300 text-xs font-medium rounded-full whitespace-nowrap">All Items</span>
+                    <span class="px-3 py-1 bg-white/5 border border-white/10 text-text-secondary text-xs font-medium rounded-full whitespace-nowrap">Tops</span>
+                    <span class="px-3 py-1 bg-white/5 border border-white/10 text-text-secondary text-xs font-medium rounded-full whitespace-nowrap">Bottoms</span>
+                  </div>
+                </div>
+
+                <!-- Wardrobe Grid -->
+                <div class="flex-1 px-4 py-4 overflow-hidden">
+                  <div class="grid grid-cols-2 gap-3 h-full">
+                    <!-- Item 1 - Blue Shirt -->
+                    <div class="group relative bg-white/5 rounded-xl border border-white/10 overflow-hidden hover:border-purple-500/30 transition-all">
+                      <div class="aspect-square bg-gradient-to-br from-blue-400/20 to-blue-600/20 flex items-center justify-center p-4">
+                        <svg class="w-12 h-12 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm0 2.18l6 2.25v4.66c0 4.15-2.73 8.03-6 8.88V4.18z"/>
+                        </svg>
+                      </div>
+                      <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2">
+                        <p class="text-white text-xs font-medium">Blue Shirt</p>
+                      </div>
+                    </div>
+
+                    <!-- Item 2 - Black Jeans -->
+                    <div class="group relative bg-white/5 rounded-xl border border-white/10 overflow-hidden hover:border-purple-500/30 transition-all">
+                      <div class="aspect-square bg-gradient-to-br from-gray-700/30 to-gray-900/30 flex items-center justify-center p-4">
+                        <svg class="w-12 h-12 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M4 2h16v20H4V2zm2 2v16h12V4H6z"/>
+                        </svg>
+                      </div>
+                      <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2">
+                        <p class="text-white text-xs font-medium">Black Jeans</p>
+                      </div>
+                    </div>
+
+                    <!-- Item 3 - Red Dress -->
+                    <div class="group relative bg-white/5 rounded-xl border border-white/10 overflow-hidden hover:border-purple-500/30 transition-all">
+                      <div class="aspect-square bg-gradient-to-br from-red-400/20 to-pink-500/20 flex items-center justify-center p-4">
+                        <svg class="w-12 h-12 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                        </svg>
+                      </div>
+                      <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2">
+                        <p class="text-white text-xs font-medium">Red Dress</p>
+                      </div>
+                    </div>
+
+                    <!-- Item 4 - White Sneakers -->
+                    <div class="group relative bg-white/5 rounded-xl border border-white/10 overflow-hidden hover:border-purple-500/30 transition-all">
+                      <div class="aspect-square bg-gradient-to-br from-white/10 to-gray-300/10 flex items-center justify-center p-4">
+                        <svg class="w-12 h-12 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"/>
+                        </svg>
+                      </div>
+                      <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2">
+                        <p class="text-white text-xs font-medium">Sneakers</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Bottom Action Bar -->
+                <div class="px-4 py-3 border-t border-white/5 flex items-center justify-between">
+                  <button class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-medium rounded-lg shadow-lg">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                    </svg>
+                    AI Outfit
+                  </button>
+                  <div class="flex gap-2">
+                    <button class="p-2 rounded-lg bg-white/5 hover:bg-white/10">
+                      <svg class="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                      </svg>
+                    </button>
+                    <button class="p-2 rounded-lg bg-white/5 hover:bg-white/10">
+                      <svg class="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Floating Elements -->
-            <div class="absolute -top-4 -right-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg">
-              AI Powered
+            <!-- Floating Badge Elements -->
+            <div class="absolute -top-4 -right-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg animate-float" style="animation-delay: 1s;">
+              <div class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                </svg>
+                AI Powered
+              </div>
             </div>
-            <div class="absolute -bottom-4 -left-4 bg-pink-500 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg">
+            <div class="absolute -bottom-4 -left-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg animate-float" style="animation-delay: 2s;">
               Perfect Matches
             </div>
           </div>
 
-          <!-- Decorative Elements -->
-          <div class="absolute top-1/4 -right-8 w-32 h-32 bg-purple-500/20 rounded-full blur-2xl"></div>
-          <div class="absolute bottom-1/4 -left-8 w-32 h-32 bg-pink-500/20 rounded-full blur-2xl"></div>
+          <!-- Decorative Glow Elements -->
+          <div class="absolute top-1/4 -right-8 w-32 h-32 bg-purple-500/20 rounded-full blur-2xl animate-float" style="animation-delay: 3s;"></div>
+          <div class="absolute bottom-1/4 -left-8 w-32 h-32 bg-pink-500/20 rounded-full blur-2xl animate-float" style="animation-delay: 1.5s;"></div>
         </div>
       </div>
     </div>

@@ -63,7 +63,7 @@
     </script>
   </head>
 
-  <body class="min-h-screen flex flex-col antialiased selection:bg-primary selection:text-white">
+  <body class="min-h-screen flex flex-col antialiased selection:bg-primary selection:text-white bg-outfit-bg">
     <%= render "shared/navbar" %>
     <div id="flash_messages">
       <%= render "shared/flash" %>
@@ -73,7 +73,7 @@
 
     <div data-controller="toast" data-action="image-upload:toast@window->toast#show"></div>
 
-    <main class="flex-grow">
+    <main class="flex-grow bg-outfit-bg">
       <%= yield %>
     </main>
   </body>

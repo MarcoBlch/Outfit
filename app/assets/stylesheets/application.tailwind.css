@@ -59,8 +59,8 @@
 }
 
 body {
-  background-color: hsl(var(--color-bg-dark));
-  color: hsl(var(--color-text-main));
+  background-color: hsl(var(--color-outfit-bg));
+  color: hsl(var(--color-text-primary));
   font-family: var(--font-sans);
 }
 
@@ -110,6 +110,10 @@ body {
   }
 }
 
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
 /* Gradient Animation for Text */
 @keyframes gradient {
   0%, 100% {
@@ -118,6 +122,10 @@ body {
   50% {
     background-position: 100% 50%;
   }
+}
+
+.animate-gradient {
+  animation: gradient 8s linear infinite;
 }
 
 /* Button Utilities for Landing Page */

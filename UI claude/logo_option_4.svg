@@ -1,0 +1,36 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <rect width="512" height="512" rx="115" fill="url(#paint0_linear_4)"/>
+  
+  <defs>
+    <linearGradient id="paint0_linear_4" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4F46E5"/>
+      <stop offset="0.5" stop-color="#7C3AED"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Main "O" with modern cut -->
+  <path d="M256 96C166.8 96 96 166.8 96 256C96 345.2 166.8 416 256 416C345.2 416 416 345.2 416 256C416 166.8 345.2 96 256 96ZM256 368C194.144 368 144 317.856 144 256C144 194.144 194.144 144 256 144C317.856 144 368 194.144 368 256C368 317.856 317.856 368 256 368Z" fill="white"/>
+  
+  <!-- AI Sparkle accents -->
+  <!-- Top sparkle -->
+  <g transform="translate(370, 130)">
+    <path d="M16 0L18.4 11.2L29.6 13.6L18.4 16L16 27.2L13.6 16L2.4 13.6L13.6 11.2L16 0Z" fill="#4FACFE"/>
+  </g>
+  
+  <!-- Middle sparkle -->
+  <g transform="translate(400, 240)">
+    <path d="M12 0L13.8 8.4L22.2 10.2L13.8 12L12 20.4L10.2 12L1.8 10.2L10.2 8.4L12 0Z" fill="#00F2FE"/>
+  </g>
+  
+  <!-- Bottom sparkle -->
+  <g transform="translate(360, 360)">
+    <path d="M10 0L11.5 7L18.5 8.5L11.5 10L10 17L8.5 10L1.5 8.5L8.5 7L10 0Z" fill="#A78BFA"/>
+  </g>
+  
+  <!-- Small sparkle inside O -->
+  <g transform="translate(290, 200)">
+    <path d="M8 0L9.2 5.6L14.8 6.8L9.2 8L8 13.6L6.8 8L1.2 6.8L6.8 5.6L8 0Z" fill="white" opacity="0.6"/>
+  </g>
+</svg>
