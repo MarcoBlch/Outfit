@@ -1,4 +1,4 @@
-\restrict Tf5klkKL71dePTYySNDZoSegH2qhVtbgJNmlnuHQ0BS4dEdMTh76j1Vk8pHXaLJ
+\restrict 5GfVTGTRqBxeZwpRjaMnzIogxqNMZOzQrKWaXINpljzQI9xmKYgVIYZNf3AAhBr
 
 -- Dumped from database version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
 -- Dumped by pg_dump version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
@@ -400,7 +400,12 @@ CREATE TABLE public.user_profiles (
     metadata jsonb DEFAULT '{}'::jsonb,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    presentation_style integer
+    presentation_style integer,
+    occasion_focus jsonb DEFAULT '[]'::jsonb NOT NULL,
+    fit_preference integer,
+    wardrobe_size integer,
+    shopping_frequency integer,
+    primary_goal integer
 );
 
 
@@ -442,7 +447,9 @@ CREATE TABLE public.users (
     subscription_tier character varying DEFAULT 'free'::character varying,
     location character varying,
     admin boolean DEFAULT false NOT NULL,
-    username character varying
+    username character varying,
+    provider character varying,
+    uid character varying
 );
 
 
@@ -970,6 +977,27 @@ CREATE INDEX index_user_profiles_on_body_type ON public.user_profiles USING btre
 
 
 --
+-- Name: index_user_profiles_on_fit_preference; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_profiles_on_fit_preference ON public.user_profiles USING btree (fit_preference);
+
+
+--
+-- Name: index_user_profiles_on_occasion_focus; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_profiles_on_occasion_focus ON public.user_profiles USING gin (occasion_focus);
+
+
+--
+-- Name: index_user_profiles_on_primary_goal; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_profiles_on_primary_goal ON public.user_profiles USING btree (primary_goal);
+
+
+--
 -- Name: index_user_profiles_on_style_preference; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -981,6 +1009,13 @@ CREATE INDEX index_user_profiles_on_style_preference ON public.user_profiles USI
 --
 
 CREATE UNIQUE INDEX index_user_profiles_on_user_id ON public.user_profiles USING btree (user_id);
+
+
+--
+-- Name: index_user_profiles_on_wardrobe_size; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_profiles_on_wardrobe_size ON public.user_profiles USING btree (wardrobe_size);
 
 
 --
@@ -1009,6 +1044,13 @@ CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 --
 
 CREATE INDEX index_users_on_jti ON public.users USING btree (jti);
+
+
+--
+-- Name: index_users_on_provider_and_uid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_provider_and_uid ON public.users USING btree (provider, uid);
 
 
 --
@@ -1194,11 +1236,13 @@ ALTER TABLE ONLY public.wardrobe_items
 -- PostgreSQL database dump complete
 --
 
-\unrestrict Tf5klkKL71dePTYySNDZoSegH2qhVtbgJNmlnuHQ0BS4dEdMTh76j1Vk8pHXaLJ
+\unrestrict 5GfVTGTRqBxeZwpRjaMnzIogxqNMZOzQrKWaXINpljzQI9xmKYgVIYZNf3AAhBr
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260123135837'),
+('20260122150840'),
 ('20260108193500'),
 ('20260108192200'),
 ('20260108120000'),

@@ -12,6 +12,9 @@
     </div>
 
     <%= render "shared/card", classes: "backdrop-blur-xl bg-white/5 border border-white/10" do %>
+      <%# Social login buttons - ABOVE email form for visibility %>
+      <%= render "devise/shared/social_login" %>
+
       <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-6" }) do |f| %>
         <div>
           <%= f.label :email, class: "block text-sm font-medium leading-6 text-white" %>

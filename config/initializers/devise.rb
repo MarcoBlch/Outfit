@@ -273,6 +273,31 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
 
+  # Social login providers
+  if ENV['GOOGLE_CLIENT_ID'].present?
+    config.omniauth :google_oauth2,
+      ENV['GOOGLE_CLIENT_ID'],
+      ENV['GOOGLE_CLIENT_SECRET'],
+      scope: 'email,profile',
+      prompt: 'select_account'
+  end
+
+  if ENV['FACEBOOK_APP_ID'].present?
+    config.omniauth :facebook,
+      ENV['FACEBOOK_APP_ID'],
+      ENV['FACEBOOK_APP_SECRET'],
+      scope: 'email,public_profile'
+  end
+
+  if ENV['APPLE_CLIENT_ID'].present?
+    config.omniauth :apple,
+      ENV['APPLE_CLIENT_ID'],
+      ENV['APPLE_TEAM_ID'],
+      ENV['APPLE_KEY_ID'],
+      ENV['APPLE_PRIVATE_KEY'],
+      scope: 'email name'
+  end
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

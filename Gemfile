@@ -102,3 +102,10 @@ gem "groupdate"
 gem "kaminari"
 gem "paapi", "~> 0.1"
 gem "web-push"
+
+# Social login
+gem "omniauth"
+gem "omniauth-google-oauth2"
+gem "omniauth-facebook"
+gem "omniauth-apple"
+gem "omniauth-rails_csrf_protection"

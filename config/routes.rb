@@ -11,9 +11,15 @@ Rails.application.routes.draw do
   get 'privacy', to: 'pages#privacy', as: :privacy
   get 'terms', to: 'pages#terms', as: :terms
 
+  # Help & Information pages
+  get 'blog', to: 'pages#blog', as: :blog
+  get 'faq', to: 'pages#faq', as: :faq
+  get 'help', to: 'pages#help', as: :help
+
   devise_for :users, controllers: {
     sessions: 'users/sessions',
-    registrations: 'users/registrations'
+    registrations: 'users/registrations',
+    omniauth_callbacks: 'users/omniauth_callbacks'
   }
   
   resources :wardrobe_items do

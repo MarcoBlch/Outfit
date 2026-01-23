@@ -12,28 +12,28 @@
     </div>
 
     <%= render "shared/card", classes: "backdrop-blur-xl bg-white/5 border border-white/10" do %>
-      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-6", data: { controller: "password-toggle" } }) do |f| %>
+      <%# Social login buttons - ABOVE email form for visibility %>
+      <%= render "devise/shared/social_login" %>
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-5", data: { controller: "password-toggle" } }) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
+
+        <%# Pass plan parameter if present (for Premium trial flow) %>
+        <% if params[:plan].present? %>
+          <%= hidden_field_tag :plan, params[:plan] %>
+        <% end %>
 
         <div>
           <%= f.label :email, class: "block text-sm font-medium leading-6 text-white" %>
           <div class="mt-2">
-            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "block w-full rounded-lg border-0 bg-white/5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "you@example.com", class: "block w-full rounded-lg border-0 bg-white/5 py-2.5 px-3 text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" %>
           </div>
-        </div>
-
-        <div>
-          <%= f.label :username, class: "block text-sm font-medium leading-6 text-white" %>
-          <div class="mt-2">
-            <%= f.text_field :username, autocomplete: "username", placeholder: "Choose a username (optional)", class: "block w-full rounded-lg border-0 bg-white/5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" %>
-          </div>
-          <p class="mt-1 text-xs text-gray-400">Leave blank to auto-generate from email</p>
         </div>
 
         <div>
           <%= f.label :password, class: "block text-sm font-medium leading-6 text-white" %>
           <div class="mt-2 relative">
-            <%= f.password_field :password, autocomplete: "new-password", data: { password_toggle_target: "password" }, class: "block w-full rounded-lg border-0 bg-white/5 py-2 pr-10 text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" %>
+            <%= f.password_field :password, autocomplete: "new-password", placeholder: "Create a password", data: { password_toggle_target: "password" }, class: "block w-full rounded-lg border-0 bg-white/5 py-2.5 px-3 pr-10 text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" %>
             <button type="button" data-action="click->password-toggle#toggle" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white transition-colors">
               <svg data-password-toggle-target="eyeIcon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -45,30 +45,25 @@
             </button>
           </div>
           <% if @minimum_password_length %>
-            <p class="mt-1 text-xs text-gray-400"><%= @minimum_password_length %> characters minimum</p>
+            <p class="mt-1.5 text-xs text-gray-400"><%= @minimum_password_length %> characters minimum</p>
           <% end %>
         </div>
 
-        <div>
-          <%= f.label :password_confirmation, class: "block text-sm font-medium leading-6 text-white" %>
-          <div class="mt-2 relative">
-            <%= f.password_field :password_confirmation, autocomplete: "new-password", data: { password_toggle_target: "passwordConfirmation" }, class: "block w-full rounded-lg border-0 bg-white/5 py-2 pr-10 text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" %>
-            <button type="button" data-action="click->password-toggle#toggleConfirmation" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white transition-colors">
-              <svg data-password-toggle-target="eyeIconConfirmation" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-              <svg data-password-toggle-target="eyeOffIconConfirmation" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-              </svg>
-            </button>
-          </div>
-        </div>
+        <%# Username field removed - auto-generated from email %>
+
+        <%# Password confirmation removed - replaced with show/hide toggle %>
 
         <div>
-          <%= f.submit "Sign up", class: "flex w-full justify-center rounded-lg bg-primary px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all shadow-lg shadow-primary/20" %>
+          <%= f.submit "Create account", class: "flex w-full justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all shadow-lg shadow-primary/20" %>
         </div>
       <% end %>
+
+      <p class="mt-4 text-center text-xs text-gray-500">
+        By creating an account, you agree to our
+        <%= link_to "Terms of Service", terms_path, class: "text-primary hover:text-primary-light" %>
+        and
+        <%= link_to "Privacy Policy", privacy_path, class: "text-primary hover:text-primary-light" %>.
+      </p>
     <% end %>
   </div>
 </div>

@@ -3,10 +3,12 @@ class User < ApplicationRecord
   self.primary_key = 'id'
 
   # Include Devise modules FIRST, then JWT strategy
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable are available but not used
+  # :confirmable, :lockable, :timeoutable, :trackable are available but not used
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :jwt_authenticatable, jwt_revocation_strategy: self,
+         :jwt_authenticatable, :omniauthable,
+         jwt_revocation_strategy: self,
+         omniauth_providers: [:google_oauth2, :facebook, :apple],
          authentication_keys: [:email]
 
   # JTIMatcher must be included AFTER devise call
@@ -15,6 +17,31 @@ class User < ApplicationRecord
   # Ensure proper primary key for JWT lookups
   def self.find_for_jwt_authentication(sub)
     find_by(id: sub)
+  end
+
+  # OmniAuth - Create or find user from social login
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0, 20]
+      user.username = generate_unique_username_from_name(auth.info.name || auth.info.email)
+    end
+  end
+
+  def self.generate_unique_username_from_name(name)
+    base_username = name.split('@').first.gsub(/[^a-zA-Z0-9_]/, '_').downcase
+    base_username = "user_#{base_username}" if base_username.length < 3
+    base_username = base_username[0..25] # Max 26 chars to leave room for counter
+
+    potential_username = base_username
+    counter = 1
+
+    while exists?(username: potential_username)
+      potential_username = "#{base_username}#{counter}"
+      counter += 1
+    end
+
+    potential_username
   end
 
   # Validations
