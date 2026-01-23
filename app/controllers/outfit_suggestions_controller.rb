@@ -1,6 +1,5 @@
 class OutfitSuggestionsController < ApplicationController
-  # TEMPORARY: Authentication disabled for AI navigation testing
-  # before_action :authenticate_user!
+  before_action :authenticate_user!
   before_action :check_rate_limit, only: [:create]
 
   def index

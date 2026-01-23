@@ -9,23 +9,23 @@
   }
 %>
 
-<div class="group relative bg-outfit-card hover:bg-outfit-card-hover border border-outfit-border hover:border-white/20 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1">
+<div class="group relative theme-card hover:bg-outfit-card-hover theme-border hover:border-white/20 dark:hover:border-white/20 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1">
   <!-- Gradient Border on Hover -->
   <div class="absolute inset-0 bg-gradient-to-r <%= gradient %> opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity"></div>
 
   <!-- Icon -->
   <div class="relative w-14 h-14 bg-gradient-to-br <%= gradient %> rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <svg class="w-7 h-7 text-white dark:text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" d="<%= icon_paths[icon] %>" />
     </svg>
   </div>
 
   <!-- Content -->
-  <h3 class="text-xl font-semibold text-white mb-3"><%= title %></h3>
-  <p class="text-text-secondary leading-relaxed"><%= description %></p>
+  <h3 class="text-xl font-semibold theme-text mb-3"><%= title %></h3>
+  <p class="theme-text-secondary leading-relaxed"><%= description %></p>
 
   <!-- Arrow Icon -->
-  <div class="mt-4 text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity">
+  <div class="mt-4 text-purple-400 dark:text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity">
     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
     </svg>

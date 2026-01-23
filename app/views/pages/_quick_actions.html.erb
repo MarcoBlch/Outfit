@@ -1,0 +1,60 @@
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <!-- Add Item -->
+  <%= link_to new_wardrobe_item_path, class: "theme-card theme-border border rounded-xl p-6 transition-all duration-200 hover:scale-105 hover:shadow-lg group" do %>
+    <div class="flex flex-col items-center text-center space-y-3">
+      <div class="w-12 h-12 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        </svg>
+      </div>
+      <div>
+        <h3 class="theme-text font-semibold text-lg">Add Item</h3>
+        <p class="theme-text-muted text-sm mt-1">Upload to your wardrobe</p>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Get AI Outfit -->
+  <%= link_to new_outfit_suggestion_path,
+      data: { turbo_frame: "modal" },
+      class: "theme-card theme-border border rounded-xl p-6 transition-all duration-200 hover:scale-105 hover:shadow-lg group relative overflow-hidden" do %>
+    <!-- Gradient background effect -->
+    <div class="absolute inset-0 bg-gradient-to-br from-purple-600/10 to-pink-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+
+    <div class="relative flex flex-col items-center text-center space-y-3">
+      <div class="w-12 h-12 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg>
+      </div>
+      <div>
+        <h3 class="theme-text font-semibold text-lg">Get AI Outfit</h3>
+        <p class="theme-text-muted text-sm mt-1">Smart suggestions for you</p>
+      </div>
+      <span class="absolute top-2 right-2 px-2 py-0.5 bg-purple-600 text-white text-xs font-semibold rounded-full">AI</span>
+    </div>
+  <% end %>
+
+  <!-- Calendar (Coming Soon) -->
+  <div class="theme-card theme-border border rounded-xl p-6 opacity-60 cursor-not-allowed relative group">
+    <div class="flex flex-col items-center text-center space-y-3">
+      <div class="w-12 h-12 rounded-full bg-gray-500 flex items-center justify-center">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+        </svg>
+      </div>
+      <div>
+        <h3 class="theme-text font-semibold text-lg">Calendar</h3>
+        <p class="theme-text-muted text-sm mt-1">Plan your outfits</p>
+      </div>
+      <span class="absolute top-2 right-2 px-2 py-0.5 theme-border border theme-text-muted text-xs font-semibold rounded-full">Coming Soon</span>
+    </div>
+
+    <!-- Tooltip on hover -->
+    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+      <div class="theme-card theme-border border rounded-lg px-3 py-2 shadow-lg">
+        <p class="theme-text-secondary text-xs font-medium">Coming Soon!</p>
+      </div>
+    </div>
+  </div>
+</div>

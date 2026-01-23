@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html class="dark">
   <head>
-    <title>Outfitmaker</title>
+    <title>OutfitMaker.ai</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <!-- Theme Initialization - Prevent flash of wrong theme -->
+    <script>
+      (function() {
+        const saved = localStorage.getItem('outfit-theme');
+        if (saved === 'light') {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
 
     <!-- Performance: Resource Hints for External Domains -->
     <link rel="dns-prefetch" href="//images-na.ssl-images-amazon.com">
@@ -12,17 +24,25 @@
     <link rel="dns-prefetch" href="//replicate.delivery">
     <link rel="preconnect" href="//replicate.delivery" crossorigin>
 
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
 
     <!-- iOS PWA Support -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Outfitmaker">
+    <meta name="apple-mobile-web-app-title" content="OutfitMaker.ai">
     <link rel="apple-touch-icon" href="/icon-192.png">
 
-    <!-- Theme Colors -->
-    <meta name="theme-color" content="#9333ea">
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="<%= asset_path('logo_option_4.svg') %>">
+
+    <!-- Theme Colors - Updated dynamically by theme toggle -->
+    <meta name="theme-color" content="#0F0F0F">
     <meta name="msapplication-TileColor" content="#9333ea">
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
@@ -63,7 +83,10 @@
     </script>
   </head>
 
-  <body class="min-h-screen flex flex-col antialiased selection:bg-primary selection:text-white bg-outfit-bg">
+  <body class="min-h-screen flex flex-col antialiased selection:bg-purple-500 selection:text-white theme-bg theme-text">
+    <!-- Skip Navigation Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <%= render "shared/navbar" %>
     <div id="flash_messages">
       <%= render "shared/flash" %>
@@ -73,8 +96,11 @@
 
     <div data-controller="toast" data-action="image-upload:toast@window->toast#show"></div>
 
-    <main class="flex-grow bg-outfit-bg">
+    <main id="main-content" class="grow theme-bg pb-20 md:pb-0" tabindex="-1">
       <%= yield %>
     </main>
+
+    <!-- Mobile Bottom Navigation (hidden on desktop) -->
+    <%= render "shared/mobile_bottom_nav" if user_signed_in? %>
   </body>
 </html>

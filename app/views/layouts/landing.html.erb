@@ -1,11 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html class="dark">
   <head>
     <title>OutfitMaker.ai - AI-Powered Wardrobe Organizer</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content="Transform your wardrobe with AI. Get instant outfit suggestions, smart organization, and personalized style recommendations. Start free today.">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <!-- Theme Initialization - Prevent flash of wrong theme -->
+    <script>
+      (function() {
+        const saved = localStorage.getItem('outfit-theme');
+        if (saved === 'light') {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
 
     <!-- Open Graph / Social Media -->
     <meta property="og:title" content="OutfitMaker.ai - AI-Powered Wardrobe Organizer">
@@ -19,12 +31,15 @@
     <!-- iOS PWA Support -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="OutfitMaker">
+    <meta name="apple-mobile-web-app-title" content="OutfitMaker.ai">
     <link rel="apple-touch-icon" href="/icon-192.png">
 
-    <!-- Theme Colors - Dark theme for modern landing -->
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="<%= asset_path('logo_option_4.svg') %>">
+
+    <!-- Theme Colors - Updated dynamically by theme toggle -->
     <meta name="theme-color" content="#0F0F0F">
-    <meta name="msapplication-TileColor" content="#0F0F0F">
+    <meta name="msapplication-TileColor" content="#9333ea">
 
     <!-- Google Fonts - Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,20 +57,15 @@
         plausible.init()
       </script>
     <% end %>
-
-    <style>
-      /* Dark theme for modern landing page */
-      body {
-        background-color: #0F0F0F !important;
-        color: #FFFFFF !important;
-      }
-    </style>
   </head>
 
-  <body class="min-h-screen antialiased scroll-smooth" style="background-color: #0F0F0F; color: #FFFFFF;" data-controller="scroll-animation">
+  <body class="min-h-screen antialiased scroll-smooth theme-bg theme-text" data-controller="scroll-animation">
+    <!-- Skip Navigation Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <%= turbo_frame_tag "modal" %>
 
-    <main>
+    <main id="main-content" tabindex="-1">
       <%= yield %>
     </main>
   </body>

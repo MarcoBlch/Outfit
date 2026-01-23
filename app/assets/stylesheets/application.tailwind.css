@@ -13,22 +13,6 @@
   --color-indigo-600: 239 84% 57%;
   --color-indigo-700: 239 76% 48%;
 
-  /* Dark Theme Colors for Modern Landing */
-  --color-outfit-bg: 0 0% 6%; /* #0F0F0F */
-  --color-outfit-card: 0 0% 10%; /* #1A1A1B */
-  --color-outfit-card-hover: 0 0% 14%; /* #242526 */
-  --color-outfit-border: 0 0% 17%; /* #2A2A2C */
-  --color-text-primary: 0 0% 100%; /* #FFFFFF */
-  --color-text-secondary: 0 0% 63%; /* #A0A0A3 */
-  --color-text-muted: 0 0% 42%; /* #6B6B6E */
-
-  --color-bg-dark: 222 47% 11%; /* Deep Slate */
-  --color-bg-card: 217 33% 17%; /* Lighter Slate */
-  --color-bg-glass: 217 33% 17% / 0.7; /* Glassmorphism base */
-
-  --color-text-main: 210 40% 98%;
-  --color-text-muted: 215 20% 65%;
-
   /* Font Family */
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
@@ -43,25 +27,134 @@
   --animate-gradient: gradient 8s linear infinite;
 }
 
+/* ============================================
+   THEME SYSTEM - Light/Dark Mode Support
+   ============================================ */
+
+/* Light Mode (default for accessibility) */
+:root {
+  /* Background Colors */
+  --color-outfit-bg: 0 0% 98%; /* #FAFAFA */
+  --color-outfit-card: 0 0% 100%; /* #FFFFFF */
+  --color-outfit-card-hover: 0 0% 96%; /* #F5F5F5 */
+  --color-outfit-border: 0 0% 90%; /* #E5E5E5 */
+
+  /* Text Colors */
+  --color-text-primary: 0 0% 9%; /* #171717 */
+  --color-text-secondary: 0 0% 38%; /* #616161 */
+  --color-text-muted: 0 0% 55%; /* #8C8C8C */
+
+  /* Glass morphism for light mode */
+  --color-bg-glass: 0 0% 100% / 0.8;
+  --glass-border: 0 0% 0% / 0.08;
+  --glass-blur: blur(12px);
+
+  /* Interactive States */
+  --color-hover-overlay: 0 0% 0% / 0.04;
+  --color-active-overlay: 0 0% 0% / 0.08;
+
+  /* Shadows for light mode */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+/* Dark Mode */
+.dark {
+  /* Background Colors */
+  --color-outfit-bg: 0 0% 6%; /* #0F0F0F */
+  --color-outfit-card: 0 0% 10%; /* #1A1A1B */
+  --color-outfit-card-hover: 0 0% 14%; /* #242526 */
+  --color-outfit-border: 0 0% 17%; /* #2A2A2C */
+
+  /* Text Colors */
+  --color-text-primary: 0 0% 100%; /* #FFFFFF */
+  --color-text-secondary: 0 0% 63%; /* #A0A0A3 */
+  --color-text-muted: 0 0% 42%; /* #6B6B6E */
+
+  /* Glass morphism for dark mode */
+  --color-bg-glass: 0 0% 10% / 0.7;
+  --glass-border: 0 0% 100% / 0.1;
+  --glass-blur: blur(12px);
+
+  /* Interactive States */
+  --color-hover-overlay: 0 0% 100% / 0.04;
+  --color-active-overlay: 0 0% 100% / 0.08;
+
+  /* Shadows for dark mode (subtle glow effect) */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+}
+
+/* Legacy variables for backward compatibility */
+.dark {
+  --color-bg-dark: 222 47% 11%;
+  --color-bg-card: 217 33% 17%;
+  --color-text-main: 210 40% 98%;
+}
+
 /* Custom Utilities for Glassmorphism */
 @utility glass {
-  background-color: var(--color-bg-glass);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgb(255 255 255 / 0.1);
+  background-color: hsl(var(--color-bg-glass));
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid hsl(var(--glass-border));
 }
 
 @utility glass-hover {
   @apply transition-all duration-300;
   &:hover {
-    background-color: rgb(255 255 255 / 0.1);
-    border-color: rgb(255 255 255 / 0.2);
+    background-color: hsl(var(--color-hover-overlay));
+    border-color: hsl(var(--glass-border));
   }
 }
 
+/* Theme-aware utility classes */
+@utility theme-bg {
+  background-color: hsl(var(--color-outfit-bg));
+}
+
+@utility theme-card {
+  background-color: hsl(var(--color-outfit-card));
+}
+
+@utility theme-card-hover {
+  &:hover {
+    background-color: hsl(var(--color-outfit-card-hover));
+  }
+}
+
+@utility theme-border {
+  border-color: hsl(var(--color-outfit-border));
+}
+
+@utility theme-text {
+  color: hsl(var(--color-text-primary));
+}
+
+@utility theme-text-secondary {
+  color: hsl(var(--color-text-secondary));
+}
+
+@utility theme-text-muted {
+  color: hsl(var(--color-text-muted));
+}
+
+/* Base body styles with smooth theme transition */
 body {
   background-color: hsl(var(--color-outfit-bg));
   color: hsl(var(--color-text-primary));
   font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Smooth transitions for theme switching */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 /* Toast Notification Animations */
@@ -136,9 +229,10 @@ body {
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-6 py-3 border-2 text-white font-medium rounded-xl transition-all duration-200;
+    @apply inline-flex items-center justify-center px-6 py-3 border-2 font-medium rounded-xl transition-all duration-200;
     background-color: hsl(var(--color-outfit-card));
     border-color: rgba(139, 92, 246, 0.5);
+    color: hsl(var(--color-text-primary));
   }
 
   .btn-secondary:hover {
@@ -146,10 +240,36 @@ body {
     border-color: rgb(139, 92, 246);
   }
 
+  /* Ghost button - transparent background */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-6 py-3 font-medium rounded-xl transition-all duration-200;
+    background-color: transparent;
+    color: hsl(var(--color-text-primary));
+  }
+
+  .btn-ghost:hover {
+    background-color: hsl(var(--color-hover-overlay));
+  }
+
+  /* Danger button */
+  .btn-danger {
+    @apply inline-flex items-center justify-center px-6 py-3 text-white font-medium rounded-xl transition-all duration-200;
+    background-color: #dc2626;
+  }
+
+  .btn-danger:hover {
+    background-color: #b91c1c;
+  }
+
   .btn-lg {
     @apply px-8 py-4 text-lg;
   }
 
+  .btn-sm {
+    @apply px-4 py-2 text-sm;
+  }
+
+  /* Gradient backgrounds */
   .bg-gradient-primary {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   }
@@ -161,4 +281,154 @@ body {
   .bg-gradient-accent {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
   }
+
+  /* Card component */
+  .card {
+    background-color: hsl(var(--color-outfit-card));
+    border: 1px solid hsl(var(--color-outfit-border));
+    border-radius: 1rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  .card:hover {
+    background-color: hsl(var(--color-outfit-card-hover));
+  }
+
+  /* Input styles */
+  .input {
+    background-color: hsl(var(--color-outfit-card));
+    border: 1px solid hsl(var(--color-outfit-border));
+    color: hsl(var(--color-text-primary));
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .input:focus {
+    outline: none;
+    border-color: #8B5CF6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+  }
+
+  .input::placeholder {
+    color: hsl(var(--color-text-muted));
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY - WCAG 2.1 AA Compliance
+   ============================================ */
+
+/* Focus visible styles - clear visual indicator for keyboard navigation */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #8B5CF6;
+  outline-offset: 2px;
+}
+
+/* High contrast focus for buttons */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-ghost:focus-visible,
+.btn-danger:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px #8B5CF6;
+}
+
+/* Skip to main content link - hidden until focused */
+.skip-link {
+  position: absolute;
+  top: -50px;
+  left: 16px;
+  background: #8B5CF6;
+  color: white;
+  padding: 12px 24px;
+  z-index: 9999;
+  text-decoration: none;
+  border-radius: 0 0 12px 12px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: none;
+}
+
+/* Reduced motion preference - respect user settings */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-float,
+  .animate-gradient,
+  .animate-fade-in-up,
+  .highlight-fade-in {
+    animation: none !important;
+  }
+}
+
+/* Ensure sufficient color contrast for interactive elements */
+a {
+  text-decoration-skip-ink: auto;
+}
+
+/* Make sure disabled states are clearly visible */
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Screen reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Focus visible only (not focus) for cleaner UX */
+.focus-visible-only:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Live region announcement for screen readers */
+[aria-live] {
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+[aria-live].visible {
+  clip: auto;
+  clip-path: none;
+  height: auto;
+  overflow: visible;
+  position: static;
+  white-space: normal;
+  width: auto;
 }

@@ -1,6 +1,5 @@
 class PagesController < ApplicationController
-  # TEMPORARY: Authentication disabled for AI navigation testing
-  # before_action :authenticate_user!, except: [:privacy, :terms]
+  before_action :authenticate_user!, except: [:privacy, :terms]
 
   def home
     # Eager load image attachments to avoid N+1 queries
@@ -27,5 +26,14 @@ class PagesController < ApplicationController
   end
 
   def terms
+  end
+
+  def blog
+  end
+
+  def faq
+  end
+
+  def help
   end
 end

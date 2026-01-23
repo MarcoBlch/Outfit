@@ -57,3 +57,9 @@ application.register("upload", UploadController)
 
 import VideoModalController from "./video_modal_controller"
 application.register("video-modal", VideoModalController)
+
+import ThemeToggleController from "./theme_toggle_controller"
+application.register("theme-toggle", ThemeToggleController)
+
+import QuizWizardController from "./quiz_wizard_controller"
+application.register("quiz-wizard", QuizWizardController)

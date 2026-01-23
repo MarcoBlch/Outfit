@@ -1,0 +1,67 @@
+<%# Mobile Bottom Navigation - App-like experience on mobile %>
+<%# Hidden on desktop (md:hidden), fixed at bottom %>
+
+<nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 theme-card border-t theme-border safe-area-bottom"
+     data-controller="mobile-bottom-nav"
+     aria-label="Mobile navigation">
+  <div class="flex justify-around items-center h-16 px-2">
+    <%# Home/Dashboard %>
+    <%= link_to root_path,
+        class: "flex flex-col items-center justify-center flex-1 py-2 min-h-[44px] rounded-lg transition-colors #{current_page?(root_path) ? 'text-purple-500' : 'theme-text-secondary hover:text-purple-400'}",
+        aria: { label: "Dashboard", current: current_page?(root_path) ? "page" : nil } do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+      </svg>
+      <span class="text-xs mt-1 font-medium">Home</span>
+    <% end %>
+
+    <%# Wardrobe %>
+    <%= link_to wardrobe_items_path,
+        class: "flex flex-col items-center justify-center flex-1 py-2 min-h-[44px] rounded-lg transition-colors #{current_page?(wardrobe_items_path) ? 'text-purple-500' : 'theme-text-secondary hover:text-purple-400'}",
+        aria: { label: "Wardrobe", current: current_page?(wardrobe_items_path) ? "page" : nil } do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" />
+      </svg>
+      <span class="text-xs mt-1 font-medium">Wardrobe</span>
+    <% end %>
+
+    <%# Center FAB - Add Item %>
+    <div class="flex flex-col items-center justify-center flex-1">
+      <%= link_to new_wardrobe_item_path,
+          class: "flex items-center justify-center w-14 h-14 -mt-5 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all",
+          aria: { label: "Add new item" },
+          data: { turbo_frame: "modal" } do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-7 h-7">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+      <% end %>
+    </div>
+
+    <%# Outfits %>
+    <%= link_to outfits_path,
+        class: "flex flex-col items-center justify-center flex-1 py-2 min-h-[44px] rounded-lg transition-colors #{current_page?(outfits_path) ? 'text-purple-500' : 'theme-text-secondary hover:text-purple-400'}",
+        aria: { label: "Outfits", current: current_page?(outfits_path) ? "page" : nil } do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
+      </svg>
+      <span class="text-xs mt-1 font-medium">Outfits</span>
+    <% end %>
+
+    <%# Profile %>
+    <%= link_to edit_user_profile_path,
+        class: "flex flex-col items-center justify-center flex-1 py-2 min-h-[44px] rounded-lg transition-colors #{current_page?(edit_user_profile_path) ? 'text-purple-500' : 'theme-text-secondary hover:text-purple-400'}",
+        aria: { label: "Profile", current: current_page?(edit_user_profile_path) ? "page" : nil } do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+      </svg>
+      <span class="text-xs mt-1 font-medium">Profile</span>
+    <% end %>
+  </div>
+</nav>
+
+<style>
+  /* Safe area for devices with home indicator (iPhone X+) */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+</style>

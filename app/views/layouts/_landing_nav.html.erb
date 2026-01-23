@@ -1,9 +1,9 @@
-<nav class="fixed top-0 left-0 right-0 z-50 bg-outfit-bg/80 backdrop-blur-lg border-b border-outfit-border" data-controller="mobile-menu">
+<nav class="fixed top-0 left-0 right-0 z-50 theme-bg/80 backdrop-blur-lg border-b theme-border" data-controller="mobile-menu">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <!-- Logo -->
       <%= link_to root_path, class: "flex items-center space-x-2 group" do %>
-        <%= image_tag 'logo_option_4.svg', class: "w-10 h-10 group-hover:scale-105 transition-transform", alt: "OutfitMaker.ai Logo" %>
+        <%= image_tag 'logo_option_4.svg', class: 'w-8 h-8 rounded-lg', alt: 'OutfitMaker.ai' %>
         <span class="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
           OutfitMaker.ai
         </span>
@@ -11,14 +11,25 @@
 
       <!-- Desktop Navigation -->
       <div class="hidden md:flex items-center space-x-8">
-        <%= link_to 'Features', '#features', class: 'text-text-secondary hover:text-text-primary transition-colors' %>
-        <%= link_to 'How It Works', '#how-it-works', class: 'text-text-secondary hover:text-text-primary transition-colors' %>
-        <%= link_to 'Pricing', '#pricing', class: 'text-text-secondary hover:text-text-primary transition-colors' %>
+        <%= link_to 'Features', '#features', class: 'theme-text-secondary hover:theme-text transition-colors' %>
+        <%= link_to 'How It Works', '#how-it-works', class: 'theme-text-secondary hover:theme-text transition-colors' %>
+        <%= link_to 'Pricing', '#pricing', class: 'theme-text-secondary hover:theme-text transition-colors' %>
       </div>
 
-      <!-- CTA Buttons -->
+      <!-- CTA Buttons & Theme Toggle -->
       <div class="hidden md:flex items-center space-x-4">
-        <%= link_to 'Sign In', new_user_session_path, class: 'text-text-secondary hover:text-text-primary transition-colors' %>
+        <button type="button"
+                class="p-2 theme-text-secondary hover:theme-text transition-colors"
+                data-controller="theme-toggle"
+                data-action="click->theme-toggle#toggle"
+                aria-label="Toggle theme">
+          <span data-theme-toggle-target="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+            </svg>
+          </span>
+        </button>
+        <%= link_to 'Sign In', new_user_session_path, class: 'theme-text-secondary hover:theme-text transition-colors' %>
         <%= link_to new_user_registration_path, class: 'btn-primary inline-flex items-center' do %>
           Get Started Free
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -27,23 +38,36 @@
         <% end %>
       </div>
 
-      <!-- Mobile Menu Button -->
-      <button type="button" class="md:hidden p-2 text-text-secondary" data-action="click->mobile-menu#toggle">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
+      <!-- Mobile Menu Button & Theme Toggle -->
+      <div class="md:hidden flex items-center space-x-2">
+        <button type="button"
+                class="p-2 theme-text-secondary"
+                data-controller="theme-toggle"
+                data-action="click->theme-toggle#toggle"
+                aria-label="Toggle theme">
+          <span data-theme-toggle-target="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+            </svg>
+          </span>
+        </button>
+        <button type="button" class="p-2 theme-text-secondary" data-action="click->mobile-menu#toggle">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 
   <!-- Mobile Menu -->
   <div class="md:hidden hidden" data-mobile-menu-target="menu">
-    <div class="px-4 pt-2 pb-4 space-y-2 bg-outfit-card border-t border-outfit-border">
-      <%= link_to 'Features', '#features', class: 'block py-2 text-text-secondary hover:text-text-primary' %>
-      <%= link_to 'How It Works', '#how-it-works', class: 'block py-2 text-text-secondary hover:text-text-primary' %>
-      <%= link_to 'Pricing', '#pricing', class: 'block py-2 text-text-secondary hover:text-text-primary' %>
+    <div class="px-4 pt-2 pb-4 space-y-2 theme-card border-t theme-border">
+      <%= link_to 'Features', '#features', class: 'block py-2 theme-text-secondary hover:theme-text' %>
+      <%= link_to 'How It Works', '#how-it-works', class: 'block py-2 theme-text-secondary hover:theme-text' %>
+      <%= link_to 'Pricing', '#pricing', class: 'block py-2 theme-text-secondary hover:theme-text' %>
       <div class="pt-4 space-y-2">
-        <%= link_to 'Sign In', new_user_session_path, class: 'block py-2 text-center text-text-secondary' %>
+        <%= link_to 'Sign In', new_user_session_path, class: 'block py-2 text-center theme-text-secondary' %>
         <%= link_to 'Get Started Free', new_user_registration_path, class: 'block btn-primary text-center' %>
       </div>
     </div>

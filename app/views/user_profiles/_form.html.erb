@@ -1,162 +1,507 @@
-<%= form_with model: user_profile, url: user_profile.persisted? ? user_profile_path : user_profile_path, method: user_profile.persisted? ? :patch : :post, id: "profile-form", data: { turbo_frame: "modal" }, class: "space-y-6" do |f| %>
-
-  <!-- Question 1: Style Preference -->
-  <div class="space-y-3">
-    <label class="block text-sm font-medium text-gray-300">
-      <span class="flex items-center space-x-2">
-        <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">1</span>
-        <span>What's your go-to style?</span>
-      </span>
-    </label>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-      <% UserProfile.style_preferences.keys.each do |style| %>
-        <div class="relative">
-          <%= f.radio_button :style_preference, style, id: "style_#{style}", class: "peer absolute opacity-0" %>
-          <label for="style_<%= style %>" class="flex flex-col items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold bg-gray-800/50 text-gray-400 border-gray-700 hover:border-gray-600 hover:text-gray-300">
-            <span class="text-xs font-medium capitalize"><%= style.humanize %></span>
-          </label>
-        </div>
-      <% end %>
+<div class="max-w-4xl mx-auto">
+  <!-- Progress Header -->
+  <div class="mb-8 sticky top-0 theme-bg/95 backdrop-blur-sm z-10 pb-6 pt-2">
+    <div class="flex items-center justify-between mb-3">
+      <div class="flex items-center space-x-3">
+        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>
+        <h2 class="text-xl font-semibold theme-text">Style Quiz</h2>
+      </div>
+      <span class="text-sm font-medium theme-text-secondary" data-quiz-wizard-target="progressText">1 of 10</span>
     </div>
-    <% if user_profile.errors[:style_preference].any? %>
-      <p class="text-sm text-red-400"><%= user_profile.errors[:style_preference].first %></p>
-    <% end %>
-  </div>
 
-  <!-- Question 2: Body Type -->
-  <div class="space-y-3">
-    <label class="block text-sm font-medium text-gray-300">
-      <span class="flex items-center space-x-2">
-        <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">2</span>
-        <span>What's your body type?</span>
-      </span>
-    </label>
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-      <% UserProfile.body_types.keys.each do |body| %>
-        <div class="relative">
-          <%= f.radio_button :body_type, body, id: "body_#{body}", class: "peer absolute opacity-0" %>
-          <label for="body_<%= body %>" class="flex flex-col items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold bg-gray-800/50 text-gray-400 border-gray-700 hover:border-gray-600 hover:text-gray-300">
-            <span class="text-xs font-medium capitalize"><%= body.to_s.humanize %></span>
-          </label>
-        </div>
-      <% end %>
-    </div>
-    <% if user_profile.errors[:body_type].any? %>
-      <p class="text-sm text-red-400"><%= user_profile.errors[:body_type].first %></p>
-    <% end %>
-  </div>
-
-  <!-- Question 3: Presentation Style -->
-  <div class="space-y-3">
-    <label class="block text-sm font-medium text-gray-300">
-      <span class="flex items-center space-x-2">
-        <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">3</span>
-        <span>How do you prefer to present your style?</span>
-      </span>
-    </label>
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-      <% UserProfile.presentation_styles.keys.each do |presentation| %>
-        <div class="relative">
-          <%= f.radio_button :presentation_style, presentation, id: "presentation_#{presentation}", class: "peer absolute opacity-0" %>
-          <label for="presentation_<%= presentation %>" class="flex flex-col items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold bg-gray-800/50 text-gray-400 border-gray-700 hover:border-gray-600 hover:text-gray-300">
-            <span class="text-xs font-medium capitalize"><%= presentation.to_s.humanize %></span>
-          </label>
-        </div>
-      <% end %>
-    </div>
-    <p class="text-xs text-gray-500">This helps us suggest outfits that match your personal style expression</p>
-    <% if user_profile.errors[:presentation_style].any? %>
-      <p class="text-sm text-red-400"><%= user_profile.errors[:presentation_style].first %></p>
-    <% end %>
-  </div>
-
-  <!-- Question 4: Age Range -->
-  <div class="space-y-3">
-    <label class="block text-sm font-medium text-gray-300">
-      <span class="flex items-center space-x-2">
-        <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">4</span>
-        <span>What's your age range?</span>
-      </span>
-    </label>
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-      <% %w[18-24 25-34 35-44 45-54 55+].each do |age| %>
-        <div class="relative">
-          <%= f.radio_button :age_range, age, id: "age_#{age.gsub(/[^0-9a-z]/i, '')}", class: "peer absolute opacity-0" %>
-          <label for="age_<%= age.gsub(/[^0-9a-z]/i, '') %>" class="flex flex-col items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold bg-gray-800/50 text-gray-400 border-gray-700 hover:border-gray-600 hover:text-gray-300">
-            <span class="text-sm font-medium"><%= age %></span>
-          </label>
-        </div>
-      <% end %>
-    </div>
-    <% if user_profile.errors[:age_range].any? %>
-      <p class="text-sm text-red-400"><%= user_profile.errors[:age_range].first %></p>
-    <% end %>
-  </div>
-
-  <!-- Question 5: Favorite Colors -->
-  <div class="space-y-3">
-    <label class="block text-sm font-medium text-gray-300">
-      <span class="flex items-center space-x-2">
-        <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">5</span>
-        <span>What are your favorite colors? (Select 2-5)</span>
-      </span>
-    </label>
-    <div class="grid grid-cols-4 md:grid-cols-8 gap-3">
-      <% colors = [
-        { name: 'Black', hex: '#000000' },
-        { name: 'White', hex: '#FFFFFF' },
-        { name: 'Gray', hex: '#6B7280' },
-        { name: 'Navy', hex: '#1E3A8A' },
-        { name: 'Blue', hex: '#3B82F6' },
-        { name: 'Red', hex: '#EF4444' },
-        { name: 'Pink', hex: '#EC4899' },
-        { name: 'Purple', hex: '#A855F7' },
-        { name: 'Green', hex: '#10B981' },
-        { name: 'Yellow', hex: '#F59E0B' },
-        { name: 'Orange', hex: '#F97316' },
-        { name: 'Brown', hex: '#92400E' },
-        { name: 'Beige', hex: '#D4B5A0' },
-        { name: 'Burgundy', hex: '#7C2D12' },
-        { name: 'Teal', hex: '#14B8A6' },
-        { name: 'Olive', hex: '#84CC16' }
-      ] %>
-      <% colors.each do |color| %>
-        <div class="relative">
-          <%= f.check_box :favorite_colors, {
-            multiple: true,
-            id: "color_#{color[:name].downcase}",
-            class: "peer absolute opacity-0",
-            checked: user_profile.favorite_colors.include?(color[:name])
-          }, color[:name], nil %>
-          <label for="color_<%= color[:name].downcase %>" class="flex flex-col items-center justify-center p-3 rounded-xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:border-purple-500 peer-checked:scale-105 bg-gray-800/50 border-gray-700 hover:border-gray-600 hover:bg-gray-800/70">
-            <div class="w-8 h-8 rounded-full mb-1 <%= color[:hex] == '#FFFFFF' ? 'border border-gray-600' : '' %>" style="background-color: <%= color[:hex] %>"></div>
-            <span class="text-xs peer-checked:text-white peer-checked:font-semibold text-gray-400"><%= color[:name] %></span>
-          </label>
-        </div>
-      <% end %>
+    <!-- Progress Bar -->
+    <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2 overflow-hidden">
+      <div
+        data-quiz-wizard-target="progressBar"
+        class="bg-gradient-to-r from-purple-600 to-pink-600 h-full transition-all duration-500 ease-out"
+        style="width: 10%">
+      </div>
     </div>
   </div>
 
-  <!-- Question 6: Location -->
-  <div class="space-y-3">
-    <label for="user_profile_location" class="block text-sm font-medium text-gray-300">
-      <span class="flex items-center space-x-2">
-        <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-600/20 text-purple-400 rounded-full text-xs font-bold">6</span>
-        <span>Where are you located? (For weather-aware suggestions)</span>
-      </span>
-    </label>
-    <%= f.text_field :location,
-      placeholder: "e.g., New York, NY or London, UK",
-      class: "w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" %>
-    <p class="text-xs text-gray-500">This helps us suggest weather-appropriate outfits</p>
-    <% if user_profile.errors[:location].any? %>
-      <p class="text-sm text-red-400"><%= user_profile.errors[:location].first %></p>
-    <% end %>
-  </div>
+  <%= form_with model: user_profile,
+    url: user_profile.persisted? ? user_profile_path : user_profile_path,
+    method: user_profile.persisted? ? :patch : :post,
+    id: "profile-form",
+    data: {
+      controller: "quiz-wizard",
+      turbo_frame: "modal",
+      action: "submit->quiz-wizard#submit"
+    },
+    class: "space-y-8" do |f| %>
 
-  <!-- Submit Button -->
-  <div class="pt-4">
-    <%= f.submit user_profile.persisted? ? "Update Profile" : "Complete Profile",
-      class: "w-full px-6 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium rounded-xl shadow-lg shadow-purple-600/20 hover:shadow-purple-600/40 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" %>
-  </div>
-<% end %>
+    <!-- Step 1: Personal Style Preference -->
+    <div data-quiz-wizard-target="step" data-optional="false" class="space-y-6">
+      <div class="space-y-3">
+        <h3 class="text-2xl font-bold theme-text flex items-center space-x-3">
+          <span class="inline-flex items-center justify-center w-10 h-10 bg-purple-600/20 text-purple-500 rounded-full text-lg font-bold">1</span>
+          <span>What's your go-to style?</span>
+        </h3>
+        <p class="theme-text-secondary text-sm pl-13">Choose the style that best represents your everyday look</p>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
+          <% [
+            { value: 'casual', icon: '👕', label: 'Casual' },
+            { value: 'business_casual', icon: '👔', label: 'Business Casual' },
+            { value: 'formal', icon: '🎩', label: 'Formal' },
+            { value: 'streetwear', icon: '👟', label: 'Streetwear' },
+            { value: 'minimalist', icon: '⚪', label: 'Minimalist' },
+            { value: 'bohemian', icon: '🌸', label: 'Bohemian' },
+            { value: 'eclectic', icon: '🎨', label: 'Eclectic' }
+          ].each do |style| %>
+            <div class="relative">
+              <%= f.radio_button :style_preference, style[:value], id: "style_#{style[:value]}", class: "peer absolute opacity-0" %>
+              <label for="style_<%= style[:value] %>" class="flex flex-col items-center justify-center p-6 rounded-2xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold peer-checked:scale-105 theme-card theme-text-secondary border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/70">
+                <span class="text-3xl mb-2"><%= style[:icon] %></span>
+                <span class="text-sm font-medium text-center"><%= style[:label] %></span>
+              </label>
+            </div>
+          <% end %>
+        </div>
+
+        <div data-quiz-wizard-target="validationError" class="hidden p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <p class="text-sm text-red-400 flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+            <span>Please select a style preference to continue</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Color Preferences -->
+    <div data-quiz-wizard-target="step" data-optional="false" class="hidden space-y-6">
+      <div class="space-y-3">
+        <h3 class="text-2xl font-bold theme-text flex items-center space-x-3">
+          <span class="inline-flex items-center justify-center w-10 h-10 bg-purple-600/20 text-purple-500 rounded-full text-lg font-bold">2</span>
+          <span>What are your favorite colors?</span>
+        </h3>
+        <p class="theme-text-secondary text-sm pl-13">Select 2-5 colors you love to wear</p>
+
+        <div data-quiz-wizard-target="checkboxGroup" class="grid grid-cols-4 md:grid-cols-8 gap-3 pt-4">
+          <% [
+            { name: 'Black', hex: '#000000' },
+            { name: 'White', hex: '#FFFFFF' },
+            { name: 'Gray', hex: '#6B7280' },
+            { name: 'Navy', hex: '#1E3A8A' },
+            { name: 'Blue', hex: '#3B82F6' },
+            { name: 'Red', hex: '#EF4444' },
+            { name: 'Pink', hex: '#EC4899' },
+            { name: 'Purple', hex: '#A855F7' },
+            { name: 'Green', hex: '#10B981' },
+            { name: 'Yellow', hex: '#F59E0B' },
+            { name: 'Orange', hex: '#F97316' },
+            { name: 'Brown', hex: '#92400E' },
+            { name: 'Beige', hex: '#D4B5A0' },
+            { name: 'Burgundy', hex: '#7C2D12' },
+            { name: 'Teal', hex: '#14B8A6' },
+            { name: 'Olive', hex: '#84CC16' }
+          ].each do |color| %>
+            <div class="relative">
+              <%= f.check_box :favorite_colors, {
+                multiple: true,
+                id: "color_#{color[:name].downcase}",
+                class: "peer absolute opacity-0",
+                checked: user_profile.favorite_colors.include?(color[:name])
+              }, color[:name], nil %>
+              <label for="color_<%= color[:name].downcase %>" class="flex flex-col items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:border-purple-500 peer-checked:scale-110 theme-card border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/70">
+                <div class="w-10 h-10 rounded-full mb-2 shadow-lg <%= color[:hex] == '#FFFFFF' ? 'border border-gray-300 dark:border-gray-600' : '' %>" style="background-color: <%= color[:hex] %>"></div>
+                <span class="text-xs font-medium theme-text-secondary peer-checked:text-white text-center"><%= color[:name] %></span>
+              </label>
+            </div>
+          <% end %>
+        </div>
+
+        <div data-quiz-wizard-target="validationError" class="hidden p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <p class="text-sm text-red-400 flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+            <span>Please select at least 2 colors to continue</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Occasion Focus -->
+    <div data-quiz-wizard-target="step" data-optional="false" class="hidden space-y-6">
+      <div class="space-y-3">
+        <h3 class="text-2xl font-bold theme-text flex items-center space-x-3">
+          <span class="inline-flex items-center justify-center w-10 h-10 bg-purple-600/20 text-purple-500 rounded-full text-lg font-bold">3</span>
+          <span>What occasions do you dress for?</span>
+        </h3>
+        <p class="theme-text-secondary text-sm pl-13">Select all that apply to help us suggest the right outfits</p>
+
+        <div data-quiz-wizard-target="checkboxGroup" class="grid grid-cols-2 md:grid-cols-3 gap-4 pt-4">
+          <% [
+            { value: 'work', icon: '💼', label: 'Work' },
+            { value: 'casual', icon: '☕', label: 'Casual' },
+            { value: 'formal', icon: '🎭', label: 'Formal Events' },
+            { value: 'date_night', icon: '💕', label: 'Date Night' },
+            { value: 'weekend', icon: '🌴', label: 'Weekend' },
+            { value: 'travel', icon: '✈️', label: 'Travel' },
+            { value: 'fitness', icon: '🏃', label: 'Fitness' }
+          ].each do |occasion| %>
+            <div class="relative">
+              <%= check_box_tag 'user_profile[occasion_focus][]', occasion[:value],
+                user_profile.occasion_focus_list.include?(occasion[:value]),
+                id: "occasion_#{occasion[:value]}",
+                class: "peer absolute opacity-0" %>
+              <label for="occasion_<%= occasion[:value] %>" class="flex items-center space-x-3 p-5 rounded-xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold theme-card theme-text-secondary border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/70">
+                <span class="text-2xl"><%= occasion[:icon] %></span>
+                <span class="text-sm font-medium"><%= occasion[:label] %></span>
+              </label>
+            </div>
+          <% end %>
+        </div>
+
+        <div data-quiz-wizard-target="validationError" class="hidden p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <p class="text-sm text-red-400 flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+            <span>Please select at least one occasion to continue</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Fit Preference -->
+    <div data-quiz-wizard-target="step" data-optional="false" class="hidden space-y-6">
+      <div class="space-y-3">
+        <h3 class="text-2xl font-bold theme-text flex items-center space-x-3">
+          <span class="inline-flex items-center justify-center w-10 h-10 bg-purple-600/20 text-purple-500 rounded-full text-lg font-bold">4</span>
+          <span>How do you prefer your clothes to fit?</span>
+        </h3>
+        <p class="theme-text-secondary text-sm pl-13">This helps us suggest items with the right silhouette</p>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
+          <% [
+            { value: 'relaxed', icon: '🛋️', label: 'Relaxed', desc: 'Loose & comfortable' },
+            { value: 'regular', icon: '👕', label: 'Regular', desc: 'Classic fit' },
+            { value: 'fitted', icon: '📏', label: 'Fitted', desc: 'Form-fitting' },
+            { value: 'tailored', icon: '✂️', label: 'Tailored', desc: 'Precisely cut' }
+          ].each do |fit| %>
+            <div class="relative">
+              <%= f.radio_button :fit_preference, fit[:value], id: "fit_#{fit[:value]}", class: "peer absolute opacity-0" %>
+              <label for="fit_<%= fit[:value] %>" class="flex flex-col items-center justify-center p-6 rounded-2xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold peer-checked:scale-105 theme-card theme-text-secondary border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/70">
+                <span class="text-3xl mb-2"><%= fit[:icon] %></span>
+                <span class="text-sm font-semibold text-center mb-1"><%= fit[:label] %></span>
+                <span class="text-xs opacity-75 text-center"><%= fit[:desc] %></span>
+              </label>
+            </div>
+          <% end %>
+        </div>
+
+        <div data-quiz-wizard-target="validationError" class="hidden p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <p class="text-sm text-red-400 flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+            <span>Please select a fit preference to continue</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5: Wardrobe Size -->
+    <div data-quiz-wizard-target="step" data-optional="false" class="hidden space-y-6">
+      <div class="space-y-3">
+        <h3 class="text-2xl font-bold theme-text flex items-center space-x-3">
+          <span class="inline-flex items-center justify-center w-10 h-10 bg-purple-600/20 text-purple-500 rounded-full text-lg font-bold">5</span>
+          <span>How large is your wardrobe?</span>
+        </h3>
+        <p class="theme-text-secondary text-sm pl-13">Approximate number of clothing items you own</p>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
+          <% [
+            { value: 'minimal_under_30', icon: '📦', label: 'Minimal', desc: 'Under 30 items' },
+            { value: 'small_30_to_75', icon: '👕', label: 'Small', desc: '30-75 items' },
+            { value: 'medium_75_to_150', icon: '👔', label: 'Medium', desc: '75-150 items' },
+            { value: 'large_150_plus', icon: '🏪', label: 'Large', desc: '150+ items' }
+          ].each do |size| %>
+            <div class="relative">
+              <%= f.radio_button :wardrobe_size, size[:value], id: "wardrobe_#{size[:value]}", class: "peer absolute opacity-0" %>
+              <label for="wardrobe_<%= size[:value] %>" class="flex flex-col items-center justify-center p-6 rounded-2xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold peer-checked:scale-105 theme-card theme-text-secondary border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/70">
+                <span class="text-3xl mb-2"><%= size[:icon] %></span>
+                <span class="text-sm font-semibold text-center mb-1"><%= size[:label] %></span>
+                <span class="text-xs opacity-75 text-center"><%= size[:desc] %></span>
+              </label>
+            </div>
+          <% end %>
+        </div>
+
+        <div data-quiz-wizard-target="validationError" class="hidden p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <p class="text-sm text-red-400 flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+            <span>Please select your wardrobe size to continue</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 6: Shopping Frequency -->
+    <div data-quiz-wizard-target="step" data-optional="false" class="hidden space-y-6">
+      <div class="space-y-3">
+        <h3 class="text-2xl font-bold theme-text flex items-center space-x-3">
+          <span class="inline-flex items-center justify-center w-10 h-10 bg-purple-600/20 text-purple-500 rounded-full text-lg font-bold">6</span>
+          <span>How often do you shop for clothes?</span>
+        </h3>
+        <p class="theme-text-secondary text-sm pl-13">This helps us tailor recommendations to your shopping habits</p>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
+          <% [
+            { value: 'rarely', icon: '🐌', label: 'Rarely', desc: 'Once or twice a year' },
+            { value: 'occasionally', icon: '🛍️', label: 'Occasionally', desc: 'Every few months' },
+            { value: 'regularly', icon: '📅', label: 'Regularly', desc: 'Monthly' },
+            { value: 'frequently', icon: '⚡', label: 'Frequently', desc: 'Weekly or more' }
+          ].each do |freq| %>
+            <div class="relative">
+              <%= f.radio_button :shopping_frequency, freq[:value], id: "shopping_#{freq[:value]}", class: "peer absolute opacity-0" %>
+              <label for="shopping_<%= freq[:value] %>" class="flex flex-col items-center justify-center p-6 rounded-2xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold peer-checked:scale-105 theme-card theme-text-secondary border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/70">
+                <span class="text-3xl mb-2"><%= freq[:icon] %></span>
+                <span class="text-sm font-semibold text-center mb-1"><%= freq[:label] %></span>
+                <span class="text-xs opacity-75 text-center"><%= freq[:desc] %></span>
+              </label>
+            </div>
+          <% end %>
+        </div>
+
+        <div data-quiz-wizard-target="validationError" class="hidden p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <p class="text-sm text-red-400 flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+            <span>Please select your shopping frequency to continue</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 7: Budget Range -->
+    <div data-quiz-wizard-target="step" data-optional="true" class="hidden space-y-6">
+      <div class="space-y-3">
+        <h3 class="text-2xl font-bold theme-text flex items-center space-x-3">
+          <span class="inline-flex items-center justify-center w-10 h-10 bg-purple-600/20 text-purple-500 rounded-full text-lg font-bold">7</span>
+          <span>What's your typical budget per item?</span>
+        </h3>
+        <p class="theme-text-secondary text-sm pl-13">Optional - helps us suggest items in your price range</p>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 pt-4">
+          <% [
+            { value: 'budget', icon: '💵', label: 'Budget', desc: 'Under $50' },
+            { value: 'moderate', icon: '💳', label: 'Moderate', desc: '$50-$150' },
+            { value: 'premium', icon: '💎', label: 'Premium', desc: '$150-$300' },
+            { value: 'luxury', icon: '👑', label: 'Luxury', desc: '$300+' },
+            { value: 'flexible', icon: '🎯', label: 'Flexible', desc: 'Varies by item' }
+          ].each do |budget| %>
+            <div class="relative">
+              <%= radio_button_tag 'user_profile[budget_range]', budget[:value],
+                false,
+                id: "budget_#{budget[:value]}",
+                class: "peer absolute opacity-0" %>
+              <label for="budget_<%= budget[:value] %>" class="flex flex-col items-center justify-center p-6 rounded-2xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold peer-checked:scale-105 theme-card theme-text-secondary border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/70">
+                <span class="text-3xl mb-2"><%= budget[:icon] %></span>
+                <span class="text-sm font-semibold text-center mb-1"><%= budget[:label] %></span>
+                <span class="text-xs opacity-75 text-center"><%= budget[:desc] %></span>
+              </label>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 8: Presentation Style -->
+    <div data-quiz-wizard-target="step" data-optional="false" class="hidden space-y-6">
+      <div class="space-y-3">
+        <h3 class="text-2xl font-bold theme-text flex items-center space-x-3">
+          <span class="inline-flex items-center justify-center w-10 h-10 bg-purple-600/20 text-purple-500 rounded-full text-lg font-bold">8</span>
+          <span>How do you prefer to present your style?</span>
+        </h3>
+        <p class="theme-text-secondary text-sm pl-13">This helps us suggest outfits that match your personal expression</p>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 pt-4">
+          <% [
+            { value: 'feminine', icon: '👗', label: 'Feminine' },
+            { value: 'masculine', icon: '🤵', label: 'Masculine' },
+            { value: 'androgynous', icon: '⚡', label: 'Androgynous' },
+            { value: 'fluid', icon: '🌈', label: 'Fluid' },
+            { value: 'prefer_not_to_say', icon: '🔒', label: 'Prefer not to say' }
+          ].each do |presentation| %>
+            <div class="relative">
+              <%= f.radio_button :presentation_style, presentation[:value], id: "presentation_#{presentation[:value]}", class: "peer absolute opacity-0" %>
+              <label for="presentation_<%= presentation[:value] %>" class="flex flex-col items-center justify-center p-6 rounded-2xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold peer-checked:scale-105 theme-card theme-text-secondary border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/70">
+                <span class="text-3xl mb-2"><%= presentation[:icon] %></span>
+                <span class="text-sm font-medium text-center"><%= presentation[:label].humanize %></span>
+              </label>
+            </div>
+          <% end %>
+        </div>
+
+        <div data-quiz-wizard-target="validationError" class="hidden p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <p class="text-sm text-red-400 flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+            <span>Please select a presentation style to continue</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 9: Age Range -->
+    <div data-quiz-wizard-target="step" data-optional="false" class="hidden space-y-6">
+      <div class="space-y-3">
+        <h3 class="text-2xl font-bold theme-text flex items-center space-x-3">
+          <span class="inline-flex items-center justify-center w-10 h-10 bg-purple-600/20 text-purple-500 rounded-full text-lg font-bold">9</span>
+          <span>What's your age range?</span>
+        </h3>
+        <p class="theme-text-secondary text-sm pl-13">Helps us suggest age-appropriate styles and trends</p>
+
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 pt-4">
+          <% [
+            { value: '18-24', icon: '🎓', label: '18-24' },
+            { value: '25-34', icon: '💼', label: '25-34' },
+            { value: '35-44', icon: '🏡', label: '35-44' },
+            { value: '45-54', icon: '👨‍💼', label: '45-54' },
+            { value: '55+', icon: '👴', label: '55+' }
+          ].each do |age| %>
+            <div class="relative">
+              <%= f.radio_button :age_range, age[:value], id: "age_#{age[:value].gsub(/[^0-9a-z]/i, '')}", class: "peer absolute opacity-0" %>
+              <label for="age_<%= age[:value].gsub(/[^0-9a-z]/i, '') %>" class="flex flex-col items-center justify-center p-6 rounded-2xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold peer-checked:scale-105 theme-card theme-text-secondary border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/70">
+                <span class="text-3xl mb-2"><%= age[:icon] %></span>
+                <span class="text-sm font-medium"><%= age[:label] %></span>
+              </label>
+            </div>
+          <% end %>
+        </div>
+
+        <div data-quiz-wizard-target="validationError" class="hidden p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <p class="text-sm text-red-400 flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+            <span>Please select your age range to continue</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 10: Primary Goal -->
+    <div data-quiz-wizard-target="step" data-optional="false" class="hidden space-y-6">
+      <div class="space-y-3">
+        <h3 class="text-2xl font-bold theme-text flex items-center space-x-3">
+          <span class="inline-flex items-center justify-center w-10 h-10 bg-purple-600/20 text-purple-500 rounded-full text-lg font-bold">10</span>
+          <span>What's your primary goal with Outfit?</span>
+        </h3>
+        <p class="theme-text-secondary text-sm pl-13">Choose what matters most to you</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+          <% [
+            { value: 'organize_existing', icon: '📋', label: 'Organize Existing Wardrobe', desc: 'Get my closet organized' },
+            { value: 'get_outfit_ideas', icon: '💡', label: 'Get Outfit Ideas', desc: 'Daily styling inspiration' },
+            { value: 'reduce_wardrobe', icon: '♻️', label: 'Reduce Wardrobe', desc: 'Minimize and declutter' },
+            { value: 'build_capsule', icon: '🎯', label: 'Build Capsule Wardrobe', desc: 'Create a curated collection' },
+            { value: 'track_value', icon: '💰', label: 'Track Wardrobe Value', desc: 'Monitor my investment' },
+            { value: 'shop_smarter', icon: '🛒', label: 'Shop Smarter', desc: 'Make better purchases' }
+          ].each do |goal| %>
+            <div class="relative">
+              <%= f.radio_button :primary_goal, goal[:value], id: "goal_#{goal[:value]}", class: "peer absolute opacity-0" %>
+              <label for="goal_<%= goal[:value] %>" class="flex items-start space-x-4 p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white peer-checked:border-purple-500 peer-checked:font-semibold peer-checked:scale-105 theme-card theme-text-secondary border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/70">
+                <span class="text-3xl flex-shrink-0"><%= goal[:icon] %></span>
+                <div class="flex-1">
+                  <div class="text-sm font-semibold mb-1"><%= goal[:label] %></div>
+                  <div class="text-xs opacity-75"><%= goal[:desc] %></div>
+                </div>
+              </label>
+            </div>
+          <% end %>
+        </div>
+
+        <div data-quiz-wizard-target="validationError" class="hidden p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <p class="text-sm text-red-400 flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+            <span>Please select your primary goal to continue</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="flex items-center justify-between pt-8 pb-4 sticky bottom-0 theme-bg/95 backdrop-blur-sm border-t theme-border">
+      <button
+        type="button"
+        data-quiz-wizard-target="backButton"
+        data-action="click->quiz-wizard#back"
+        class="invisible px-6 py-3 theme-text-secondary hover:theme-text font-medium rounded-xl border theme-border hover:border-gray-400 dark:hover:border-gray-600 transition-all duration-200">
+        <span class="flex items-center space-x-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          <span>Back</span>
+        </span>
+      </button>
+
+      <div class="flex items-center space-x-3">
+        <button
+          type="button"
+          data-quiz-wizard-target="skipButton"
+          data-action="click->quiz-wizard#skip"
+          class="hidden px-6 py-3 theme-text-secondary hover:theme-text font-medium rounded-xl transition-all duration-200">
+          Skip
+        </button>
+
+        <button
+          type="button"
+          data-quiz-wizard-target="nextButton"
+          data-action="click->quiz-wizard#next"
+          class="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium rounded-xl shadow-lg shadow-purple-600/20 hover:shadow-purple-600/40 transition-all duration-200">
+          <span class="flex items-center space-x-2">
+            <span>Next</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </span>
+        </button>
+
+        <%= f.submit user_profile.persisted? ? "Update Profile" : "Complete Profile",
+          data: { quiz_wizard_target: "submitButton" },
+          class: "hidden px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl shadow-lg shadow-purple-600/20 hover:shadow-purple-600/40 transition-all duration-200" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<style>
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+  }
+
+  .animate-shake {
+    animation: shake 0.5s ease-out;
+  }
+</style>

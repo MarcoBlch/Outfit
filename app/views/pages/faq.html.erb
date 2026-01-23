@@ -1,0 +1,344 @@
+<!-- FAQ Page -->
+<div class="min-h-screen theme-bg">
+  <!-- Navigation -->
+  <nav class="sticky top-0 z-50 theme-bg/80 backdrop-blur-sm border-b theme-border">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <%= link_to root_path, class: "flex items-center space-x-2" do %>
+          <%= image_tag 'logo_option_4.svg', class: 'w-8 h-8 rounded-lg', alt: 'OutfitMaker.ai' %>
+          <span class="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+            OutfitMaker.ai
+          </span>
+        <% end %>
+        <div class="flex items-center space-x-4">
+          <button type="button"
+                  class="p-2 theme-text-secondary hover:theme-text transition-colors"
+                  data-controller="theme-toggle"
+                  data-action="click->theme-toggle#toggle"
+                  aria-label="Toggle theme">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+            </svg>
+          </button>
+          <%= link_to "Back to Home", root_path, class: "theme-text-secondary hover:theme-text font-medium transition" %>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl sm:text-5xl font-bold theme-text mb-4 tracking-tight">
+        Frequently Asked Questions
+      </h1>
+      <p class="text-xl theme-text-secondary max-w-2xl mx-auto">
+        Find answers to common questions about OutfitMaker.ai
+      </p>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="mb-8" data-controller="faq-search">
+      <div class="relative">
+        <input type="text"
+               placeholder="Search FAQs..."
+               data-faq-search-target="input"
+               data-action="input->faq-search#filter"
+               class="w-full px-4 py-3 pl-12 rounded-lg theme-card theme-border border theme-text placeholder:theme-text-secondary focus:ring-2 focus:ring-purple-500 focus:border-transparent transition">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 theme-text-secondary">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+        </svg>
+      </div>
+      <div class="hidden mt-4 p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20" data-faq-search-target="noResults">
+        <p class="text-yellow-600 dark:text-yellow-400">
+          No FAQs match your search. Try different keywords or contact support.
+        </p>
+      </div>
+    </div>
+
+    <!-- FAQ Accordion -->
+    <div class="space-y-4" data-controller="accordion" data-faq-search-target="container">
+      <!-- FAQ 1 -->
+      <div class="theme-card rounded-lg border theme-border overflow-hidden" data-faq-search-target="item" data-faq-keywords="ai outfit suggestion algorithm recommendation how work">
+        <button type="button"
+                class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                data-accordion-target="trigger"
+                data-action="click->accordion#toggle">
+          <span class="font-semibold theme-text pr-4">How does AI outfit suggestion work?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 theme-text-secondary flex-shrink-0 transition-transform" data-accordion-target="icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+        <div class="hidden px-6 pb-4" data-accordion-target="content">
+          <p class="theme-text-secondary leading-relaxed">
+            Our AI analyzes your wardrobe items using advanced computer vision to identify colors, patterns, styles, and clothing types. It then uses sophisticated algorithms to match complementary pieces, considering factors like color harmony, style consistency, occasion appropriateness, and current fashion trends. You can also specify preferences like weather, occasion, or style vibe to get personalized suggestions.
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="theme-card rounded-lg border theme-border overflow-hidden" data-faq-search-target="item" data-faq-keywords="privacy data secure safe private photo wardrobe">
+        <button type="button"
+                class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                data-accordion-target="trigger"
+                data-action="click->accordion#toggle">
+          <span class="font-semibold theme-text pr-4">Is my data private and secure?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 theme-text-secondary flex-shrink-0 transition-transform" data-accordion-target="icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+        <div class="hidden px-6 pb-4" data-accordion-target="content">
+          <p class="theme-text-secondary leading-relaxed mb-3">
+            Absolutely. We take your privacy seriously. Your wardrobe photos and data are encrypted in transit (HTTPS/TLS) and stored securely on Amazon S3 with restricted access. We <strong>never sell your data</strong> to third parties. Your personal wardrobe and outfit information is only used to provide you with personalized suggestions and improve our service.
+          </p>
+          <p class="theme-text-secondary leading-relaxed">
+            If you delete your account, all your data is permanently removed within 24 hours. See our <%= link_to "Privacy Policy", privacy_path, class: "text-purple-600 dark:text-purple-400 hover:underline" %> for full details.
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="theme-card rounded-lg border theme-border overflow-hidden" data-faq-search-target="item" data-faq-keywords="free premium pricing subscription plan tier difference feature">
+        <button type="button"
+                class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                data-accordion-target="trigger"
+                data-action="click->accordion#toggle">
+          <span class="font-semibold theme-text pr-4">What's included in free vs premium?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 theme-text-secondary flex-shrink-0 transition-transform" data-accordion-target="icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+        <div class="hidden px-6 pb-4" data-accordion-target="content">
+          <div class="theme-text-secondary leading-relaxed space-y-3">
+            <div>
+              <p class="font-semibold theme-text mb-2">Free Plan:</p>
+              <ul class="list-disc list-inside space-y-1 ml-2">
+                <li>Up to 50 wardrobe items</li>
+                <li>5 AI outfit suggestions per month</li>
+                <li>Basic wardrobe organization</li>
+                <li>Manual outfit creation</li>
+              </ul>
+            </div>
+            <div>
+              <p class="font-semibold theme-text mb-2">Premium Plan ($9.99/month):</p>
+              <ul class="list-disc list-inside space-y-1 ml-2">
+                <li>Unlimited wardrobe items</li>
+                <li>Unlimited AI outfit suggestions</li>
+                <li>Advanced search and filters</li>
+                <li>Shopping recommendations</li>
+                <li>Trip planning feature</li>
+                <li>Priority support</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 4 -->
+      <div class="theme-card rounded-lg border theme-border overflow-hidden" data-faq-search-target="item" data-faq-keywords="add upload item wardrobe clothing photo image">
+        <button type="button"
+                class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                data-accordion-target="trigger"
+                data-action="click->accordion#toggle">
+          <span class="font-semibold theme-text pr-4">How do I add items to my wardrobe?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 theme-text-secondary flex-shrink-0 transition-transform" data-accordion-target="icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+        <div class="hidden px-6 pb-4" data-accordion-target="content">
+          <div class="theme-text-secondary leading-relaxed space-y-3">
+            <p>Adding items is easy:</p>
+            <ol class="list-decimal list-inside space-y-2 ml-2">
+              <li>Navigate to your Wardrobe page</li>
+              <li>Click "Add Item" or the "+" button</li>
+              <li>Take a photo or upload an image of your clothing item</li>
+              <li>Our AI will automatically detect the item type, color, and suggest tags</li>
+              <li>Review and adjust the details if needed</li>
+              <li>Click "Save" to add it to your wardrobe</li>
+            </ol>
+            <p class="mt-3">
+              <strong>Pro tip:</strong> Take photos on a plain background with good lighting for the best AI recognition results.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 5 -->
+      <div class="theme-card rounded-lg border theme-border overflow-hidden" data-faq-search-target="item" data-faq-keywords="offline app work internet mobile pwa">
+        <button type="button"
+                class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                data-accordion-target="trigger"
+                data-action="click->accordion#toggle">
+          <span class="font-semibold theme-text pr-4">Can I use the app offline?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 theme-text-secondary flex-shrink-0 transition-transform" data-accordion-target="icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+        <div class="hidden px-6 pb-4" data-accordion-target="content">
+          <p class="theme-text-secondary leading-relaxed">
+            Currently, OutfitMaker.ai requires an internet connection to function because our AI processing happens in the cloud. However, once your wardrobe is loaded, you can browse your items and manually create outfits with a limited connection. We're working on a Progressive Web App (PWA) version that will allow you to save wardrobes offline for viewing. AI-powered features like outfit suggestions will always require an internet connection.
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ 6 -->
+      <div class="theme-card rounded-lg border theme-border overflow-hidden" data-faq-search-target="item" data-faq-keywords="trip planner travel packing vacation plan feature">
+        <button type="button"
+                class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                data-accordion-target="trigger"
+                data-action="click->accordion#toggle">
+          <span class="font-semibold theme-text pr-4">How does the trip planner work?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 theme-text-secondary flex-shrink-0 transition-transform" data-accordion-target="icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+        <div class="hidden px-6 pb-4" data-accordion-target="content">
+          <div class="theme-text-secondary leading-relaxed space-y-3">
+            <p>The trip planner (Premium feature) helps you pack smart:</p>
+            <ol class="list-decimal list-inside space-y-2 ml-2">
+              <li>Enter your destination, trip duration, and planned activities</li>
+              <li>Our AI analyzes weather forecasts and local style norms</li>
+              <li>It suggests outfits from your wardrobe for each day</li>
+              <li>It recommends versatile pieces that mix and match</li>
+              <li>You'll get a packing checklist with visual outfit previews</li>
+            </ol>
+            <p class="mt-3">
+              The goal is to help you pack light while ensuring you have the perfect outfit for every occasion on your trip.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 7 -->
+      <div class="theme-card rounded-lg border theme-border overflow-hidden" data-faq-search-target="item" data-faq-keywords="payment method credit card paypal stripe billing">
+        <button type="button"
+                class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                data-accordion-target="trigger"
+                data-action="click->accordion#toggle">
+          <span class="font-semibold theme-text pr-4">What payment methods do you accept?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 theme-text-secondary flex-shrink-0 transition-transform" data-accordion-target="icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+        <div class="hidden px-6 pb-4" data-accordion-target="content">
+          <div class="theme-text-secondary leading-relaxed space-y-3">
+            <p>We use Stripe for secure payment processing and accept:</p>
+            <ul class="list-disc list-inside space-y-1 ml-2">
+              <li>All major credit cards (Visa, Mastercard, American Express, Discover)</li>
+              <li>Debit cards</li>
+              <li>Apple Pay</li>
+              <li>Google Pay</li>
+            </ul>
+            <p class="mt-3">
+              All payment information is handled securely by Stripe. We never store your full credit card details on our servers. Your payment data is encrypted and PCI-compliant.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 8 -->
+      <div class="theme-card rounded-lg border theme-border overflow-hidden" data-faq-search-target="item" data-faq-keywords="cancel subscription refund unsubscribe downgrade stop">
+        <button type="button"
+                class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                data-accordion-target="trigger"
+                data-action="click->accordion#toggle">
+          <span class="font-semibold theme-text pr-4">How do I cancel my subscription?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 theme-text-secondary flex-shrink-0 transition-transform" data-accordion-target="icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+        <div class="hidden px-6 pb-4" data-accordion-target="content">
+          <div class="theme-text-secondary leading-relaxed space-y-3">
+            <p>You can cancel your subscription anytime:</p>
+            <ol class="list-decimal list-inside space-y-2 ml-2">
+              <li>Go to your Account Settings</li>
+              <li>Click on "Subscription" or "Billing"</li>
+              <li>Select "Cancel Subscription"</li>
+              <li>Confirm your cancellation</li>
+            </ol>
+            <p class="mt-3">
+              <strong>Important:</strong> When you cancel, you'll continue to have Premium access until the end of your current billing period. After that, your account will automatically revert to the free plan. Your wardrobe data will be preserved, but you'll be limited to free plan features.
+            </p>
+            <p class="mt-3">
+              We don't offer prorated refunds for partial months, but you can reactivate your subscription anytime.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 9 -->
+      <div class="theme-card rounded-lg border theme-border overflow-hidden" data-faq-search-target="item" data-faq-keywords="shopping recommendation affiliate link buy purchase product">
+        <button type="button"
+                class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                data-accordion-target="trigger"
+                data-action="click->accordion#toggle">
+          <span class="font-semibold theme-text pr-4">How do shopping recommendations work?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 theme-text-secondary flex-shrink-0 transition-transform" data-accordion-target="icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+        <div class="hidden px-6 pb-4" data-accordion-target="content">
+          <p class="theme-text-secondary leading-relaxed">
+            When you request outfit suggestions, our AI may recommend complementary items to complete the look if you're missing key pieces. These suggestions are based on your existing wardrobe and personal style. We use affiliate links, meaning we may earn a small commission if you make a purchase (at no extra cost to you). However, we <strong>never share your wardrobe photos or personal data</strong> with retailers. Recommendations are optional and never required to use the app.
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ 10 -->
+      <div class="theme-card rounded-lg border theme-border overflow-hidden" data-faq-search-target="item" data-faq-keywords="delete account remove data privacy gdpr">
+        <button type="button"
+                class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                data-accordion-target="trigger"
+                data-action="click->accordion#toggle">
+          <span class="font-semibold theme-text pr-4">How do I delete my account and data?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 theme-text-secondary flex-shrink-0 transition-transform" data-accordion-target="icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+        <div class="hidden px-6 pb-4" data-accordion-target="content">
+          <div class="theme-text-secondary leading-relaxed space-y-3">
+            <p>To permanently delete your account:</p>
+            <ol class="list-decimal list-inside space-y-2 ml-2">
+              <li>Go to Account Settings</li>
+              <li>Scroll to "Danger Zone"</li>
+              <li>Click "Delete Account"</li>
+              <li>Confirm by entering your password</li>
+            </ol>
+            <p class="mt-3">
+              <strong>This action is permanent and cannot be undone.</strong> All your wardrobe items, photos, outfits, and personal data will be permanently deleted within 24 hours. If you have an active subscription, it will be automatically canceled.
+            </p>
+            <p class="mt-3">
+              For GDPR data requests or questions, email <a href="mailto:hello@outfitmaker.ai" class="text-purple-600 dark:text-purple-400 hover:underline">hello@outfitmaker.ai</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Support -->
+    <div class="mt-12 text-center theme-card rounded-xl p-8 border theme-border">
+      <h2 class="text-2xl font-bold theme-text mb-3">Still have questions?</h2>
+      <p class="theme-text-secondary mb-6">
+        We're here to help! Our support team typically responds within 24 hours.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="mailto:hello@outfitmaker.ai" class="btn-primary inline-flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+          </svg>
+          Email Support
+        </a>
+        <%= link_to help_path, class: "btn-secondary inline-flex items-center justify-center" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+          </svg>
+          Visit Help Center
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <%= render 'layouts/landing_footer' %>
+</div>
