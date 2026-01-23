@@ -1,0 +1,86 @@
+<% # Trial countdown banner %>
+<% # Shows countdown for users on Premium trial %>
+
+<%
+  # Check if user is on trial (has trial_ends_at set and it's in the future)
+  # This assumes you have trial_ends_at field - will show nothing if not present
+  trial_ends_at = current_user.try(:trial_ends_at)
+  is_on_trial = trial_ends_at.present? && trial_ends_at > Time.current
+
+  if is_on_trial
+    days_remaining = ((trial_ends_at - Time.current) / 1.day).ceil
+    urgency_level = if days_remaining <= 1
+      :critical
+    elsif days_remaining <= 3
+      :warning
+    else
+      :info
+    end
+
+    bg_color = case urgency_level
+    when :critical then "from-red-600/20 to-orange-600/20 border-red-500/50"
+    when :warning then "from-orange-600/20 to-yellow-600/20 border-orange-500/50"
+    else "from-purple-600/20 to-pink-600/20 border-purple-500/50"
+    end
+
+    text_color = case urgency_level
+    when :critical then "text-red-400"
+    when :warning then "text-orange-400"
+    else "text-purple-400"
+    end
+  end
+%>
+
+<% if is_on_trial %>
+  <div class="mb-4 rounded-xl p-4 bg-gradient-to-r <%= bg_color %> border">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <!-- Countdown info -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 <%= text_color %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <div>
+          <p class="font-medium theme-text">
+            <% if days_remaining == 0 %>
+              Your Premium trial ends today!
+            <% elsif days_remaining == 1 %>
+              Only 1 day left in your Premium trial
+            <% else %>
+              <%= days_remaining %> days left in your Premium trial
+            <% end %>
+          </p>
+          <p class="text-xs theme-text-muted">
+            <% if urgency_level == :critical %>
+              Upgrade now to keep your Premium features
+            <% else %>
+              You've generated <%= current_user.outfit_suggestions.count %> outfits so far
+            <% end %>
+          </p>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="flex items-center gap-3">
+        <%= link_to new_subscription_path(plan: 'premium'),
+            class: "px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-medium rounded-lg hover:shadow-lg hover:shadow-purple-600/30 transition-all whitespace-nowrap" do %>
+          <% if urgency_level == :critical %>
+            Keep Premium - $7.99/mo
+          <% else %>
+            Upgrade to Premium
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if urgency_level == :critical %>
+      <div class="mt-3 pt-3 border-t border-white/10">
+        <p class="text-xs theme-text-muted">
+          After your trial ends, you'll be moved to the Free plan (3 AI suggestions/day, 50 items max).
+          Your data will be preserved.
+        </p>
+      </div>
+    <% end %>
+  </div>
+<% end %>

@@ -38,13 +38,13 @@
           <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
           </svg>
-          <span><strong class="text-white">30</strong> AI suggestions/day</span>
+          <span><strong class="text-white">15</strong> AI suggestions/day</span>
         </li>
         <li class="flex items-start">
           <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
           </svg>
-          <span>Priority AI processing</span>
+          <span><strong class="text-white">300</strong> wardrobe items</span>
         </li>
         <li class="flex items-start">
           <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -60,9 +60,10 @@
         </li>
       </ul>
 
-      <a href="#" class="block w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium rounded-lg shadow-lg shadow-purple-600/20 hover:shadow-purple-600/40 transition-all duration-200 text-center">
-        Upgrade to Premium
-      </a>
+      <%= link_to new_subscription_path(plan: 'premium'),
+          class: "block w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium rounded-lg shadow-lg shadow-purple-600/20 hover:shadow-purple-600/40 transition-all duration-200 text-center" do %>
+        Start 7-Day Free Trial
+      <% end %>
     </div>
 
     <!-- Pro plan -->
@@ -80,7 +81,13 @@
           <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
           </svg>
-          <span><strong class="text-white">100</strong> AI suggestions/day</span>
+          <span><strong class="text-white">Unlimited</strong> AI suggestions</span>
+        </li>
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span><strong class="text-white">Unlimited</strong> wardrobe items</span>
         </li>
         <li class="flex items-start">
           <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -92,19 +99,14 @@
           <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
           </svg>
-          <span>Shopping suggestions</span>
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          <span>Priority support</span>
+          <span>24/7 Priority support</span>
         </li>
       </ul>
 
-      <a href="#" class="block w-full px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-medium rounded-lg border border-white/10 transition-colors text-center">
+      <%= link_to new_subscription_path(plan: 'pro'),
+          class: "block w-full px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-medium rounded-lg border border-white/10 transition-colors text-center" do %>
         Upgrade to Pro
-      </a>
+      <% end %>
     </div>
   </div>
 
@@ -112,11 +114,8 @@
   <div class="pt-4">
     <p class="text-sm text-gray-400">
       Come back tomorrow for 3 more free suggestions, or
-      <button type="button"
-              onclick="window.location.reload()"
-              class="text-purple-400 hover:text-purple-300 underline">
-        go back to your wardrobe
-      </button>
+      <%= link_to "go back to your wardrobe", wardrobe_items_path,
+          class: "text-purple-400 hover:text-purple-300 underline" %>
     </p>
   </div>
 </div>

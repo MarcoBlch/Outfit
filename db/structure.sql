@@ -1,4 +1,4 @@
-\restrict F8Zc1ND1MOeOlcKGKSebwM7VpEzE4zzT6YqTYRo1mujZ8bXWndRm1SC5pVvK6pk
+\restrict 0q3K3lzGqLSsfrOGTKycXPsX3SC0NuaiohHa6oa3KARg49huwhMv3r2MWW7nHfa
 
 -- Dumped from database version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
 -- Dumped by pg_dump version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
@@ -449,7 +449,9 @@ CREATE TABLE public.users (
     admin boolean DEFAULT false NOT NULL,
     username character varying,
     provider character varying,
-    uid character varying
+    uid character varying,
+    trial_started_at timestamp(6) without time zone,
+    trial_ends_at timestamp(6) without time zone
 );
 
 
@@ -1237,11 +1239,12 @@ ALTER TABLE ONLY public.wardrobe_items
 -- PostgreSQL database dump complete
 --
 
-\unrestrict F8Zc1ND1MOeOlcKGKSebwM7VpEzE4zzT6YqTYRo1mujZ8bXWndRm1SC5pVvK6pk
+\unrestrict 0q3K3lzGqLSsfrOGTKycXPsX3SC0NuaiohHa6oa3KARg49huwhMv3r2MWW7nHfa
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260123140746'),
 ('20260123140337'),
 ('20260123135837'),
 ('20260122150840'),

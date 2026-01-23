@@ -1,0 +1,153 @@
+<% # Celebration modal for user achievements %>
+<% # Usage: render "shared/celebration_modal", milestone: :first_item | :ten_items | :first_outfit | :first_suggestion | :profile_complete %>
+
+<%
+  milestone ||= :generic
+
+  content = case milestone
+  when :first_item
+    {
+      emoji: "party",
+      title: "Your wardrobe has begun!",
+      message: "You've added your first item. Keep going - the AI needs at least 3 items to suggest outfits.",
+      cta_text: "Add More Items",
+      cta_path: new_wardrobe_item_path
+    }
+  when :three_items
+    {
+      emoji: "sparkles",
+      title: "Ready for AI magic!",
+      message: "With 3+ items, you can now get AI-powered outfit suggestions. Let's try it!",
+      cta_text: "Get AI Suggestion",
+      cta_path: new_outfit_suggestion_path
+    }
+  when :ten_items
+    {
+      emoji: "fire",
+      title: "Wardrobe growing strong!",
+      message: "10 items and counting! More items = better outfit combinations.",
+      cta_text: "Keep Building",
+      cta_path: new_wardrobe_item_path
+    }
+  when :first_outfit
+    {
+      emoji: "tada",
+      title: "Your first outfit!",
+      message: "You've created your first outfit combination. Share it or save it for later!",
+      cta_text: "View Outfit",
+      cta_path: outfits_path
+    }
+  when :first_suggestion
+    {
+      emoji: "robot",
+      title: "AI at your service!",
+      message: "Your first AI suggestion is ready. Want even better recommendations? Complete your style profile.",
+      cta_text: "Complete Profile",
+      cta_path: new_user_profile_path,
+      show_skip: true
+    }
+  when :profile_complete
+    {
+      emoji: "star",
+      title: "Profile complete!",
+      message: "Your AI suggestions will now be personalized to your style, body type, and preferences.",
+      cta_text: "Get Personalized Suggestion",
+      cta_path: new_outfit_suggestion_path
+    }
+  else
+    {
+      emoji: "trophy",
+      title: "Achievement unlocked!",
+      message: "Keep going, you're doing great!",
+      cta_text: "Continue",
+      cta_path: authenticated_root_path
+    }
+  end
+
+  emoji_svg = case content[:emoji]
+  when "party"
+    '<svg class="w-12 h-12 text-yellow-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>'
+  when "sparkles"
+    '<svg class="w-12 h-12 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>'
+  when "fire"
+    '<svg class="w-12 h-12 text-orange-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 23c3.31 0 6-2.69 6-6 0-2.97-2.16-5.77-4-7.68-1.11-1.16-2.12-1.91-2.46-2.34-.62.19-1.06.59-1.31.97-.35.53-.15 1.18-.15 1.18s-.42-.15-.82-.35c-.63-.31-1.35-.77-1.95-1.59-.86-1.18-1.06-2.81-.09-4.37C5.19 4.91 4 7.5 4 10c0 3.5 2 7 4 9 1 1 2.5 2.5 4 4zm0-9c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/></svg>'
+  when "tada"
+    '<svg class="w-12 h-12 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>'
+  when "robot"
+    '<svg class="w-12 h-12 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>'
+  when "star"
+    '<svg class="w-12 h-12 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>'
+  else
+    '<svg class="w-12 h-12 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
+  end
+%>
+
+<div data-controller="celebration"
+     data-celebration-milestone-value="<%= milestone %>"
+     class="fixed inset-0 z-50 hidden"
+     data-celebration-target="container">
+
+  <!-- Backdrop with confetti effect -->
+  <div class="fixed inset-0 bg-black/70 backdrop-blur-sm"
+       data-celebration-target="backdrop"></div>
+
+  <!-- Confetti particles (CSS animation) -->
+  <div class="confetti-container fixed inset-0 pointer-events-none overflow-hidden" data-celebration-target="confetti">
+    <% 20.times do |i| %>
+      <div class="confetti-piece" style="left: <%= rand(100) %>%; animation-delay: <%= rand(0..500) %>ms; background-color: <%= ['#9333ea', '#ec4899', '#f59e0b', '#22c55e', '#3b82f6'].sample %>;"></div>
+    <% end %>
+  </div>
+
+  <!-- Modal -->
+  <div class="fixed inset-0 flex items-center justify-center p-4">
+    <div class="theme-card theme-border border rounded-2xl shadow-2xl max-w-sm w-full p-8 relative animate-in fade-in zoom-in duration-300 text-center">
+      <!-- Icon with pulse animation -->
+      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-purple-600/20 to-pink-600/20 mb-6 animate-pulse">
+        <%= emoji_svg.html_safe %>
+      </div>
+
+      <!-- Content -->
+      <h2 class="text-2xl font-bold theme-text mb-3"><%= content[:title] %></h2>
+      <p class="theme-text-secondary mb-6"><%= content[:message] %></p>
+
+      <!-- CTA -->
+      <%= link_to content[:cta_path],
+          class: "block w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-purple-600/30 transition-all" do %>
+        <%= content[:cta_text] %>
+      <% end %>
+
+      <% if content[:show_skip] %>
+        <button data-action="click->celebration#dismiss"
+                class="mt-4 text-sm theme-text-muted hover:theme-text transition-colors">
+          Maybe later
+        </button>
+      <% else %>
+        <button data-action="click->celebration#dismiss"
+                class="mt-4 text-sm theme-text-muted hover:theme-text transition-colors">
+          Close
+        </button>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<style>
+  .confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    animation: confetti-fall 3s ease-out forwards;
+  }
+
+  @keyframes confetti-fall {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+</style>

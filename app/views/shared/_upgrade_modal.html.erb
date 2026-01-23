@@ -1,0 +1,159 @@
+<% # Contextual upgrade modal %>
+<% # Usage: render "shared/upgrade_modal", context: :ai_limit | :wardrobe_limit | :premium_feature, feature_name: "Image Search" %>
+
+<%
+  context ||= :general
+  feature_name ||= "this feature"
+
+  # Define content based on context
+  content = case context
+  when :ai_limit
+    {
+      icon: "sparkles",
+      title: "You've used today's AI suggestions!",
+      subtitle: "Free accounts get 3 AI outfit suggestions per day.",
+      benefit: "Upgrade to Premium for 15 suggestions/day",
+      cta: "Get Premium - 7 Days Free",
+      secondary: "Get unlimited suggestions with Pro"
+    }
+  when :wardrobe_limit
+    {
+      icon: "collection",
+      title: "Your wardrobe is full!",
+      subtitle: "Free accounts can store up to 50 items.",
+      benefit: "Upgrade to Premium for 300 items",
+      cta: "Get Premium - 7 Days Free",
+      secondary: "Get unlimited storage with Pro"
+    }
+  when :premium_feature
+    {
+      icon: "lock-open",
+      title: "#{feature_name} is a Premium feature",
+      subtitle: "Unlock this and other powerful features.",
+      benefit: "Start your 7-day free trial",
+      cta: "Try Premium Free",
+      secondary: "No credit card required"
+    }
+  when :closet_limit
+    {
+      icon: "folder",
+      title: "You've reached your closet limit!",
+      subtitle: "Free accounts can create up to 2 closets.",
+      benefit: "Upgrade for unlimited closets",
+      cta: "Get Premium - 7 Days Free",
+      secondary: "Organize your wardrobe your way"
+    }
+  else
+    {
+      icon: "sparkles",
+      title: "Upgrade to unlock more features",
+      subtitle: "Get the most out of OutfitMaker.ai",
+      benefit: "AI suggestions, image search, and more",
+      cta: "View Plans",
+      secondary: "Starting at $7.99/month"
+    }
+  end
+%>
+
+<div data-controller="modal"
+     data-modal-open-on-load-value="true"
+     class="fixed inset-0 z-50 hidden"
+     data-modal-target="container">
+
+  <!-- Backdrop -->
+  <div class="fixed inset-0 bg-black/70 backdrop-blur-sm"
+       data-action="click->modal#close"
+       data-modal-target="backdrop"></div>
+
+  <!-- Modal -->
+  <div class="fixed inset-0 flex items-center justify-center p-4">
+    <div class="theme-card theme-border border rounded-2xl shadow-2xl max-w-md w-full p-8 relative animate-in fade-in zoom-in duration-300">
+      <!-- Close button -->
+      <button data-action="click->modal#close"
+              class="absolute top-4 right-4 theme-text-muted hover:theme-text transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+
+      <!-- Icon -->
+      <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 mb-4 shadow-lg shadow-purple-600/30">
+          <% case content[:icon] %>
+          <% when "sparkles" %>
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+            </svg>
+          <% when "collection" %>
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+            </svg>
+          <% when "lock-open" %>
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path>
+            </svg>
+          <% when "folder" %>
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+            </svg>
+          <% end %>
+        </div>
+
+        <h2 class="text-2xl font-bold theme-text mb-2"><%= content[:title] %></h2>
+        <p class="theme-text-secondary"><%= content[:subtitle] %></p>
+      </div>
+
+      <!-- Benefits -->
+      <div class="bg-gradient-to-r from-purple-900/30 to-pink-900/30 rounded-xl p-4 mb-6">
+        <div class="flex items-center gap-3">
+          <svg class="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          <span class="theme-text font-medium"><%= content[:benefit] %></span>
+        </div>
+      </div>
+
+      <!-- Tier comparison (compact) -->
+      <div class="grid grid-cols-2 gap-3 mb-6 text-sm">
+        <div class="bg-purple-600/10 rounded-lg p-3 border border-purple-500/30">
+          <div class="font-semibold text-purple-400 mb-1">Premium</div>
+          <div class="theme-text-muted">$7.99/mo</div>
+          <ul class="mt-2 space-y-1 text-xs theme-text-muted">
+            <li>15 AI/day</li>
+            <li>300 items</li>
+            <li>Image search</li>
+          </ul>
+        </div>
+        <div class="bg-pink-600/10 rounded-lg p-3 border border-pink-500/30">
+          <div class="font-semibold text-pink-400 mb-1">Pro</div>
+          <div class="theme-text-muted">$14.99/mo</div>
+          <ul class="mt-2 space-y-1 text-xs theme-text-muted">
+            <li>Unlimited AI</li>
+            <li>Unlimited items</li>
+            <li>Virtual try-on</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- CTA buttons -->
+      <div class="space-y-3">
+        <%= link_to new_subscription_path(plan: 'premium_trial'),
+            class: "block w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl text-center hover:shadow-lg hover:shadow-purple-600/30 transition-all" do %>
+          <%= content[:cta] %>
+        <% end %>
+
+        <p class="text-center text-xs theme-text-muted">
+          <%= content[:secondary] %>
+        </p>
+      </div>
+
+      <!-- Skip link -->
+      <div class="mt-4 text-center">
+        <button data-action="click->modal#close"
+                class="text-sm theme-text-muted hover:theme-text transition-colors">
+          Maybe later
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
