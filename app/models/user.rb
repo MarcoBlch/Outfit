@@ -56,13 +56,9 @@ class User < ApplicationRecord
   scope :newest_first, -> { order(created_at: :desc) }
   scope :oldest_first, -> { order(created_at: :asc) }
 
-  # AI Outfit Suggestions - Rate Limiting
+  # AI Outfit Suggestions - Rate Limiting (aligned with ITEM_UPLOAD_AND_TIER_LIMITS_SPEC)
   def remaining_suggestions_today
-    limit = case subscription_tier
-    when "pro" then 100
-    when "premium" then 30
-    else 3
-    end
+    limit = ai_suggestions_daily_limit
 
     # Use Redis cache to match the rate limiting in OutfitSuggestionService
     today = Date.current
@@ -70,6 +66,36 @@ class User < ApplicationRecord
     used = Rails.cache.read(usage_key) || 0
 
     [limit - used, 0].max
+  end
+
+  # Daily AI suggestion limits per tier (from spec)
+  def ai_suggestions_daily_limit
+    case subscription_tier
+    when "pro" then 999999 # Unlimited
+    when "premium" then 15
+    else 3
+    end
+  end
+
+  # Wardrobe item limits per tier (from spec)
+  def wardrobe_item_limit
+    case subscription_tier
+    when "pro" then 999999 # Unlimited
+    when "premium" then 300
+    else 50
+    end
+  end
+
+  def can_add_items?(count = 1)
+    wardrobe_items.active.count + count <= wardrobe_item_limit
+  end
+
+  def items_remaining
+    [wardrobe_item_limit - wardrobe_items.active.count, 0].max
+  end
+
+  def ai_suggestions_remaining_today
+    remaining_suggestions_today
   end
 
   def can_request_suggestion?
@@ -86,6 +112,11 @@ class User < ApplicationRecord
 
   def free_tier?
     subscription_tier == "free" || subscription_tier.blank?
+  end
+
+  # Alias for cleaner view code
+  def free?
+    free_tier?
   end
 
   # Admin helpers
@@ -115,17 +146,13 @@ class User < ApplicationRecord
     subscription&.current_period_end
   end
 
-  # Wardrobe item limits based on subscription
-  def wardrobe_item_limit
-    premium? ? 300 : 50
-  end
-
+  # Kept for backwards compatibility - uses new spec-aligned methods
   def can_add_wardrobe_item?
-    wardrobe_items.count < wardrobe_item_limit
+    can_add_items?(1)
   end
 
   def wardrobe_items_remaining
-    [wardrobe_item_limit - wardrobe_items.count, 0].max
+    items_remaining
   end
 
   # Image search limits (Premium only)
