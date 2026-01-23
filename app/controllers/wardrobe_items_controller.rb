@@ -1,6 +1,5 @@
 class WardrobeItemsController < ApplicationController
-  # TEMPORARY: Authentication disabled for AI navigation testing
-  # before_action :authenticate_user!
+  before_action :authenticate_user!
   before_action :set_wardrobe_item, only: %i[show update destroy]
 
   def index
@@ -111,6 +110,33 @@ class WardrobeItemsController < ApplicationController
     end
 
     render turbo_stream: turbo_stream.update("wardrobe_grid", partial: "wardrobe_items/grid", locals: { wardrobe_items: @wardrobe_items })
+  end
+
+  # Add sample wardrobe items for new users to explore the app
+  def add_sample_wardrobe
+    # Only allow if user has no items (prevent abuse)
+    if current_user.wardrobe_items.any?
+      redirect_to wardrobe_items_path, alert: "You already have items in your wardrobe."
+      return
+    end
+
+    # Create sample items with placeholder data
+    # These will be created without images - user can add real items later
+    sample_items = [
+      { category: "tops", color: "white", metadata: { brand: "Sample", material: "cotton", tags: ["casual", "basic"] } },
+      { category: "tops", color: "blue", metadata: { brand: "Sample", material: "cotton", tags: ["casual", "work"] } },
+      { category: "bottoms", color: "navy", metadata: { brand: "Sample", material: "denim", tags: ["casual", "versatile"] } },
+      { category: "bottoms", color: "black", metadata: { brand: "Sample", material: "wool", tags: ["formal", "work"] } },
+      { category: "shoes", color: "white", metadata: { brand: "Sample", material: "leather", tags: ["casual", "sneakers"] } },
+      { category: "shoes", color: "brown", metadata: { brand: "Sample", material: "leather", tags: ["formal", "dress"] } },
+      { category: "outerwear", color: "gray", metadata: { brand: "Sample", material: "wool", tags: ["layering", "fall"] } }
+    ]
+
+    sample_items.each do |item_attrs|
+      current_user.wardrobe_items.create!(item_attrs.merge(is_sample: true))
+    end
+
+    redirect_to authenticated_root_path, notice: "Sample wardrobe added! You can now try AI outfit suggestions."
   end
 
   private

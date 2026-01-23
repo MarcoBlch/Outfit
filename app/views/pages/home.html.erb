@@ -1,3 +1,8 @@
+<%# First-time user wizard (shows for new users with no items) %>
+<% if current_user.wardrobe_items.empty? && current_user.created_at > 30.days.ago %>
+  <%= render "pages/first_time_wizard" %>
+<% end %>
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
   <!-- Personalized Greeting Section -->
@@ -47,6 +52,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Onboarding Progress (shows until all steps complete) -->
+  <%= render "shared/onboarding_progress" %>
 
   <!-- Ad Banner for Free Tier Users (hidden for first 7 days to let users experience value first) -->
   <% if current_user.free? && current_user.created_at < 7.days.ago %>

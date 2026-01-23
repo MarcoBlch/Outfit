@@ -1,4 +1,4 @@
-\restrict 5GfVTGTRqBxeZwpRjaMnzIogxqNMZOzQrKWaXINpljzQI9xmKYgVIYZNf3AAhBr
+\restrict F8Zc1ND1MOeOlcKGKSebwM7VpEzE4zzT6YqTYRo1mujZ8bXWndRm1SC5pVvK6pk
 
 -- Dumped from database version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
 -- Dumped by pg_dump version 16.11 (Ubuntu 16.11-0ubuntu0.24.04.1)
@@ -484,7 +484,8 @@ CREATE TABLE public.wardrobe_items (
     metadata jsonb,
     embedding public.vector(768),
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    is_sample boolean DEFAULT false
 );
 
 
@@ -1236,11 +1237,12 @@ ALTER TABLE ONLY public.wardrobe_items
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 5GfVTGTRqBxeZwpRjaMnzIogxqNMZOzQrKWaXINpljzQI9xmKYgVIYZNf3AAhBr
+\unrestrict F8Zc1ND1MOeOlcKGKSebwM7VpEzE4zzT6YqTYRo1mujZ8bXWndRm1SC5pVvK6pk
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260123140337'),
 ('20260123135837'),
 ('20260122150840'),
 ('20260108193500'),

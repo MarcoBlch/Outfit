@@ -1,0 +1,101 @@
+<% # Onboarding progress bar %>
+<% # Shows progress through: Account created > Items added > First outfit > Profile complete > First AI suggestion %>
+
+<%
+  # Calculate completion status for each step
+  steps = [
+    { name: "Account created", completed: true, icon: "check-circle" },
+    { name: "Add first items", completed: current_user.wardrobe_items.any?, target: 3, current: current_user.wardrobe_items.count, icon: "photograph" },
+    { name: "Create outfit", completed: current_user.outfits.any?, icon: "collection" },
+    { name: "Complete profile", completed: current_user.user_profile.present?, icon: "user-circle" },
+    { name: "Get AI suggestion", completed: current_user.outfit_suggestions.any?, icon: "sparkles" }
+  ]
+
+  completed_count = steps.count { |s| s[:completed] }
+  progress_percentage = (completed_count.to_f / steps.length * 100).round
+  all_complete = completed_count == steps.length
+%>
+
+<% unless all_complete %>
+  <div class="theme-card theme-border border rounded-xl p-4 mb-6">
+    <div class="flex items-center justify-between mb-3">
+      <h3 class="font-semibold theme-text text-sm">Getting Started</h3>
+      <span class="text-xs theme-text-muted"><%= completed_count %>/<%= steps.length %> complete</span>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="w-full bg-slate-700/50 rounded-full h-2 mb-4">
+      <div class="bg-gradient-to-r from-purple-600 to-pink-600 h-2 rounded-full transition-all duration-500"
+           style="width: <%= progress_percentage %>%"></div>
+    </div>
+
+    <!-- Steps -->
+    <div class="flex justify-between items-start">
+      <% steps.each_with_index do |step, index| %>
+        <div class="flex flex-col items-center flex-1 relative">
+          <% if index > 0 %>
+            <%# Connector line %>
+            <div class="absolute top-3 -left-1/2 w-full h-0.5 <%= step[:completed] ? 'bg-purple-600' : 'bg-slate-700' %>"></div>
+          <% end %>
+
+          <%# Step circle %>
+          <div class="relative z-10 w-6 h-6 rounded-full flex items-center justify-center
+                      <%= step[:completed] ? 'bg-purple-600 text-white' : 'bg-slate-700 theme-text-muted' %>">
+            <% if step[:completed] %>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            <% else %>
+              <span class="text-xs"><%= index + 1 %></span>
+            <% end %>
+          </div>
+
+          <%# Step label %>
+          <span class="mt-1.5 text-xs text-center theme-text-muted hidden sm:block max-w-[80px]">
+            <%= step[:name] %>
+            <% if step[:target] && !step[:completed] %>
+              <br><span class="text-purple-400">(<%= step[:current] %>/<%= step[:target] %>)</span>
+            <% end %>
+          </span>
+        </div>
+      <% end %>
+    </div>
+
+    <%# Next action CTA %>
+    <% next_step = steps.find { |s| !s[:completed] } %>
+    <% if next_step %>
+      <div class="mt-4 pt-3 border-t border-slate-700/50">
+        <% case next_step[:name] %>
+        <% when "Add first items" %>
+          <%= link_to new_wardrobe_item_path, class: "inline-flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Add your first wardrobe item
+          <% end %>
+        <% when "Create outfit" %>
+          <%= link_to new_outfit_path, class: "inline-flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Create your first outfit
+          <% end %>
+        <% when "Complete profile" %>
+          <%= link_to new_user_profile_path, class: "inline-flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+            Complete your style profile
+          <% end %>
+        <% when "Get AI suggestion" %>
+          <%= link_to new_outfit_suggestion_path, class: "inline-flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+            Get your first AI suggestion
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

@@ -35,6 +35,9 @@
     <% end %>
   </div>
 
+  <!-- Profile completion prompt (after first suggestion) -->
+  <%= render "shared/profile_prompt" %>
+
   <!-- Actions footer -->
   <div class="flex items-center justify-between pt-4 border-t border-white/10">
     <%= link_to outfit_suggestion_path(id: suggestion.id),

@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   resources :wardrobe_items do
     collection do
       get :search
+      post :add_sample_wardrobe
     end
   end
   resources :outfits
