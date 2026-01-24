@@ -1,8 +1,6 @@
 class LandingController < ApplicationController
   def index
-    # Redirect to dashboard if already logged in
-    if user_signed_in?
-      redirect_to authenticated_root_path
-    end
+    # Routing handles authenticated users - they go to pages#home automatically
+    # This controller only handles unauthenticated visitors
   end
 end

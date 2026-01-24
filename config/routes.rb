@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
-  # Landing page (unauthenticated)
-  root to: 'landing#index'
-
-  # Authenticated app (after login)
+  # Authenticated app (after login) - must be before unauthenticated root
   authenticated :user do
     root to: 'pages#home', as: :authenticated_root
   end
+
+  # Landing page (unauthenticated)
+  root to: 'landing#index'
 
   # Legal pages
   get 'privacy', to: 'pages#privacy', as: :privacy

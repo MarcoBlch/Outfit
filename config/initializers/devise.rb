@@ -274,7 +274,15 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
 
   # Social login providers
-  if ENV['GOOGLE_CLIENT_ID'].present?
+  # Only configure if real credentials are provided (not placeholders)
+  google_configured = ENV['GOOGLE_CLIENT_ID'].present? &&
+                      !ENV['GOOGLE_CLIENT_ID'].start_with?('your_')
+  facebook_configured = ENV['FACEBOOK_APP_ID'].present? &&
+                        !ENV['FACEBOOK_APP_ID'].start_with?('your_')
+  apple_configured = ENV['APPLE_CLIENT_ID'].present? &&
+                     !ENV['APPLE_CLIENT_ID'].start_with?('your_')
+
+  if google_configured
     config.omniauth :google_oauth2,
       ENV['GOOGLE_CLIENT_ID'],
       ENV['GOOGLE_CLIENT_SECRET'],
@@ -282,14 +290,14 @@ Devise.setup do |config|
       prompt: 'select_account'
   end
 
-  if ENV['FACEBOOK_APP_ID'].present?
+  if facebook_configured
     config.omniauth :facebook,
       ENV['FACEBOOK_APP_ID'],
       ENV['FACEBOOK_APP_SECRET'],
       scope: 'email,public_profile'
   end
 
-  if ENV['APPLE_CLIENT_ID'].present?
+  if apple_configured
     config.omniauth :apple,
       ENV['APPLE_CLIENT_ID'],
       ENV['APPLE_TEAM_ID'],
