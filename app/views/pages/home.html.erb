@@ -40,18 +40,48 @@
           </p>
         </div>
 
-        <!-- Weather placeholder (future feature) -->
-        <div class="theme-bg rounded-xl p-4 flex items-center space-x-3 min-w-max">
-          <div class="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-            </svg>
-          </div>
-          <div>
-            <p class="theme-text font-semibold text-lg">22°C</p>
-            <p class="theme-text-muted text-xs">Sunny</p>
-          </div>
-        </div>
+        <!-- Weather Display (dynamic based on user location) -->
+        <% if current_user.weather_available? %>
+          <% weather = current_user.current_weather %>
+          <% if weather.present? %>
+            <div class="theme-bg rounded-xl p-4 flex items-center space-x-3 min-w-max">
+              <div class="w-12 h-12 rounded-full bg-gradient-to-br <%= weather_gradient_class(weather[:condition]) %> flex items-center justify-center">
+                <%= weather_icon(weather[:condition]) %>
+              </div>
+              <div>
+                <p class="theme-text font-semibold text-lg"><%= weather[:temp] %>°F</p>
+                <p class="theme-text-muted text-xs capitalize"><%= weather[:condition] %></p>
+              </div>
+            </div>
+          <% else %>
+            <!-- Weather fetch failed - show placeholder -->
+            <div class="theme-bg rounded-xl p-4 flex items-center space-x-3 min-w-max opacity-60">
+              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                </svg>
+              </div>
+              <div>
+                <p class="theme-text font-semibold text-sm">Weather unavailable</p>
+                <p class="theme-text-muted text-xs">Try again later</p>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <!-- No location set - prompt user to add it -->
+          <%= link_to edit_user_profile_path, class: "theme-bg rounded-xl p-4 flex items-center space-x-3 min-w-max hover:ring-2 hover:ring-purple-500/50 transition-all cursor-pointer" do %>
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+            </div>
+            <div>
+              <p class="theme-text font-semibold text-sm">Set your location</p>
+              <p class="theme-text-muted text-xs">For weather-based outfits</p>
+            </div>
+          <% end %>
+        <% end %>
       </div>
     </div>
   </div>
