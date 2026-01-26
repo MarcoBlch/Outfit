@@ -6,4 +6,4 @@
     per_page:      number of items to fetch per page
     remote:        data-remote
 -%>
-<%= link_to_unless current_page.last?, raw("Next &raquo;"), url, rel: 'next', remote: remote, class: "relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors" %>
+<%= link_to_unless current_page.last?, raw("Next &raquo;"), url, rel: 'next', remote: remote, class: "relative inline-flex items-center px-4 py-2 text-sm font-medium theme-text-secondary hover:theme-text hover:bg-black/10 dark:hover:bg-white/10 rounded-lg transition-colors" %>

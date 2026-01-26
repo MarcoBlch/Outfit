@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["step", "progressBar", "progressText", "backButton", "nextButton", "skipButton", "submitButton"]
   static values = {
     currentStep: { type: Number, default: 0 },
-    totalSteps: { type: Number, default: 10 }
+    totalSteps: { type: Number, default: 11 }
   }
 
   connect() {

@@ -3,8 +3,7 @@ module Admin
     before_action :set_user, only: [:show, :update_tier]
 
     def index
-      @users = User.includes(:user_profile, :subscription)
-                   .left_joins(:wardrobe_items, :outfits, :outfit_suggestions)
+      @users = User.left_joins(:wardrobe_items, :outfits, :outfit_suggestions)
                    .select("users.*,
                             COUNT(DISTINCT wardrobe_items.id) AS wardrobe_items_count,
                             COUNT(DISTINCT outfits.id) AS outfits_count,

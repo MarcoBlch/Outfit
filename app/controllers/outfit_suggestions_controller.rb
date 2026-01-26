@@ -3,7 +3,10 @@ class OutfitSuggestionsController < ApplicationController
   before_action :check_rate_limit, only: [:create]
 
   def index
-    @suggestions = current_user.outfit_suggestions.recent.limit(20)
+    @suggestions = current_user.outfit_suggestions
+                               .includes(:product_recommendations)
+                               .recent
+                               .limit(20)
   end
 
   def new
@@ -101,7 +104,9 @@ class OutfitSuggestionsController < ApplicationController
   end
 
   def show_recommendations
-    @suggestion = current_user.outfit_suggestions.find(params[:id])
+    @suggestion = current_user.outfit_suggestions
+                              .includes(:product_recommendations)
+                              .find(params[:id])
     @recommendations = @suggestion.product_recommendations
                                   .order(priority: :desc, created_at: :desc)
   end

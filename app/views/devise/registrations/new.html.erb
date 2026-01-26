@@ -4,14 +4,14 @@
       <div class="mx-auto h-12 w-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-2xl shadow-lg shadow-primary/20">
         O
       </div>
-      <h2 class="mt-6 text-3xl font-bold tracking-tight text-white">Create your account</h2>
+      <h2 class="mt-6 text-3xl font-bold tracking-tight theme-text">Create your account</h2>
       <p class="mt-2 text-sm text-gray-400">
         Already have an account?
         <%= link_to "Sign in", new_session_path(resource_name), class: "font-medium text-primary hover:text-primary-light transition-colors" %>
       </p>
     </div>
 
-    <%= render "shared/card", classes: "backdrop-blur-xl bg-white/5 border border-white/10" do %>
+    <%= render "shared/card", classes: "backdrop-blur-xl theme-card border theme-border" do %>
       <%# Social login buttons - ABOVE email form for visibility %>
       <%= render "devise/shared/social_login" %>
 
@@ -24,17 +24,17 @@
         <% end %>
 
         <div>
-          <%= f.label :email, class: "block text-sm font-medium leading-6 text-white" %>
+          <%= f.label :email, class: "block text-sm font-medium leading-6 theme-text" %>
           <div class="mt-2">
-            <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "you@example.com", class: "block w-full rounded-lg border-0 bg-white/5 py-2.5 px-3 text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "you@example.com", class: "block w-full rounded-lg border-0 bg-black/5 dark:bg-white/5 py-2.5 px-3 theme-text shadow-sm ring-1 ring-inset ring-black/10 dark:ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" %>
           </div>
         </div>
 
         <div>
-          <%= f.label :password, class: "block text-sm font-medium leading-6 text-white" %>
+          <%= f.label :password, class: "block text-sm font-medium leading-6 theme-text" %>
           <div class="mt-2 relative">
-            <%= f.password_field :password, autocomplete: "new-password", placeholder: "Create a password", data: { password_toggle_target: "password" }, class: "block w-full rounded-lg border-0 bg-white/5 py-2.5 px-3 pr-10 text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" %>
-            <button type="button" data-action="click->password-toggle#toggle" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white transition-colors">
+            <%= f.password_field :password, autocomplete: "new-password", placeholder: "Create a password", data: { password_toggle_target: "password" }, class: "block w-full rounded-lg border-0 bg-black/5 dark:bg-white/5 py-2.5 px-3 pr-10 theme-text shadow-sm ring-1 ring-inset ring-black/10 dark:ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" %>
+            <button type="button" data-action="click->password-toggle#toggle" class="absolute inset-y-0 right-0 pr-3 flex items-center theme-text-secondary hover:theme-text transition-colors">
               <svg data-password-toggle-target="eyeIcon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
